@@ -3,9 +3,41 @@ body {
     min-height: 400px;
 }
 
+a {
+    text-decoration:none
+}
+
 .popup-padded {
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
     padding-right: 10px;
+}
+
+.pwdreset {
+    font-size: 14px;
+}
+
+.signupbox {
+    border-radius: 0.25rem;
+    padding: 20px;
+    margin-top: 15px;
+    background-color: white;
+}
+
+.signupbox_hint {
+    border-radius: 0.25rem;
+    padding: 20px;
+    margin-top: 5px;
+}
+
+.container {
+    padding: 1rem 2rem;
+    background-color: #e3e8ee;
+}
+
+.btn-primary, .btn-primary:hover {
+    background-color: #fafbfc;
+    color: black;
+    border-color: #ced4da;
 }
