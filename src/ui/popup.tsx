@@ -39,7 +39,7 @@ class App extends React.Component {
                                 aria-describedby="basic-addon1"
                                 type="password"
                                 />
-                                <span className="pwdreset"><a href="/en/iforgotmypassword">Password reset</a></span>
+                                <span className="pwdreset"><a href="#">Password reset</a></span>
                             </div>
                             <div className="actions">
                                 <Button name="commit" >Sign in</Button>
