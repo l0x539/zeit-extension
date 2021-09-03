@@ -1,7 +1,9 @@
 body {
-    min-width: 400px;
+    width: 400px;
     min-height: 400px;
+    max-height: 630px;
     font-family: Verdana, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    background-color: #e3e8ee;
 }
 
 a {
@@ -34,7 +36,85 @@ a {
 
 .container {
     padding: 1rem 2rem;
-    background-color: #e3e8ee;
+}
+
+.content {
+    margin-top: 116px;
+}
+
+.time-entries-head {
+    font-size: 14px;
+    font-family: Verdana, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    background-color: #dfe0e1;
+    border-radius: 0.25rem;
+    position: relative;
+    top: 20px
+}
+
+.time-entries {
+    font-size: 14px;
+    font-family: Verdana, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    background-color: white;
+    border-radius: 0.25rem;
+    position: relative;
+    top: 20px
+}
+
+.time-entry {
+    height: 60px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.time-entry:not(:first-child) {
+    border-top: 1px solid #F7F7F7;
+}
+
+.time-entries-desc {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.time-entries-info {
+    width: 48%;
+}
+
+.time-entries-project {
+    font-size: 10px;
+}
+
+.time-entries-play > svg:hover {
+    fill: tomato;
+}
+
+.main-header {
+    background-color: white;
+    font-family: Verdana, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+}
+
+.page-header {
+    height: 45px;
+    padding: 0 1rem;
+}
+
+.header-second-row {
+    border-top: 1px solid #F7F7F7;
+}
+
+.logo_zeitio {
+    font-weight: bold;
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.a_logo, .a_logo:hover {
+    color: black;
+}
+
+.header__icon-button svg {
+    cursor: pointer;
+    margin-left: 0.6rem;
 }
 
 .btn-primary, .btn-primary:hover {
