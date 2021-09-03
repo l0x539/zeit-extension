@@ -11,7 +11,7 @@ const Entries = ({entries}: {entries: TimeEntry[]}) => {
             <div className="shadow-sm time-entries mx-4 my-2 p-2">
                 <div>
                     {entries.map((entry: TimeEntry, index: number) => (
-                        <div className="row time-entry">
+                        <div key={index} className="row time-entry">
                             <div className="time-entries-info col m-auto">
                                 <div className="time-entries-desc">
                                     {entry.desciption}
@@ -22,7 +22,7 @@ const Entries = ({entries}: {entries: TimeEntry[]}) => {
                             </div>
                             <div className="time-entries-total-and-time  m-auto d-flex justify-content-around col-5">
                                 <div className="time-entries-total">
-                                    ${entry.rate*entry.time*0.01}
+                                    ${(entry.rate*entry.time).toFixed(2)}
                                 </div>
                                 <div className="ml-1 time-entries-total-time">
                                     {toTimer(entry.time)}

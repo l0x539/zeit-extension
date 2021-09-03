@@ -3,9 +3,10 @@ import * as ReactDOM from "react-dom"
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "../styles/popup.css"
-import Header from "./components/Header"
-import { TimeEntry } from "./utils/types"
-import Entries from "./components/Entries"
+import AuthProtected from "./components/Layout/AuthProtected"
+import Track from "./pages/Track"
+import { CacheProvider } from "@rest-hooks/core"
+
 
 /* Start recording POST https://zeit.io/api/v1/usr/time_records/start
  * Headers: apikey: 34JrUdPjZFdb8SXdvHrX5CHbntm0pPPO76jPzBjx
@@ -23,96 +24,15 @@ import Entries from "./components/Entries"
  */
 
 
-const ENTRIES: TimeEntry[] = [
-    {
-        time: 163,
-        desciption: "Test Work.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work2.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work3.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work4.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work5.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    {
-        time: 163,
-        desciption: "Test Work6.",
-        project: "Project name",
-        rate: 15
-    },
-    
-]
-
 const App = () => {
     console.log(chrome);
     
     return (
-        <>
-            <Header />
-            <Entries entries={ENTRIES} />
-        </>
+        <CacheProvider>
+            <AuthProtected >
+                <Track />
+            </AuthProtected>
+        </CacheProvider>
     )
 }
 

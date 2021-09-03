@@ -1,7 +1,31 @@
+import { useFetcher } from "@rest-hooks/core"
+import { useLoading } from '@rest-hooks/hooks'
 import * as React from "react"
-import { Alert, Button, Form, FormControl, InputGroup } from "react-bootstrap";
+import { Alert, Button, Form, FormControl } from "react-bootstrap"
+import { loginHook } from "../utils/api";
 
 const Login = () => {
+
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
+    const [error, setError] = React.useState('')
+
+    const [login, loading, loginError] = useLoading(useFetcher(loginHook))
+    
+    const handleSubmit = React.useCallback(async () => {
+        console.log(email, password);
+        
+        if (email && password) {
+            const res = await login({
+                email,
+                password 
+            })
+            console.log(res)
+        } else {
+            setError('Missing fields!')
+        }
+    }, [email, password])
+
     return (
         <div className="popup-padded container">
             <div className="row">
@@ -14,31 +38,37 @@ const Login = () => {
                     </div>    
                 </div>
                 <div className="col-lg-6 shadow-sm signupbox">
-                    <Alert variant={"danger"} dismissible>
-                        Error goes here
-                    </Alert>
+                    {error.length > 0 ? 
+                        <Alert variant={"danger"} dismissible>
+                            {error}
+                        </Alert>
+                    :
+                        null
+                    }
                     <Form className="form-horizontal" action="/en/signin" method="post">
                         <Form.Label className="form-label" htmlFor="session_email">Email</Form.Label>
                         <div className="mb-3">
                             <FormControl
-                            aria-label="Username"
+                            aria-label="Email"
                             id="session_email"
                             aria-describedby="basic-addon1"
                             type="email"
+                            onChange={(e) => {setEmail(e.target.value), setError('')}}
                             />
                         </div>
                         <Form.Label className="form-label" htmlFor="session_password">Password</Form.Label>
                         <div className="mb-3">
                             <FormControl
-                            aria-label="Username"
+                            aria-label="Password"
                             id="session_password"
                             aria-describedby="basic-addon1"
                             type="password"
+                            onChange={(e) => {setPassword(e.target.value), setError('')}}
                             />
                             <span className="pwdreset"><a href="#">Password reset</a></span>
                         </div>
                         <div className="actions">
-                            <Button name="commit" >Sign in</Button>
+                            <Button onClick={handleSubmit} name="commit" >Sign in</Button>
                         </div>
                     </Form>
                 </div>
@@ -46,3 +76,5 @@ const Login = () => {
         </div>
     )
 }
+
+export default Login
