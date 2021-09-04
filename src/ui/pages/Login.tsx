@@ -46,7 +46,7 @@ const Login = () => {
                 </div>
                 <div className="col-lg-6 shadow-sm signupbox">
                     {error.length > 0 ? 
-                        <Alert variant={"danger"} onClose={() => setError('false')} dismissible>
+                        <Alert variant={"danger"} onClose={() => setError('')} dismissible>
                             {error}
                         </Alert>
                     :
