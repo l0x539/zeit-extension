@@ -27,6 +27,7 @@
     "@rest-hooks/test": "^6.2.0",
     "bootstrap": "^5.1.0",
     "bootstrap-icons": "^1.5.0",
+    "moment": "^2.29.1",
     "react": "^16.6.3",
     "react-bootstrap": "^2.0.0-beta.6",
     "react-dom": "^16.6.3",

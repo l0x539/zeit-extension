@@ -10,7 +10,8 @@ import { reload, useStore } from "./utils/chrome"
 import { loginHook } from "./utils/api"
 import ErrorBoundary from './components/ErrorBoundaries'
 import FakeRoute from "./components/Layout/FakeRoute"
-
+import { BiLoader } from "react-icons/bi"
+import Loading from "./components/Loading"
 
 /* Start recording POST https://zeit.io/api/v1/usr/time_records/start
  * Headers: apikey: 34JrUdPjZFdb8SXdvHrX5CHbntm0pPPO76jPzBjx
@@ -31,15 +32,18 @@ import FakeRoute from "./components/Layout/FakeRoute"
 const App = () => {
     
     return (
-        <CacheProvider>
-            <ErrorBoundary>
-                <AuthProvider >
-                    <FakeRoute>
-                        <Track />
-                    </FakeRoute>
-                </AuthProvider>
-            </ErrorBoundary>
-        </CacheProvider>
+        <React.Suspense fallback={<Loading />}>
+            <CacheProvider>
+                <ErrorBoundary>
+                    <AuthProvider >
+                        <FakeRoute>
+                            <Track />
+                        </FakeRoute>
+                    </AuthProvider>
+                </ErrorBoundary>
+            </CacheProvider>
+        </React.Suspense>
+
     )
 }
 
@@ -50,11 +54,10 @@ const AuthProvider = ({children}) => {
         loggedIn: isPersistent && apiKey && (apiKey.length > 0),
         login: (apiKey: string) => {
             setApiKey(apiKey)
-            reload()
         },
         logout: () => {
             setApiKey(null)
-            reload()
+            // reload()
         }
     }
 
