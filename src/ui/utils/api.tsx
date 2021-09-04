@@ -51,8 +51,19 @@ export const ResetTimerHook = new Endpoint(({apiKey}:{
     return request("/api/v1/usr/time_records/reset", "POST", {}, apiKey)
 })
 
-export const StopTimerHook = new Endpoint(({apiKey}:{
-    apiKey: string
+export const StopTimerHook = new Endpoint(({apiKey, project_id, comment}:{
+    apiKey: string,
+    project_id: string,
+    comment: string 
 }) => {
-    return request("/api/v1/usr/time_records/stop", "POST", {}, apiKey)
+    return request("/api/v1/usr/time_records/stop", "POST", {project_id, comment}, apiKey)
+})
+
+
+// Projects
+export const getProjectsHook = new Endpoint(({apiKey, params}:{
+    apiKey: string,
+    params: string
+}) => {
+    return request("/api/v1/usr/projects", "GET", null, apiKey, params)
 })

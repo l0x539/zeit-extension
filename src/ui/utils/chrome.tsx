@@ -5,3 +5,4 @@ export const reload = () => {
 }
 
 export const useStore = createChromeStorageStateHookLocal("apiKey");
+export const useClock = createChromeStorageStateHookLocal("clock");

@@ -112,6 +112,15 @@ a {
     color: black;
 }
 
+.menu-item {
+    cursor: pointer;
+}
+
+.menu-item:hover, .menu-item:hover svg, .menu-item:hover path {
+    color: tomato;
+    stroke: tomato
+}
+
 .header__icon-button svg {
     cursor: pointer;
     margin-left: 0.6rem;

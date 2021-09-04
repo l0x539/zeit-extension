@@ -14,7 +14,8 @@ const Login = () => {
 
     const [login, loading, loginError] = useLoading(useFetcher(loginHook))
     
-    const handleSubmit = React.useCallback(async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         console.log(email, password);
         
         if (email && password) {
@@ -31,7 +32,7 @@ const Login = () => {
         } else {
             setError('Missing fields!')
         }
-    }, [email, password])
+    }
 
     return (
         <div className="popup-padded container">
@@ -52,7 +53,7 @@ const Login = () => {
                     :
                         null
                     }
-                    <Form className="form-horizontal" action="/en/signin" method="post">
+                    <Form className="form-horizontal" onSubmit={handleSubmit}>
                         <Form.Label className="form-label" htmlFor="session_email">Email</Form.Label>
                         <div className="mb-3">
                             <FormControl
@@ -75,7 +76,7 @@ const Login = () => {
                             <span className="pwdreset"><a href="#">Password reset</a></span>
                         </div>
                         <div className="actions">
-                            <Button onClick={handleSubmit} name="commit" >Sign in</Button>
+                            <Button type="submit" name="commit" >Sign in</Button>
                         </div>
                     </Form>
                 </div>
