@@ -4,6 +4,7 @@ import Login from "../../pages/Login"
 
 const FakeRoute = ({children}) => {
     const {loggedIn} = React.useContext(AuthContext)
+    console.log("loggedIn", loggedIn)
     if (loggedIn) {
         return (<>
                 {children}

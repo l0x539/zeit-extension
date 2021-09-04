@@ -45,25 +45,19 @@ const App = () => {
 
 const AuthProvider = ({children}) => {
     const [apiKey, setApiKey, isPersistent, error] = useStore()
-    const [value, setValue] = React.useState({
-        token: '',
-        loggedIn: false,
-        login: ({email, password}: {email: string, password: string}) => {
-            loginHook({email, password})
+    const value = {
+        token: isPersistent && apiKey ? apiKey : '',
+        loggedIn: isPersistent && apiKey && (apiKey.length > 0),
+        login: (apiKey: string) => {
+            setApiKey(apiKey)
             reload()
         },
         logout: () => {
             setApiKey(null)
             reload()
         }
-    })
-    if (isPersistent && apiKey) {
-        console.log("apiKey", apiKey)
-        value.token = apiKey
-        value.loggedIn = true
-        setValue(value)
-    } 
-    console.log('hi')
+    }
+
     return (
         <AuthContext.Provider value={value}>
             {children}

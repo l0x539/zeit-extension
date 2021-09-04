@@ -3,7 +3,7 @@ import {createContext} from 'react'
 const AuthContext = createContext<{
     token: string;
     loggedIn: boolean;
-    login: ({email, password}: {email: string, password: string}) => void;
+    login: (apiKey: string) => void;
     logout: () => void;
       }>({
         token: null,

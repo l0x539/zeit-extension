@@ -2,6 +2,7 @@ import { useFetcher } from "@rest-hooks/core"
 import { useLoading } from '@rest-hooks/hooks'
 import * as React from "react"
 import { Alert, Button, Form, FormControl } from "react-bootstrap"
+import AuthContext from "../contexts/AuthContexts";
 import { loginHook } from "../utils/api";
 
 const Login = () => {
@@ -9,6 +10,7 @@ const Login = () => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [error, setError] = React.useState('')
+    const {login: loginUser} = React.useContext(AuthContext)
 
     const [login, loading, loginError] = useLoading(useFetcher(loginHook))
     
@@ -24,7 +26,7 @@ const Login = () => {
             if (res.error) {
                 setError(res.error)
             } else if (res.success) {
-                
+                loginUser(res.apiKey)
             }
         } else {
             setError('Missing fields!')
