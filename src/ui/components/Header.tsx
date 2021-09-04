@@ -3,6 +3,7 @@ import { BsList } from "react-icons/bs"
 import { BiRefresh } from "react-icons/bi"
 import { BsBoxArrowUpRight } from "react-icons/bs"
 import { FormControl, InputGroup, Button } from "react-bootstrap"
+import { reload } from "../utils/chrome"
 
 const Header = () => {
     return (
@@ -13,7 +14,7 @@ const Header = () => {
                     <span className="logo_zeitio"><a href="/en/" className="a_logo">ZEIT.IO</a></span>
                 </div>
                 <div className="header__icon-button">
-                    <BsBoxArrowUpRight size={25} />
+                    <BsBoxArrowUpRight size={25} onClick={() => reload()} />
                     <BiRefresh size={35} />
                     <BsList size={35} />
                 </div>

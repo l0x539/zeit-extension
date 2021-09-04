@@ -21,6 +21,11 @@ const Login = () => {
                 password 
             })
             console.log(res)
+            if (res.error) {
+                setError(res.error)
+            } else if (res.success) {
+                
+            }
         } else {
             setError('Missing fields!')
         }

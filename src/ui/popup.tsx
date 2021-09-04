@@ -3,9 +3,13 @@ import * as ReactDOM from "react-dom"
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "../styles/popup.css"
-import AuthProtected from "./components/Layout/AuthProtected"
 import Track from "./pages/Track"
 import { CacheProvider } from "@rest-hooks/core"
+import AuthContext from "./contexts/AuthContexts"
+import { reload, useStore } from "./utils/chrome"
+import { loginHook } from "./utils/api"
+import ErrorBoundary from './components/ErrorBoundaries'
+import FakeRoute from "./components/Layout/FakeRoute"
 
 
 /* Start recording POST https://zeit.io/api/v1/usr/time_records/start
@@ -25,18 +29,50 @@ import { CacheProvider } from "@rest-hooks/core"
 
 
 const App = () => {
-    console.log(chrome);
     
     return (
         <CacheProvider>
-            <AuthProtected >
-                <Track />
-            </AuthProtected>
+            <ErrorBoundary>
+                <AuthProvider >
+                    <FakeRoute>
+                        <Track />
+                    </FakeRoute>
+                </AuthProvider>
+            </ErrorBoundary>
         </CacheProvider>
     )
 }
 
+const AuthProvider = ({children}) => {
+    const [apiKey, setApiKey, isPersistent, error] = useStore()
+    const [value, setValue] = React.useState({
+        token: '',
+        loggedIn: false,
+        login: ({email, password}: {email: string, password: string}) => {
+            loginHook({email, password})
+            reload()
+        },
+        logout: () => {
+            setApiKey(null)
+            reload()
+        }
+    })
+    if (isPersistent && apiKey) {
+        console.log("apiKey", apiKey)
+        value.token = apiKey
+        value.loggedIn = true
+        setValue(value)
+    } 
+    console.log('hi')
+    return (
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
+    )
+}
+
 // --------------
+
 
 ReactDOM.render(
     <App />,

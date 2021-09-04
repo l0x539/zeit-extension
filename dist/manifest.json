@@ -21,7 +21,8 @@
       "persistent": true
     },
     "permissions": [
-      "https://*/*"
+      "https://*/*",
+      "storage"
     ],
     "content_scripts": [
       {
