@@ -5,13 +5,13 @@ import { ImExit } from "react-icons/im"
 import { GrPowerReset } from "react-icons/gr"
 import { GrLogout } from "react-icons/gr"
 import { BsBoxArrowUpRight } from "react-icons/bs"
-import { FormControl, InputGroup, Button, Dropdown } from "react-bootstrap"
+import { FormControl, InputGroup, Button, Dropdown, Modal } from "react-bootstrap"
 import { reload, useClock } from "../utils/chrome"
 import AuthContext from "../contexts/AuthContexts"
 import { toTimer } from "../utils/functions"
 import ModalScreen from "./ModalScreen"
-import { useFetcher } from "@rest-hooks/core"
-import { StartTimerHook, StopTimerHook, ResetTimerHook } from "../utils/api"
+import { useFetcher, useResource } from "@rest-hooks/core"
+import { StartTimerHook, ResetTimerHook, PauseTimerHook, ResumeTimerHook } from "../utils/api"
 import Editor from "./Editor"
 
 const calculateTime = (time: number) => {
@@ -21,12 +21,17 @@ const calculateTime = (time: number) => {
 const Header = () => {
     const {token, logout} = React.useContext(AuthContext)
     const [clock, setClock, isPersistent, error]  = useClock();
+    const timerStatus = useResource(PauseTimerHook, {apiKey: token})
+
     const [menuOpen, setMenuOpen] = React.useState(false)
+    const [questionOpen, setQuestionOpen] = React.useState(false)
     const [editorOpen, setEditorOpen] = React.useState(false)
+    const [workingOn, setWorkingOn] = React.useState('')
     const [timer, setTimer] = React.useState(0)
     const [isOn, setIsOn] = React.useState(false)
     const startTimer = useFetcher(StartTimerHook)
     const resetTimer = useFetcher(ResetTimerHook)
+    const resumeTimer = useFetcher(ResumeTimerHook)
     
 
     React.useEffect(() => {
@@ -37,7 +42,24 @@ const Header = () => {
         } else {
             setTimer(0)
         }
-      });
+    });
+    
+    React.useEffect(() => {
+        console.log("checking..", timerStatus);
+        
+        if (timerStatus.error && timerStatus.error.length > 0) {
+
+        } else if (timerStatus.message === "Timer was paused already" && timerStatus.start !== "0") {
+            setTimer(Math.floor(Date.now()/1000) - Math.floor(new Date(timerStatus.start).getTime()/1000) - timerStatus.pause_total)
+            setQuestionOpen(true)
+        } else if (timerStatus.message === "Timer paused" && timerStatus.start) {
+            setTimer(Math.floor(Date.now()/1000) - Math.floor(new Date(timerStatus.start).getTime()/1000) - timerStatus.pause_total)
+            resumeTimer({apiKey: token})
+            setIsOn(true)
+        } else {
+            resetTimer({apiKey: token})
+        }
+    }, []);
 
     const handleStartTimer = () => {
         const restult = startTimer({apiKey: token})
@@ -47,16 +69,37 @@ const Header = () => {
 
     const handleStopTimer = async () => {
         await setEditorOpen(true)
-        setIsOn(false)
     }
 
     const handleResetTimer = () => {
         resetTimer({apiKey: token})
-        setIsOn(flase)
+        setWorkingOn('')
+        setIsOn(false)
+    }
+
+    const handleResumeTimer = async () => {
+        const result = await resumeTimer({apiKey: token})
+        setTimer(Math.floor(Date.now()/1000) - Math.floor(new Date(result.start).getTime()/1000) - result.pause_total)
+        setIsOn(false)
     }
 
     return (
         <div className="shadow-sm main-header fixed-top">
+            <Modal show={questionOpen} onHide={() => setQuestionOpen(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Active clock detected.</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Would you like to resume your last record?
+                </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={() => {
+                        resetTimer({apiKey: token})
+                        setQuestionOpen(false)}
+                    }>No</Button>
+                    <Button variant="primary" onClick={handleResumeTimer}>Yes</Button>
+                    </Modal.Footer>
+            </Modal>
             <div className="page-header d-flex align-items-center justify-content-between">
                 <div onClick={() => {chrome.tabs.create({ url: "https://zeit.io/en/times" })}}>
                     <img style={{height: "35px", cursor: "pointer"}} className="logo_big" alt="zeit.io icon" src="https://d2ldomkd7flzzm.cloudfront.net/assets/logo-1b1939c78f5369f959943e65b78943cd505527bcfe9f1d44c4c33d5e0e47eeeb.png"/>
@@ -73,7 +116,7 @@ const Header = () => {
                         <Dropdown.Menu>
                         
                         <Dropdown.Item eventKey="1" className="d-flex justify-content-around" onClick={() => {setMenuOpen(true)}}><BsList size={20} /> Settings</Dropdown.Item>
-                        <Dropdown.Item eventKey="1" className="d-flex justify-content-around"><GrPowerReset size={20} /> Reset</Dropdown.Item>
+                        <Dropdown.Item eventKey="1" className="d-flex justify-content-around" onClick={handleResetTimer}><GrPowerReset size={20} /> Reset</Dropdown.Item>
                         <Dropdown.Item eventKey="1" className="d-flex justify-content-around" onClick={logout}><ImExit size={20} /> Logout </Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
@@ -84,6 +127,9 @@ const Header = () => {
                     <FormControl
                     placeholder="What are you working on?"
                     aria-label="What are you working on?"
+                    value={workingOn.length?workingOn:null}
+                    onChange={(e) => {setWorkingOn(e.target.value)}}
+                    disabled={isOn}
                     />
                     {
                         timer && timer > 0 ?
@@ -109,7 +155,7 @@ const Header = () => {
                     </div>
                 </div>
             </ModalScreen>
-            <Editor editorOpen={editorOpen} setEditorOpen={setEditorOpen} fromTime={0} toTime={0} pauseTime={0} />
+            <Editor editorOpen={editorOpen} setEditorOpen={setEditorOpen} fromTime={0} toTime={0} pauseTime={0} workingOn={workingOn} setWorkingOn={setWorkingOn} setIsOn={setIsOn} />
         </div>
     )
 }

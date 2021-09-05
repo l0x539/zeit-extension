@@ -17,3 +17,8 @@ const rightJustify = (str, length, char ) => {
 export const toTimer = (time) => {
     return `${leftJustify(Math.floor(time/3600).toLocaleString(), 2, "0")}:${leftJustify((Math.floor(time/60)%60).toLocaleString(), 2, "0")}:${leftJustify((time%60).toLocaleString(), 2, "0")}`
 }
+
+export const toTime = (timer: string) => {
+  var timerList = timer.split(':')
+  return (+timerList[0]) * 60 * 60 + (+timerList[1]) * 60 + (+timerList[2])
+}
