@@ -123,7 +123,10 @@ const Header: () => JSX.Element = () => {
           <Dropdown
             align={{lg: 'start'}}
           >
-            <Dropdown.Toggle size={35} as={BsList}></Dropdown.Toggle>
+            <Dropdown.Toggle style={{
+              height: 35,
+              width: 35,
+            }} as={BsList}></Dropdown.Toggle>
             <Dropdown.Menu>
 
               <Dropdown.Item
