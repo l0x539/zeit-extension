@@ -34,7 +34,7 @@ const Track = () => {
           style={{height: '100vh'}}
         >
           <Entries
-            entries={timeRecords.result.time_records.reverse()}
+            entries={[...timeRecords.result.time_records].reverse()}
             total={timeRecords.result.total_duration} />
         </Scrollbars> :
         <BiLoader />
