@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {Modal} from 'react-bootstrap';
 
+/*
+ * Full screen modal.
+ */
 const ModalScreen = ({modalOpen, setModalOpen, title, children, footer=null}: {
     modalOpen: boolean;
     setModalOpen: (value: boolean) => void;

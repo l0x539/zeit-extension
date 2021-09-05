@@ -25,7 +25,9 @@ const calculateTime: (time: number) => number = (time: number) => {
   return time + 1;
 };
 
-
+/*
+ * App Header that handles the timer.
+ */
 const Header: () => JSX.Element = () => {
   const {token, logout} = React.useContext(AuthContext);
   // const [clock, setClock, isPersistent, error]  = useClock();

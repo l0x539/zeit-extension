@@ -1,3 +1,7 @@
+/*
+ * Chrome related calls and store hooks.
+ */
+
 import {createChromeStorageStateHookLocal} from 'use-chrome-storage';
 
 export const reload = () => {

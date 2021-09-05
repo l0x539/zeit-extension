@@ -1,3 +1,8 @@
+/*
+ * Api Endpoints to communicate with zeit.io on /api/v1
+ */
+
+
 import {Endpoint} from '@rest-hooks/endpoint';
 import {API_URL} from './constants';
 

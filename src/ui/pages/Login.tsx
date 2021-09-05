@@ -6,6 +6,9 @@ import AuthContext from '../contexts/AuthContexts';
 import {loginHook} from '../utils/api';
 import {Auth, isErrorAuth} from '../utils/types';
 
+/*
+ * Login Page
+ */
 const Login = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');

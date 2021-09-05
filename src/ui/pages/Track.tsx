@@ -10,6 +10,9 @@ import moment = require('moment')
 
 import {Scrollbars} from 'react-custom-scrollbars';
 
+/*
+ * Hold time records entries (currently main app page)
+ */
 const Track = () => {
   const {logout, token} = React.useContext(AuthContext);
   const timeRecords = useResource(getTimeRecordsHook,

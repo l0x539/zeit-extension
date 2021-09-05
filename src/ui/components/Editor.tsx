@@ -9,6 +9,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 // import {toTimer} from '../utils/functions';
 import {isErrorProjects, ProjectResult} from '../utils/types';
 
+/*
+ * Edit time records posting information when the timer is stopped.
+ */
 const Editor = ({
   editorOpen,
   setEditorOpen,

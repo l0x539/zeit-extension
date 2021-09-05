@@ -1,3 +1,7 @@
+/*
+ * Useful functions
+ */
+
 const leftJustify = (str, length, char ) => {
   const fill = [];
   while ( fill.length + str.length < length ) {

@@ -1,5 +1,8 @@
 import {createContext} from 'react';
 
+/*
+ * Auth context, hold apiKey and authentication logic
+ */
 const AuthContext = createContext<{
     token: string;
     loggedIn: boolean;

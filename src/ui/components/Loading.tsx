@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {BiLoader} from 'react-icons/bi';
 
+/*
+ * Loading Page (On suspense).
+ */
 const Loading: () => JSX.Element = () => {
   return <div
     className="align-items-center justify-content-center d-flex"

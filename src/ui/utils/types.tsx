@@ -1,3 +1,7 @@
+/*
+ * App global types
+ */
+
 
 export type TimeEntry = {
     id: string,

@@ -1,6 +1,9 @@
 import * as React from 'react';
 import {Button, Modal} from 'react-bootstrap';
 
+/*
+ * Yes No question modal (allow, deny).
+ */
 const QuestionModal = ({
   questionOpen,
   setQuestionOpen,

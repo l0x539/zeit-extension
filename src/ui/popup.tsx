@@ -1,3 +1,8 @@
+/*
+ * Main app function (similar to index.tsx)
+ */
+
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
