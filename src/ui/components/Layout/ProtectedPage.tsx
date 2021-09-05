@@ -2,7 +2,7 @@ import * as React from 'react';
 import AuthContext from '../../contexts/AuthContexts';
 import Login from '../../pages/Login';
 
-const FakeRoute = ({children}: {children: React.ReactNode}) => {
+const ProtectedPage = ({children}: {children: React.ReactNode}) => {
   const {loggedIn} = React.useContext(AuthContext);
 
   if (loggedIn) {
@@ -14,4 +14,4 @@ const FakeRoute = ({children}: {children: React.ReactNode}) => {
   }
 };
 
-export default FakeRoute;
+export default ProtectedPage;

@@ -13,6 +13,7 @@ const request = (route, method, data=null, apiKey=undefined, params='') => {
   }).then((res) => res.json());
 };
 
+// Authentication
 export const loginHook = new Endpoint(({email, password}: {
     email: string,
     password: string
@@ -20,6 +21,7 @@ export const loginHook = new Endpoint(({email, password}: {
   return request('/api/v1/authenticate', 'POST', {email, password});
 });
 
+// Time Records
 export const getTimeRecordsHook = new Endpoint(({apiKey, params}:{
     apiKey: string,
     params: string

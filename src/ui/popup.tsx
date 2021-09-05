@@ -8,7 +8,7 @@ import {CacheProvider} from '@rest-hooks/core';
 import AuthContext from './contexts/AuthContexts';
 import {useStore} from './utils/chrome';
 import ErrorBoundary from './components/ErrorBoundaries';
-import FakeRoute from './components/Layout/FakeRoute';
+import ProtectedPage from './components/Layout/ProtectedPage';
 import Loading from './components/Loading';
 
 const App = () => {
@@ -17,9 +17,9 @@ const App = () => {
       <React.Suspense fallback={<Loading />}>
         <CacheProvider>
           <AuthProvider >
-            <FakeRoute>
+            <ProtectedPage>
               <Track />
-            </FakeRoute>
+            </ProtectedPage>
           </AuthProvider>
         </CacheProvider>
       </React.Suspense>
@@ -56,7 +56,6 @@ const AuthProvider = ({children}: {
 };
 
 // --------------
-
 
 ReactDOM.render(
     <App />,

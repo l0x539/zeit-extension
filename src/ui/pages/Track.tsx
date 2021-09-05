@@ -18,7 +18,7 @@ const Track = () => {
         params: `?from=${moment().subtract('day', 1).
             format('YYYY-MM-DD')}&to=${moment().add('day', 1)
             .format('YYYY-MM-DD')}`,
-      }); // a day ago.
+      }); // Last 24 hours.
 
   if (timeRecords.error) {
     logout();

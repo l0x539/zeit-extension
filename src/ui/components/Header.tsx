@@ -5,10 +5,9 @@ import {ImExit} from 'react-icons/im';
 import {GrPowerReset} from 'react-icons/gr';
 import {FiSettings} from 'react-icons/fi';
 import {BsBoxArrowUpRight} from 'react-icons/bs';
-import {FormControl, InputGroup, Button, Dropdown} from 'react-bootstrap';
+import {FormControl, InputGroup, Dropdown} from 'react-bootstrap';
 import {reload} from '../utils/chrome';
 import AuthContext from '../contexts/AuthContexts';
-import {toTimer} from '../utils/functions';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
 import {
@@ -20,6 +19,7 @@ import {
 import Editor from './Editor';
 import QuestionModal from './QuestionModal';
 import {isErrorTimer, Timer} from '../utils/types';
+import TimerButton from './TimerButton';
 
 const calculateTime: (time: number) => number = (time: number) => {
   return time + 1;
@@ -166,19 +166,10 @@ const Header: () => JSX.Element = () => {
             }}
             disabled={isOn}
           />
-          {
-            timer && timer > 0 ?
-            <Button onClick={handleStopTimer}
-              variant="danger"
-              className="px-3">
-              {toTimer(timer)}
-            </Button> :
-            <Button onClick={handleStartTimer}
-              variant="danger"
-              className="px-3">
-                Start
-            </Button>
-          }
+          <TimerButton timer={timer}
+            handleStartTimer={handleStartTimer}
+            handleStopTimer={handleStopTimer}
+          />
         </InputGroup>
       </div>
       <ModalScreen
