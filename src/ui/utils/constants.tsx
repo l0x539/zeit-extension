@@ -1,1 +1,1 @@
-export const API_URL = "https://zeit.io"
+export const API_URL = 'https://zeit.io';
