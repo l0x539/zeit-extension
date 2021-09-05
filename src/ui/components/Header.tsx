@@ -155,9 +155,9 @@ const Header: () => JSX.Element = () => {
       <div className="header-second-row p-3">
         <InputGroup>
           <FormControl
-            placeholder="What are you working on?"
+            placeholder={isOn ? '...' : 'What are you working on?'}
             aria-label="What are you working on?"
-            value={workingOn.length?workingOn:null}
+            value={workingOn.length?workingOn:''}
             onChange={(e) => {
               setWorkingOn(e.target.value);
             }}

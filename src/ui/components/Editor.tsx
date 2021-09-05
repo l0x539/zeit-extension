@@ -93,6 +93,7 @@ const Editor = ({
             resetTimer({apiKey: token});
             setIsOn(false);
             setEditorOpen(false);
+            setWorkingOn('');
           }}>Discard Time</Button>
           <Button variant="primary" onClick={handleStopTimer}>Save</Button>
         </>

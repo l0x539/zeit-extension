@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Alert} from 'react-bootstrap';
+import {reload} from '../utils/chrome';
 
 interface State {
     hasError: boolean
@@ -33,6 +34,7 @@ export default class ErrorBoundary extends React.Component<any, State> {
    * @param {string} errorInfo
    */
   componentDidCatch(error, errorInfo) {
+    reload();
     // You can also log the error to an error reporting service
   }
 
@@ -42,6 +44,7 @@ export default class ErrorBoundary extends React.Component<any, State> {
    */
   render() {
     if (this.state.hasError) {
+      reload();
       // You can render any custom fallback UI
       return (
         <Alert className="mx-2 my-5" variant="danger">

@@ -13,18 +13,17 @@ import Loading from './components/Loading';
 
 const App = () => {
   return (
-    <React.Suspense fallback={<Loading />}>
-      <CacheProvider>
-        <ErrorBoundary>
+    <ErrorBoundary>
+      <React.Suspense fallback={<Loading />}>
+        <CacheProvider>
           <AuthProvider >
             <FakeRoute>
               <Track />
             </FakeRoute>
           </AuthProvider>
-        </ErrorBoundary>
-      </CacheProvider>
-    </React.Suspense>
-
+        </CacheProvider>
+      </React.Suspense>
+    </ErrorBoundary>
   );
 };
 
