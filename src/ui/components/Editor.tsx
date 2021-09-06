@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
-import {useFetcher, useResource} from '@rest-hooks/core';
+import {useFetcher, useResetter, useResource} from '@rest-hooks/core';
 import {StopTimerHook, ResetTimerHook, getProjectsHook} from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -34,6 +34,7 @@ const Editor = ({
   const {token} = React.useContext(AuthContext);
   const stopTimer = useFetcher(StopTimerHook);
   const resetTimer = useFetcher(ResetTimerHook);
+  const resetCache = useResetter();
   const projects: ProjectResult = useResource(
       getProjectsHook,
       {apiKey: token, params: '',
@@ -75,6 +76,7 @@ const Editor = ({
         setWorkingOn('');
         setEditorOpen(false);
         setIsOn(false);
+        resetCache();
       }
     } else {
       setError('Please Select a project.');

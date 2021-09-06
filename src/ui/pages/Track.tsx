@@ -15,6 +15,8 @@ import {Scrollbars} from 'react-custom-scrollbars';
  */
 const Track = () => {
   const {logout, token} = React.useContext(AuthContext);
+  document.body.style.minHeight = '600px';
+
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,

@@ -10,6 +10,7 @@ import {Auth, isErrorAuth} from '../utils/types';
  * Login Page
  */
 const Login = () => {
+  document.body.style.minHeight = '400px';
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
