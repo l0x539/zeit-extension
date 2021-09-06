@@ -5,8 +5,8 @@ import {ImExit} from 'react-icons/im';
 import {GrPowerReset} from 'react-icons/gr';
 import {FiSettings} from 'react-icons/fi';
 import {BsBoxArrowUpRight} from 'react-icons/bs';
-import {FormControl, InputGroup, Dropdown} from 'react-bootstrap';
-import {reload, useComment} from '../utils/chrome';
+import {FormControl, InputGroup, Dropdown, Form} from 'react-bootstrap';
+import {reload, useComment, useSettings} from '../utils/chrome';
 import AuthContext from '../contexts/AuthContexts';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
@@ -18,7 +18,7 @@ import {
 } from '../utils/api';
 import Editor from './Editor';
 import QuestionModal from './QuestionModal';
-import {isErrorTimer, Timer} from '../utils/types';
+import {isErrorTimer, Settings, Timer} from '../utils/types';
 import TimerButton from './TimerButton';
 
 const calculateTime: (time: number) => number = (time: number) => {
@@ -52,6 +52,13 @@ const Header: () => JSX.Element = () => {
     boolean,
     string
 ] = useComment();
+  const [settings, setSettings]: [
+  Settings,
+  (value: Settings) => void,
+  boolean,
+  string
+] = useSettings();
+
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [questionOpen, setQuestionOpen] = React.useState(false);
   const [editorOpen, setEditorOpen] = React.useState(false);
@@ -61,6 +68,23 @@ const Header: () => JSX.Element = () => {
   const startTimer = useFetcher(StartTimerHook);
   const resetTimer = useFetcher(ResetTimerHook);
   const resumeTimer = useFetcher(ResumeTimerHook);
+
+  const handleSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
+    switch (e.target.id) {
+      case 'start-stop':
+        setSettings({...settings, startStop: e.target.checked});
+        break;
+      case 'start-browser':
+        setSettings({...settings, startBrowser: e.target.checked});
+        break;
+      case 'stop-browser':
+        setSettings({...settings, StopBrowser: e.target.checked});
+        break;
+      case 'alarm-reminder':
+        setSettings({...settings, alarmReminder: e.target.checked});
+        break;
+    }
+  };
 
   const handleClearComment = () => {
     setWorkingOn('');
@@ -127,6 +151,7 @@ const Header: () => JSX.Element = () => {
     setTimer(Math.floor(Date.now()/1000) -
                 Math.floor(new Date(result.start).getTime()/1000) -
                 result.pause_total);
+    setQuestionOpen(false);
     setIsOn(false);
   };
 
@@ -211,10 +236,56 @@ const Header: () => JSX.Element = () => {
         setModalOpen={setMenuOpen}
         title={'Settings'} >
         <div>
-          <div className="row m-4 menu-item">
-            <div className="col text-center"> Comming Soon! </div>
+          <div className="row m-4">
+            <div className="col text-center">
+              Your Settings will automatically save
+            </div>
           </div>
         </div>
+        <hr />
+        <Form
+          className="m-3 mt-5">
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`start-stop`}
+              label={`Start/pause timer shortcut (Ctrl+Shift+S)`}
+              checked={typeof settings?.startStop === 'undefined' ?
+                  false:settings?.startStop}
+              onChange={handleSettings}
+            />
+          </div>
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`start-browser`}
+              label={`Start timer when the browser start`}
+              checked={typeof settings?.startStop === 'undefined' ?
+                  false:settings?.startBrowser}
+              onChange={handleSettings}
+            />
+          </div>
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`stop-browser`}
+              label={`Stop timer when the browser close`}
+              checked={typeof settings?.startStop === 'undefined' ?
+                  false:settings?.StopBrowser}
+              onChange={handleSettings}
+            />
+          </div>
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`alarm-reminder`}
+              label={`Set an alarm reminder`}
+              checked={typeof settings?.startStop === 'undefined' ?
+                  false:settings?.alarmReminder}
+              onChange={handleSettings}
+            />
+          </div>
+        </Form>
       </ModalScreen>
       <Editor
         editorOpen={editorOpen}
