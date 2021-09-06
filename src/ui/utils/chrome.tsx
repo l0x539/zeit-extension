@@ -12,3 +12,4 @@ chrome.runtime.connect({name: 'Zeit'});
 
 export const useStore = createChromeStorageStateHookLocal('apiKey');
 export const useClock = createChromeStorageStateHookLocal('clock');
+export const useComment = createChromeStorageStateHookLocal('comment');

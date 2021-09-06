@@ -172,3 +172,7 @@ a {
     -o-animation: rotating 2s linear infinite;
     animation: rotating 2s linear infinite;
 }
+
+.form-control:disabled {
+    background-color: #cecece;
+}

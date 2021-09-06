@@ -6,7 +6,7 @@ import {GrPowerReset} from 'react-icons/gr';
 import {FiSettings} from 'react-icons/fi';
 import {BsBoxArrowUpRight} from 'react-icons/bs';
 import {FormControl, InputGroup, Dropdown} from 'react-bootstrap';
-import {reload} from '../utils/chrome';
+import {reload, useComment} from '../utils/chrome';
 import AuthContext from '../contexts/AuthContexts';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
@@ -46,7 +46,12 @@ const Header: () => JSX.Element = () => {
   const {token, logout} = React.useContext(AuthContext);
   // const [clock, setClock, isPersistent, error]  = useClock();
   const timerStatus: Timer = useResource(PauseTimerHook, {apiKey: token});
-
+  const [comment, setComment]: [
+    string,
+    (value: string) => void,
+    boolean,
+    string
+] = useComment();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [questionOpen, setQuestionOpen] = React.useState(false);
   const [editorOpen, setEditorOpen] = React.useState(false);
@@ -57,6 +62,10 @@ const Header: () => JSX.Element = () => {
   const resetTimer = useFetcher(ResetTimerHook);
   const resumeTimer = useFetcher(ResumeTimerHook);
 
+  const handleClearComment = () => {
+    setWorkingOn('');
+    setComment('');
+  };
 
   React.useEffect(() => {
     if (isOn) {
@@ -67,6 +76,12 @@ const Header: () => JSX.Element = () => {
       setTimer(0);
     }
   });
+
+  React.useEffect(() => {
+    if (isOn && comment && comment.length) {
+      setWorkingOn(comment);
+    }
+  }, [comment]);
 
   React.useEffect(() => {
     if (isErrorTimer(timerStatus)) {
@@ -89,6 +104,9 @@ const Header: () => JSX.Element = () => {
   }, []);
 
   const handleStartTimer = () => {
+    console.log('setting comment to:', workingOn);
+
+    setComment(workingOn);
     startTimer({apiKey: token});
     setIsOn(true);
   };
@@ -99,7 +117,7 @@ const Header: () => JSX.Element = () => {
 
   const handleResetTimer = () => {
     resetTimer({apiKey: token});
-    setWorkingOn('');
+    handleClearComment();
     setIsOn(false);
     setQuestionOpen(false);
   };
@@ -176,7 +194,7 @@ const Header: () => JSX.Element = () => {
           <FormControl
             placeholder={isOn ? '...' : 'What are you working on?'}
             aria-label="What are you working on?"
-            value={workingOn.length?workingOn:''}
+            defaultValue={workingOn?.length?workingOn:''}
             onChange={(e) => {
               setWorkingOn(e.target.value);
             }}
