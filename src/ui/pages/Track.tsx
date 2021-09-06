@@ -28,7 +28,7 @@ const Track = () => {
   }
 
   return (
-    <>
+    <div className="my-auto">
       <Header />
       {
         timeRecords?.result?.time_records?
@@ -42,7 +42,7 @@ const Track = () => {
         </Scrollbars> :
         <BiLoader />
       }
-    </>
+    </div>
   );
 };
 
