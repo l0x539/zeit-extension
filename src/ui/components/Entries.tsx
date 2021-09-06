@@ -15,7 +15,7 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
           {entries.map((entry: TimeEntry, index: number) => (
             <div onClick={() => {
               handleVisitProject(entry.project_id);
-            }} key={index} className="row time-entry">
+            }} key={index} className="row time-entry mx-auto">
               <div className="time-entries-info col m-auto">
                 <div className="time-entries-desc">
                   {entry.comment}
