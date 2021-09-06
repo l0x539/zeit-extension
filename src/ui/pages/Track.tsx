@@ -20,8 +20,8 @@ const Track = () => {
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${moment().subtract('day', 1).
-            format('YYYY-MM-DD')}&to=${moment().add('day', 1)
+        params: `?from=${moment().subtract(1, 'day').
+            format('YYYY-MM-DD')}&to=${moment().add(1, 'day')
             .format('YYYY-MM-DD')}`,
       }); // Last 24 hours.
 
