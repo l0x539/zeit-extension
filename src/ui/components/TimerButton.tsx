@@ -20,7 +20,7 @@ const TimerButton = ({timer, handleStartTimer, handleStopTimer}: {
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
           variant="danger"
-          className="px-3">
+          className="px-3 w-25">
           {
               isHover?
               'Stop' :
@@ -29,7 +29,7 @@ const TimerButton = ({timer, handleStartTimer, handleStopTimer}: {
         </Button> :
         <Button onClick={handleStartTimer}
           variant="danger"
-          className="px-3">
+          className="px-3 w-25">
             Start
         </Button>
       }
