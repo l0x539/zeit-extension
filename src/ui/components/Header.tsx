@@ -147,7 +147,7 @@ const Header: () => JSX.Element = () => {
 
               <Dropdown.Item
                 eventKey="1"
-                className="d-flex justify-content-start mx-2"
+                className="d-flex justify-content-start"
                 onClick={() => {
                   setMenuOpen(true);
                 }}>
@@ -156,14 +156,14 @@ const Header: () => JSX.Element = () => {
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="1"
-                className="d-flex justify-content-start mx-2"
+                className="d-flex justify-content-start"
                 onClick={handleResetTimer}>
                 <GrPowerReset size={20} />
                 <div className="px-2">Reset Timer</div>
               </Dropdown.Item>
               <Dropdown.Item
                 eventKey="1"
-                className="d-flex justify-content-start mx-2"
+                className="d-flex justify-content-start"
                 onClick={logout}><ImExit size={20} />
                 <div className="px-2">Logout</div>
               </Dropdown.Item>
