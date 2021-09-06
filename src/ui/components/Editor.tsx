@@ -115,24 +115,31 @@ const Editor = ({
             <div className="mb-3">
               <Form.Label className="form-label">Project</Form.Label>
               <div>
-                <Form.Select onSelect={handleSelectProject}>
-                  {!isErrorProjects(projects) ?
-                  projects?.result?.projects &&
+                {!isErrorProjects(projects) ?
                   projects.result.projects.length ?
-                    projects.result.projects.map((project, index) => (
-                      <option key={index} value={project.id}>
-                        {project.name}
-                      </option>
-                    )) :
-                    <option>No projects yet, <a onClick={() => {
-                      chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
-                    }}>create a project now!</a></option> :
-                    <option>No projects yet, <a onClick={() => {
-                      chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
-                    }}>create a project now!</a></option>
-                  }
+                  <Form.Select onSelect={handleSelectProject}>
+                    {
+                      projects?.result?.projects &&
+                      projects.result.projects.map((project, index) => (
+                        <option key={index} value={project.id}>
+                          {project.name}
+                        </option>
+                      ))
+                    }
 
-                </Form.Select>
+                  </Form.Select> :
+                <div>No projects yet, <a style={{
+                  color: 'blueviolet',
+                  cursor: 'pointer',
+                }} onClick={() => {
+                  chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
+                }}>create a project now!</a></div>:
+                <div>No projects yet, <a style={{
+                  color: 'blueviolet',
+                  cursor: 'pointer',
+                }} onClick={() => {
+                  chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
+                }}>create a project now!</a></div>}
               </div>
             </div>
           </div>

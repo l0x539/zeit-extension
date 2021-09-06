@@ -13,32 +13,34 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
         <HeaderEntry total={total} />
         <div className="shadow-sm time-entries mx-4 my-2 p-2">
           <div>
-            {entries.map((entry: TimeEntry, index: number) => (
-              <div onClick={() => {
-                handleVisitProject(entry.project_id);
-              }} key={index} className="row time-entry mx-auto">
-                <div className="time-entries-info col m-auto">
-                  <div className="time-entries-desc">
-                    {entry.comment}
-                  </div>
-                  <a className="time-entries-project">
-                    {entry.project_name}
-                  </a>
-                </div>
-                <div className={`time-entries-total-and-time  m-auto 
+            {entries?.length ?
+             entries.map((entry: TimeEntry, index: number) => (
+               <div onClick={() => {
+                 handleVisitProject(entry.project_id);
+               }} key={index} className="row time-entry mx-auto">
+                 <div className="time-entries-info col m-auto">
+                   <div className="time-entries-desc">
+                     {entry.comment}
+                   </div>
+                   <a className="time-entries-project">
+                     {entry.project_name}
+                   </a>
+                 </div>
+                 <div className={`time-entries-total-and-time  m-auto 
                                d-flex justify-content-around col-5`}>
-                  <div className="time-entries-total">
+                   <div className="time-entries-total">
                                     ${entry.amount*0.01 /* in cents */}
-                  </div>
-                  <div className="ml-1 time-entries-total-time">
-                    {toTimer(entry.duration)}
-                  </div>
-                  {/* <div className="time-entries-play">
+                   </div>
+                   <div className="ml-1 time-entries-total-time">
+                     {toTimer(entry.duration)}
+                   </div>
+                   {/* <div className="time-entries-play">
                     <BsPlay size={20} />
                 </div> */}
-                </div>
-              </div>
-            ))}
+                 </div>
+               </div>
+             )):
+            <div className="m-auto">No time records today, Start now!</div>}
           </div>
         </div>
       </div>
