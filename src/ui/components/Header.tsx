@@ -25,6 +25,20 @@ const calculateTime: (time: number) => number = (time: number) => {
   return time + 1;
 };
 
+const IconToggleList = React.forwardRef(({onClick}: {
+  onClick: () => void
+},
+ref: React.RefObject<HTMLDivElement>) => (
+  <div
+    ref={ref}
+    onClick={onClick}
+  >
+    <BsList size={35} />
+  </div>
+));
+
+IconToggleList.displayName = 'IconToggleList';
+
 /*
  * App Header that handles the timer.
  */
@@ -128,7 +142,7 @@ const Header: () => JSX.Element = () => {
             <Dropdown.Toggle style={{
               height: 35,
               width: 35,
-            }} as={BsList}></Dropdown.Toggle>
+            }} as={IconToggleList}></Dropdown.Toggle>
             <Dropdown.Menu>
 
               <Dropdown.Item
