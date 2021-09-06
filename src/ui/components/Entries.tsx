@@ -8,7 +8,7 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
     chrome.tabs.create({url: 'https://zeit.io/en/projects/' + id});
   };
   return (
-    <div>
+    <div className="pb-4">
       <div className="content">
         <HeaderEntry total={total} />
         <div className="shadow-sm time-entries mx-4 my-2 p-2">
