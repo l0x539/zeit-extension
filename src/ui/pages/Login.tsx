@@ -82,7 +82,7 @@ const Login = () => {
                   setPassword(e.target.value), setError('');
                 }}
               />
-              <span className="pwdreset"><a onClick={() => {
+              <span className="pwdreset"><a href="#" onClick={() => {
                 chrome.tabs.create({url: 'https://zeit.io/en/iforgotmypassword'});
               }}>Password reset</a></span>
             </div>
