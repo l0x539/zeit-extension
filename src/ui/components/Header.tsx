@@ -303,7 +303,7 @@ const Header: () => JSX.Element = () => {
             <Form.Check
               type={'checkbox'}
               id={`stop-browser`}
-              label={`Stop timer when the browser close`}
+              label={`Pause timer when the browser close`}
               checked={typeof settings?.StopBrowser === 'undefined' ?
                   false:settings?.StopBrowser}
               onChange={handleSettings}
