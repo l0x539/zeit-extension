@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
-import {useFetcher, useResetter, useResource} from '@rest-hooks/core';
-import {StopTimerHook, ResetTimerHook, getProjectsHook} from '../utils/api';
+import {useFetcher, useResource} from '@rest-hooks/core';
+import {StopTimerHook, getProjectsHook} from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
 // import DatePicker from "react-datepicker";
@@ -20,7 +20,9 @@ const Editor = ({
   pauseTime,
   workingOn: comment,
   setWorkingOn,
-  setIsOn}: {
+  stopTimerHandler,
+  handleResetTimer,
+}: {
         editorOpen: boolean,
         setEditorOpen: (value: boolean) => void,
         fromTime: number,
@@ -28,13 +30,12 @@ const Editor = ({
         pauseTime: number,
         workingOn: string,
         setWorkingOn: (value: string) => void,
-        setIsOn: (value: boolean) => void
+        stopTimerHandler: () => void,
+        handleResetTimer: () => void,
     }) => {
   const [error, setError] = React.useState('');
   const {token} = React.useContext(AuthContext);
   const stopTimer = useFetcher(StopTimerHook);
-  const resetTimer = useFetcher(ResetTimerHook);
-  const resetCache = useResetter();
   const projects: ProjectResult = useResource(
       getProjectsHook,
       {apiKey: token, params: '',
@@ -73,10 +74,7 @@ const Editor = ({
       if (result.error && result.error.length > 0) {
         setError(result.error);
       } else {
-        setWorkingOn('');
-        setEditorOpen(false);
-        setIsOn(false);
-        resetCache();
+        stopTimerHandler();
       }
     } else {
       setError('Please Select a project.');
@@ -94,12 +92,8 @@ const Editor = ({
       title={'Edit'}
       footer={(
         <>
-          <Button variant="secondary" onClick={() => {
-            resetTimer({apiKey: token});
-            setIsOn(false);
-            setEditorOpen(false);
-            setWorkingOn('');
-          }}>Discard Time</Button>
+          <Button variant="secondary"
+            onClick={handleResetTimer}>Discard Time</Button>
           <Button variant="primary" onClick={handleStopTimer}>Save</Button>
         </>
       )} >

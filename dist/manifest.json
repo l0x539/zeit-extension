@@ -1,7 +1,7 @@
 {
     "name": "Zeit",
     "version": "0.0.1",
-    "manifest_version": 2,
+    "manifest_version": 3,
     "description": "Extension for Ziet.io, Time Tracking & Invoicing for Agencies & Freelancers.",
     "homepage_url": "https://zeit.io",
     "icons": {
@@ -9,20 +9,24 @@
       "48": "icons/icon.png",
       "128": "icons/icon.png"
     },
-    "browser_action": {
+    "action": {
       "default_title": "Ziet.io",
       "default_popup": "popup.html"
     },
     "default_locale": "en",
     "background": {
-      "scripts": [
-        "js/background.js"
-      ],
-      "persistent": true
+      "service_worker": "js/background.js"
     },
     "permissions": [
-      "https://*/*",
-      "storage"
+      "alarms",
+      "storage",
+      "notifications"
+    ],
+    "optional_permissions": [
+      "unlimitedStorage"
+    ],
+    "host_permissions": [
+      "https://*/*"
     ],
     "content_scripts": [
       {
@@ -33,6 +37,17 @@
           "js/content.js"
         ]
       }
-    ]
+    ],
+    "commands": {
+      "start-stop": {
+        "suggested_key": {
+          "windows": "Ctrl+Shift+S",
+          "mac": "Command+Shift+S",
+          "chromeos": "Ctrl+Shift+S",
+          "linux": "Ctrl+Shift+S"
+        },
+        "description": "Run \"foo\" on the current page."
+      }
+    }
   }
   

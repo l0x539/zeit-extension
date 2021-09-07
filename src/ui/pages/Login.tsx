@@ -82,7 +82,9 @@ const Login = () => {
                   setPassword(e.target.value), setError('');
                 }}
               />
-              <span className="pwdreset"><a href="#">Password reset</a></span>
+              <span className="pwdreset"><a href="#" onClick={() => {
+                chrome.tabs.create({url: 'https://zeit.io/en/iforgotmypassword'});
+              }}>Password reset</a></span>
             </div>
             <div className="actions">
               <Button type="submit" name="commit" >Sign in</Button>

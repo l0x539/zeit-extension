@@ -174,3 +174,11 @@ export type Auth = {
 } | {
     error: string
 }
+
+export type Settings = {
+    startStop: boolean,
+    startBrowser: boolean,
+    StopBrowser: boolean,
+    alarmReminder: boolean,
+    notifications: boolean
+}

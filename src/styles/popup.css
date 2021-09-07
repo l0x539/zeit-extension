@@ -119,6 +119,7 @@ a {
 
 .menu-item {
     cursor: pointer;
+    user-select: none;
 }
 
 .menu-item:hover, .menu-item:hover svg, .menu-item:hover path {

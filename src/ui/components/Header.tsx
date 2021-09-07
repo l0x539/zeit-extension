@@ -5,11 +5,16 @@ import {ImExit} from 'react-icons/im';
 import {GrPowerReset} from 'react-icons/gr';
 import {FiSettings} from 'react-icons/fi';
 import {BsBoxArrowUpRight} from 'react-icons/bs';
-import {FormControl, InputGroup, Dropdown} from 'react-bootstrap';
-import {reload, useComment} from '../utils/chrome';
+import {FormControl, InputGroup, Dropdown, Form} from 'react-bootstrap';
+import {
+  registerCommandAction,
+  reload,
+  useComment,
+  useSettings,
+} from '../utils/chrome';
 import AuthContext from '../contexts/AuthContexts';
 import ModalScreen from './ModalScreen';
-import {useFetcher, useResource} from '@rest-hooks/core';
+import {useFetcher, useResetter, useResource} from '@rest-hooks/core';
 import {
   StartTimerHook,
   ResetTimerHook,
@@ -18,12 +23,21 @@ import {
 } from '../utils/api';
 import Editor from './Editor';
 import QuestionModal from './QuestionModal';
-import {isErrorTimer, Timer} from '../utils/types';
+import {isErrorTimer, Settings, Timer} from '../utils/types';
 import TimerButton from './TimerButton';
 
-const calculateTime: (time: number) => number = (time: number) => {
-  return time + 1;
-};
+const calculateTime: (
+  start: string,
+  pauseTotal: number
+  ) => number = (
+      start: string,
+      pauseTotal: number,
+  ) => {
+    return Math.floor(Date.now()/1000) -
+        Math.floor(new Date(start).getTime()/1000) -
+        pauseTotal;
+  };
+
 
 const IconToggleList = React.forwardRef(({onClick}: {
   onClick: () => void
@@ -52,6 +66,13 @@ const Header: () => JSX.Element = () => {
     boolean,
     string
 ] = useComment();
+  const [settings, setSettings]: [
+  Settings,
+  (value: Settings) => void,
+  boolean,
+  string
+] = useSettings();
+
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [questionOpen, setQuestionOpen] = React.useState(false);
   const [editorOpen, setEditorOpen] = React.useState(false);
@@ -61,6 +82,27 @@ const Header: () => JSX.Element = () => {
   const startTimer = useFetcher(StartTimerHook);
   const resetTimer = useFetcher(ResetTimerHook);
   const resumeTimer = useFetcher(ResumeTimerHook);
+  const resetCache = useResetter();
+
+  const handleSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
+    switch (e.target.id) {
+      case 'start-stop':
+        setSettings({...settings, startStop: e.target.checked});
+        break;
+      case 'start-browser':
+        setSettings({...settings, startBrowser: e.target.checked});
+        break;
+      case 'stop-browser':
+        setSettings({...settings, StopBrowser: e.target.checked});
+        break;
+      case 'alarm-reminder':
+        setSettings({...settings, alarmReminder: e.target.checked});
+        break;
+      case 'notifications':
+        setSettings({...settings, notifications: e.target.checked});
+        break;
+    }
+  };
 
   const handleClearComment = () => {
     setWorkingOn('');
@@ -70,12 +112,15 @@ const Header: () => JSX.Element = () => {
   React.useEffect(() => {
     if (isOn) {
       setTimeout(() => {
-        setTimer(calculateTime(timer));
+        setTimer(timer+1);
       }, 1000);
-    } else {
-      setTimer(0);
     }
   });
+
+
+  registerCommandAction(() => {
+    setIsOn(!isOn);
+  }, 'start-stop', 'settings');
 
   React.useEffect(() => {
     if (isOn && comment && comment.length) {
@@ -84,51 +129,65 @@ const Header: () => JSX.Element = () => {
   }, [comment]);
 
   React.useEffect(() => {
-    if (isErrorTimer(timerStatus)) {
+    if (!isErrorTimer(timerStatus)) {
+      switch (timerStatus.message) {
+        case 'Timer was paused already':
+          setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
+          console.log('t3', timer);
 
-    } else if (timerStatus.message === 'Timer was paused already' &&
-                timerStatus.start !== '0') {
-      setTimer(Math.floor(Date.now()/1000) -
-                    Math.floor(new Date(timerStatus.start).getTime()/1000) -
-                    timerStatus.pause_total);
-      setQuestionOpen(true);
-    } else if (timerStatus.message === 'Timer paused' && timerStatus.start) {
-      setTimer(Math.floor(Date.now()/1000) -
-                    Math.floor(new Date(timerStatus.start).getTime()/1000) -
-                    timerStatus.pause_total);
-      resumeTimer({apiKey: token});
-      setIsOn(true);
-    } else {
-      resetTimer({apiKey: token});
+          setQuestionOpen(true);
+          break;
+        case 'Timer paused':
+          setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
+          resumeTimer({apiKey: token});
+          setIsOn(true);
+          break;
+        default:
+          resetTimer({apiKey: token});
+          break;
+      }
     }
   }, []);
 
   const handleStartTimer = () => {
-    console.log('setting comment to:', workingOn);
-
     setComment(workingOn);
     startTimer({apiKey: token});
     setIsOn(true);
   };
 
-  const handleStopTimer = async () => {
+  const handleOpenEditor = async () => {
     await setEditorOpen(true);
   };
 
+  const handleStopTimer = () => {
+    setWorkingOn('');
+    setEditorOpen(false);
+    setIsOn(false);
+    setTimer(0);
+    resetCache();
+  };
+
   const handleResetTimer = () => {
-    resetTimer({apiKey: token});
     handleClearComment();
     setIsOn(false);
+    setWorkingOn('');
     setQuestionOpen(false);
+    setEditorOpen(false);
+    resetCache();
+    resetTimer({apiKey: token});
+    setTimeout(() => {
+      setTimer(0);
+    }, 1000);
   };
 
   const handleResumeTimer = async () => {
-    const result = await resumeTimer({apiKey: token});
-    setTimer(Math.floor(Date.now()/1000) -
-                Math.floor(new Date(result.start).getTime()/1000) -
-                result.pause_total);
-    setIsOn(false);
+    const res = await resumeTimer({apiKey: token});
+    setTimer(calculateTime(res.start, res.pause_total));
+
+    setQuestionOpen(false);
+    setIsOn(true);
   };
+
 
   return (
     <div className="shadow-sm main-header fixed-top">
@@ -202,7 +261,7 @@ const Header: () => JSX.Element = () => {
           />
           <TimerButton timer={timer}
             handleStartTimer={handleStartTimer}
-            handleStopTimer={handleStopTimer}
+            handleStopTimer={handleOpenEditor}
           />
         </InputGroup>
       </div>
@@ -211,10 +270,66 @@ const Header: () => JSX.Element = () => {
         setModalOpen={setMenuOpen}
         title={'Settings'} >
         <div>
-          <div className="row m-4 menu-item">
-            <div className="col text-center"> Comming Soon! </div>
+          <div className="row m-4">
+            <div className="col text-center">
+              Your Settings will automatically save
+            </div>
           </div>
         </div>
+        <hr />
+        <Form
+          className="m-3 mt-5">
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`start-stop`}
+              label={`Start/pause timer shortcut (Ctrl+Shift+S)`}
+              checked={typeof settings?.startStop === 'undefined' ?
+                  false:settings?.startStop}
+              onChange={handleSettings}
+            />
+          </div>
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`start-browser`}
+              label={`Start timer when the browser start`}
+              checked={typeof settings?.startBrowser === 'undefined' ?
+                  false:settings?.startBrowser}
+              onChange={handleSettings}
+            />
+          </div>
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`stop-browser`}
+              label={`Pause timer when the browser close`}
+              checked={typeof settings?.StopBrowser === 'undefined' ?
+                  false:settings?.StopBrowser}
+              onChange={handleSettings}
+            />
+          </div>
+          <div className="mb-3 menu-item">
+            {/* <Form.Check
+              type={'checkbox'}
+              id={`alarm-reminder`}
+              label={`Set an alarm reminder`}
+              checked={typeof settings?.startStop === 'undefined' ?
+                  false:settings?.alarmReminder}
+              onChange={handleSettings}
+            /> */}
+          </div>
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`notifications`}
+              label={`Enable notifications.`}
+              checked={typeof settings?.notifications === 'undefined' ?
+                  false:settings?.notifications}
+              onChange={handleSettings}
+            />
+          </div>
+        </Form>
       </ModalScreen>
       <Editor
         editorOpen={editorOpen}
@@ -224,7 +339,9 @@ const Header: () => JSX.Element = () => {
         pauseTime={0}
         workingOn={workingOn}
         setWorkingOn={setWorkingOn}
-        setIsOn={setIsOn} />
+        handleResetTimer={handleResetTimer}
+        stopTimerHandler={handleStopTimer}
+      />
     </div>
   );
 };

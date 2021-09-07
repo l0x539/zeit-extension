@@ -6,7 +6,13 @@
 import {Endpoint} from '@rest-hooks/endpoint';
 import {API_URL} from './constants';
 
-const request = (route, method, data=null, apiKey=undefined, params='') => {
+export const request = (
+    route,
+    method,
+    data=null,
+    apiKey=undefined,
+    params='',
+) => {
   return fetch(API_URL + route + params, {
     method: method,
     headers: {
