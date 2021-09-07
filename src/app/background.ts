@@ -1,4 +1,5 @@
 import {request} from '../ui/utils/api';
+import {notify, registerCommandAction} from '../ui/utils/chrome';
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   console.log('Background got a message!');
@@ -29,17 +30,14 @@ const startStop = () => {
             {},
             result.apiKey,
         );
+        notify('Zeit.io', 'Timer Resumed');
+      } else {
+        notify('Zeit.io', 'Timer Paused');
       }
+    } else {
+      notify('Zeit.io', 'Timer Started');
     }
   });
 };
 
-chrome.commands.onCommand.addListener((command) => {
-  if (command === 'start-stop') {
-    chrome.storage.local.get('settings', (results) => {
-      if (results?.settings?.startStop) {
-        startStop();
-      }
-    });
-  }
-});
+registerCommandAction(startStop, 'start-stop', 'settings');
