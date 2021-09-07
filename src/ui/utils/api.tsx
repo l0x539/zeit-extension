@@ -1,15 +1,15 @@
 import { Endpoint } from "@rest-hooks/endpoint";
 import { API_URL } from "./constants"
 
-const request = (route, method, data={}, apiKey=undefined) => {
-    return fetch(API_URL + route, {
+const request = (route, method, data=null, apiKey=undefined, params="") => {
+    return fetch(API_URL + route + params, {
         method: method,
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             apiKey
         },
-        body: JSON.stringify(data)
+        body: data ? JSON.stringify(data) : undefined
     }).then(res => res.json());
 }
 
@@ -20,10 +20,11 @@ export const loginHook = new Endpoint(({email, password}: {
     return request("/api/v1/authenticate", "POST", {email, password})
 })
 
-export const getTimeRecorsHook = new Endpoint(({apiKey}:{
-    apiKey: string
+export const getTimeRecordsHook = new Endpoint(({apiKey, params}:{
+    apiKey: string,
+    params: string
 }) => {
-    return request("/api/v1/usr/time_records", "Get", {}, apiKey)
+    return request("/api/v1/usr/time_records", "GET", null, apiKey, params)
 })
 
 export const StartTimerHook = new Endpoint(({apiKey}:{

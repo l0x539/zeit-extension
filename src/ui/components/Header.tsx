@@ -3,8 +3,12 @@ import { BsList } from "react-icons/bs"
 import { BiRefresh } from "react-icons/bi"
 import { BsBoxArrowUpRight } from "react-icons/bs"
 import { FormControl, InputGroup, Button } from "react-bootstrap"
+import { reload } from "../utils/chrome"
+import AuthContext from "../contexts/AuthContexts"
 
 const Header = () => {
+    const {logout} = React.useContext(AuthContext)
+
     return (
         <div className="shadow-sm main-header fixed-top">
             <div className="page-header d-flex align-items-center justify-content-between">
@@ -13,9 +17,9 @@ const Header = () => {
                     <span className="logo_zeitio"><a href="/en/" className="a_logo">ZEIT.IO</a></span>
                 </div>
                 <div className="header__icon-button">
-                    <BsBoxArrowUpRight size={25} />
-                    <BiRefresh size={35} />
-                    <BsList size={35} />
+                    <BsBoxArrowUpRight size={25} onClick={() => {chrome.tabs.create({ url: "https://zeit.io/en/dashboard" })}} />
+                    <BiRefresh size={35} onClick={() => reload()} />
+                    <BsList size={35} onClick={logout} />
                 </div>
             </div>
             <div className="header-second-row p-3">

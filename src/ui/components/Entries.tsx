@@ -4,28 +4,28 @@ import { TimeEntry } from "../utils/types";
 
 import { BsPlay } from "react-icons/bs"
 
-const Entries = ({entries}: {entries: TimeEntry[]}) => {
+const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
     return (
         <div className="content">
-            <HeaderEntry total={entries.reduce((p, v) => v.time+p, 0)} />
+            <HeaderEntry total={total} />
             <div className="shadow-sm time-entries mx-4 my-2 p-2">
                 <div>
                     {entries.map((entry: TimeEntry, index: number) => (
                         <div key={index} className="row time-entry">
                             <div className="time-entries-info col m-auto">
                                 <div className="time-entries-desc">
-                                    {entry.desciption}
+                                    {entry.comment}
                                 </div>
                                 <a className="time-entries-project">
-                                    {entry.project}
+                                    {entry.project_name}
                                 </a>
                             </div>
                             <div className="time-entries-total-and-time  m-auto d-flex justify-content-around col-5">
                                 <div className="time-entries-total">
-                                    ${(entry.rate*entry.time).toFixed(2)}
+                                    ${entry.amount*0.01 /* in cents */}
                                 </div>
                                 <div className="ml-1 time-entries-total-time">
-                                    {toTimer(entry.time)}
+                                    {toTimer(entry.duration)}
                                 </div>
                                 <div className="time-entries-play">
                                     <BsPlay size={20} />

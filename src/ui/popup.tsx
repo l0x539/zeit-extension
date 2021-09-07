@@ -3,10 +3,15 @@ import * as ReactDOM from "react-dom"
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import "../styles/popup.css"
-import AuthProtected from "./components/Layout/AuthProtected"
 import Track from "./pages/Track"
 import { CacheProvider } from "@rest-hooks/core"
-
+import AuthContext from "./contexts/AuthContexts"
+import { reload, useStore } from "./utils/chrome"
+import { loginHook } from "./utils/api"
+import ErrorBoundary from './components/ErrorBoundaries'
+import FakeRoute from "./components/Layout/FakeRoute"
+import { BiLoader } from "react-icons/bi"
+import Loading from "./components/Loading"
 
 /* Start recording POST https://zeit.io/api/v1/usr/time_records/start
  * Headers: apikey: 34JrUdPjZFdb8SXdvHrX5CHbntm0pPPO76jPzBjx
@@ -25,18 +30,46 @@ import { CacheProvider } from "@rest-hooks/core"
 
 
 const App = () => {
-    console.log(chrome);
     
     return (
-        <CacheProvider>
-            <AuthProtected >
-                <Track />
-            </AuthProtected>
-        </CacheProvider>
+        <React.Suspense fallback={<Loading />}>
+            <CacheProvider>
+                <ErrorBoundary>
+                    <AuthProvider >
+                        <FakeRoute>
+                            <Track />
+                        </FakeRoute>
+                    </AuthProvider>
+                </ErrorBoundary>
+            </CacheProvider>
+        </React.Suspense>
+
+    )
+}
+
+const AuthProvider = ({children}) => {
+    const [apiKey, setApiKey, isPersistent, error] = useStore()
+    const value = {
+        token: isPersistent && apiKey ? apiKey : '',
+        loggedIn: isPersistent && apiKey && (apiKey.length > 0),
+        login: (apiKey: string) => {
+            setApiKey(apiKey)
+        },
+        logout: () => {
+            setApiKey(null)
+            // reload()
+        }
+    }
+
+    return (
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
     )
 }
 
 // --------------
+
 
 ReactDOM.render(
     <App />,
