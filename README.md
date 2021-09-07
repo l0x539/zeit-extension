@@ -13,7 +13,7 @@ Clone this repository, and then, in this directory:
 
 The extension is now ready to be developed, any changes on the repository will reflect to the extension.
 
-![Add extension to chrome](http://url/to/img.png)
+![Add extension to chrome](https://www.shimmercat.com/assets/img/imgopt/addon.png)
 
 ## Building the extension
 
