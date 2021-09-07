@@ -43,7 +43,7 @@ const Login = () => {
           <div>
             <h1>Sign in</h1>
             <section className="short-explain">
-                        Sign in to use all features of ZEIT.IO
+                        Sign in to use ZEIT.IO extension.
             </section>
           </div>
         </div>
@@ -54,7 +54,9 @@ const Login = () => {
             </Alert> :
             null
           }
-          <Form className="form-horizontal" onSubmit={handleSubmit}>
+          <Form
+            className="form-horizontal"
+            onSubmit={handleSubmit}>
             <Form.Label className="form-label" htmlFor="session_email">
                 Email
             </Form.Label>
@@ -64,7 +66,6 @@ const Login = () => {
                 id="session_email"
                 aria-describedby="basic-addon1"
                 type="email"
-                name="email"
                 onChange={(e) => {
                   setEmail(e.target.value), setError('');
                 }}
@@ -79,7 +80,6 @@ const Login = () => {
                 id="session_password"
                 aria-describedby="basic-addon1"
                 type="password"
-                name="password"
                 onChange={(e) => {
                   setPassword(e.target.value), setError('');
                 }}
