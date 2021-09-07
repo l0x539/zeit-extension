@@ -1,7 +1,12 @@
+*, *::before, *::after {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
 body {
     width: 400px;
     min-height: 400px;
-    max-height: 630px;
     font-family: Verdana, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
     background-color: #e3e8ee;
 }
@@ -112,9 +117,17 @@ a {
     color: black;
 }
 
+.menu-item {
+    cursor: pointer;
+}
+
+.menu-item:hover, .menu-item:hover svg, .menu-item:hover path {
+    color: tomato;
+    stroke: tomato
+}
+
 .header__icon-button svg {
     cursor: pointer;
-    margin-left: 0.6rem;
 }
 
 .btn-primary, .btn-primary:hover {
@@ -158,4 +171,8 @@ a {
     -ms-animation: rotating 2s linear infinite;
     -o-animation: rotating 2s linear infinite;
     animation: rotating 2s linear infinite;
+}
+
+.form-control:disabled {
+    background-color: #cecece;
 }
