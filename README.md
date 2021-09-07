@@ -13,7 +13,7 @@ Clone this repository, and then, in this directory:
 
 The extension is now ready to be developed, any changes on the repository will reflect to the extension.
 
-![Add extension to chrome](https://imag.malavida.com/qa/qa-google-chrome-42.jpg)
+![Add extension to chrome](https://i.imgur.com/umrnGJM.png)
 
 ## Building the extension
 
