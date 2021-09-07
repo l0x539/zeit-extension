@@ -133,7 +133,6 @@ const Header: () => JSX.Element = () => {
       switch (timerStatus.message) {
         case 'Timer was paused already':
           setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
-          console.log('t3', timer);
 
           setQuestionOpen(true);
           break;

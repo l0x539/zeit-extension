@@ -64,6 +64,7 @@ const Login = () => {
                 id="session_email"
                 aria-describedby="basic-addon1"
                 type="email"
+                name="email"
                 onChange={(e) => {
                   setEmail(e.target.value), setError('');
                 }}
@@ -78,6 +79,7 @@ const Login = () => {
                 id="session_password"
                 aria-describedby="basic-addon1"
                 type="password"
+                name="password"
                 onChange={(e) => {
                   setPassword(e.target.value), setError('');
                 }}
