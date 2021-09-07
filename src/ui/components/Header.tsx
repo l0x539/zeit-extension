@@ -98,6 +98,9 @@ const Header: () => JSX.Element = () => {
       case 'alarm-reminder':
         setSettings({...settings, alarmReminder: e.target.checked});
         break;
+      case 'notifications':
+        setSettings({...settings, notifications: e.target.checked});
+        break;
     }
   };
 
@@ -291,7 +294,7 @@ const Header: () => JSX.Element = () => {
               type={'checkbox'}
               id={`start-browser`}
               label={`Start timer when the browser start`}
-              checked={typeof settings?.startStop === 'undefined' ?
+              checked={typeof settings?.startBrowser === 'undefined' ?
                   false:settings?.startBrowser}
               onChange={handleSettings}
             />
@@ -301,7 +304,7 @@ const Header: () => JSX.Element = () => {
               type={'checkbox'}
               id={`stop-browser`}
               label={`Stop timer when the browser close`}
-              checked={typeof settings?.startStop === 'undefined' ?
+              checked={typeof settings?.StopBrowser === 'undefined' ?
                   false:settings?.StopBrowser}
               onChange={handleSettings}
             />
@@ -315,6 +318,16 @@ const Header: () => JSX.Element = () => {
                   false:settings?.alarmReminder}
               onChange={handleSettings}
             /> */}
+          </div>
+          <div className="mb-3 menu-item">
+            <Form.Check
+              type={'checkbox'}
+              id={`notifications`}
+              label={`Enable notifications.`}
+              checked={typeof settings?.notifications === 'undefined' ?
+                  false:settings?.notifications}
+              onChange={handleSettings}
+            />
           </div>
         </Form>
       </ModalScreen>

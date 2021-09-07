@@ -11,12 +11,16 @@ export const reload = () => {
 chrome.runtime.connect({name: 'Zeit'});
 
 export const notify = (title: string, description: string) => {
-  chrome.notifications.create('start-stop', {
-    type: 'basic',
-    iconUrl: 'https://d2ldomkd7flzzm.cloudfront.net/assets/logo-1b1939c78f5369f959943e65b78943cd505527bcfe9f1d44c4c33d5e0e47eeeb.png',
-    title: title,
-    message: description,
-    priority: 2,
+  chrome.storage.local.get('settings', async (results) => {
+    if (results.settings.notifications) {
+      chrome.notifications.create('start-stop', {
+        type: 'basic',
+        iconUrl: 'https://d2ldomkd7flzzm.cloudfront.net/assets/logo-1b1939c78f5369f959943e65b78943cd505527bcfe9f1d44c4c33d5e0e47eeeb.png',
+        title: title,
+        message: description,
+        priority: 2,
+      });
+    }
   });
 };
 
@@ -44,4 +48,5 @@ export const useSettings = createChromeStorageStateHookLocal('settings', {
   startBrowser: false,
   StopBrowser: false,
   alarmReminder: false,
+  notifications: true,
 });
