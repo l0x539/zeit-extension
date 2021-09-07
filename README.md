@@ -7,7 +7,7 @@ This is an extension source code for [zeit.io](https://zeit.io/)
 Clone this repository, and then, in this directory:
 
 1. Run `yarn` or `npm i` to install npm packages.
-2. Run `yarn start` to build the project and watch files.
+2. Run `yarn start` or `npm run start` to build the project and watch files.
 3. Open chrome and go to `Settings > Extensions` and enable developer mode (Top right).
 4. Click on `Load unpacked` and select `dist/` folder from the project.
 
