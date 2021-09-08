@@ -177,3 +177,10 @@ a {
 .form-control:disabled {
     background-color: #cecece;
 }
+
+.timer_section {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 0px;
+    font-size: 26px;
+}

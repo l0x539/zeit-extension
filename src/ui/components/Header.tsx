@@ -5,7 +5,7 @@ import {ImExit} from 'react-icons/im';
 import {GrPowerReset} from 'react-icons/gr';
 import {FiSettings} from 'react-icons/fi';
 import {BsBoxArrowUpRight} from 'react-icons/bs';
-import {FormControl, InputGroup, Dropdown, Form} from 'react-bootstrap';
+import {InputGroup, Dropdown, Form} from 'react-bootstrap';
 import {
   registerCommandAction,
   reload,
@@ -24,7 +24,7 @@ import {
 import Editor from './Editor';
 import QuestionModal from './QuestionModal';
 import {isErrorTimer, Settings, Timer} from '../utils/types';
-import TimerButton from './TimerButton';
+import ZeitTimer from './ZeitTimer';
 
 const calculateTime: (
   start: string,
@@ -82,6 +82,7 @@ const Header: () => JSX.Element = () => {
   const startTimer = useFetcher(StartTimerHook);
   const resetTimer = useFetcher(ResetTimerHook);
   const resumeTimer = useFetcher(ResumeTimerHook);
+  const pauseTimer = useFetcher(PauseTimerHook);
   const resetCache = useResetter();
 
   const handleSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,6 +157,11 @@ const Header: () => JSX.Element = () => {
 
   const handleOpenEditor = async () => {
     await setEditorOpen(true);
+  };
+
+  const handlePauseTimer = () => {
+    setIsOn(false);
+    pauseTimer({apiKey: token});
   };
 
   const handleStopTimer = () => {
@@ -249,18 +255,11 @@ const Header: () => JSX.Element = () => {
       </div>
       <div className="header-second-row p-3">
         <InputGroup>
-          <FormControl
-            placeholder={isOn ? '...' : 'What are you working on?'}
-            aria-label="What are you working on?"
-            defaultValue={workingOn?.length?workingOn:''}
-            onChange={(e) => {
-              setWorkingOn(e.target.value);
-            }}
-            disabled={isOn}
-          />
-          <TimerButton timer={timer}
+          <ZeitTimer timer={timer}
             handleStartTimer={handleStartTimer}
             handleStopTimer={handleOpenEditor}
+            handlePauseTimer={handlePauseTimer}
+            handleResumeTimer={handleResumeTimer}
           />
         </InputGroup>
       </div>
