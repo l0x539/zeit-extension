@@ -43,7 +43,7 @@ const Login = () => {
           <div>
             <h1>Sign in</h1>
             <section className="short-explain">
-                        Sign in to use ZEIT.IO extension.
+                        Sign in to use ZEIT.IO.
             </section>
           </div>
         </div>
@@ -84,9 +84,16 @@ const Login = () => {
                   setPassword(e.target.value), setError('');
                 }}
               />
-              <span className="pwdreset"><a href="#" onClick={() => {
-                chrome.tabs.create({url: 'https://zeit.io/en/iforgotmypassword'});
-              }}>Password reset</a></span>
+              <div>
+                <span className="pwdreset"><a href="#" onClick={() => {
+                  chrome.tabs.create({url: 'https://zeit.io/en/iforgotmypassword'});
+                }}>I forgot my password</a></span>
+              </div>
+              <div>
+                <span className="pwdreset"><a href="#" onClick={() => {
+                  chrome.tabs.create({url: 'https://zeit.io/en/signups/new'});
+                }}>Create a new account</a></span>
+              </div>
             </div>
             <div className="actions">
               <Button type="submit" name="commit" >Sign in</Button>
