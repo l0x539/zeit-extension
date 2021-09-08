@@ -87,6 +87,9 @@ a {
 
 .time-entries-project {
     font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .time-entries-play > svg:hover {
