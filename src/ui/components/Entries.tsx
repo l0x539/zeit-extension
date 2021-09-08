@@ -2,11 +2,28 @@ import * as React from 'react';
 import {toTimer} from '../utils/functions';
 import {TimeEntry} from '../utils/types';
 
+const sortByProject = (entries: TimeEntry[]) => {
+  return entries.reduce((i, entry) => {
+    i[entry.project_id] = i[entry.project_id]?
+        [...i[entry.project_id], entry]: [entry];
+    return i;
+  }, {});
+};
+
+const sumAmount = (entries: TimeEntry[]) => {
+  return entries.reduce((i, entry) => i + (entry.amount*0.01), 0);
+};
+
+const sumDuration = (entries: TimeEntry[]) => {
+  return entries.reduce((i, entry) => i + entry.duration, 0);
+};
 
 const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
   const handleVisitProject = (id: string) => {
     chrome.tabs.create({url: 'https://zeit.io/en/projects/' + id});
   };
+
+  const projects = sortByProject(entries);
   return (
     <div className="pb-4">
       <div className="content">
@@ -14,25 +31,27 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
         <div className="shadow-sm time-entries mx-4 my-2 p-2">
           <div>
             {entries?.length ?
-             entries.map((entry: TimeEntry, index: number) => (
+             Object.keys(projects).map((project: string, index: number) => (
                <div onClick={() => {
-                 handleVisitProject(entry.project_id);
+                 handleVisitProject(project);
                }} key={index} className="row time-entry mx-auto">
                  <div className="time-entries-info col m-auto">
                    <div className="time-entries-desc">
-                     {entry.comment}
+                     {projects[project][0].project_name}
                    </div>
                    <a className="time-entries-project">
-                     {entry.project_name}
+                     Last worked on:
+                     {projects[project][projects[project].length - 1].comment}
+
                    </a>
                  </div>
                  <div className={`time-entries-total-and-time  m-auto 
                                d-flex justify-content-around col-5`}>
                    <div className="time-entries-total">
-                                    ${entry.amount*0.01 /* in cents */}
+                      ${sumAmount(projects[project]) /* in cents */}
                    </div>
                    <div className="ml-1 time-entries-total-time">
-                     {toTimer(entry.duration)}
+                     {toTimer(sumDuration(projects[project]))}
                    </div>
                    {/* <div className="time-entries-play">
                     <BsPlay size={20} />

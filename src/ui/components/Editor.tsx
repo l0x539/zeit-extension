@@ -111,7 +111,7 @@ const Editor = ({
               <div>
                 {!isErrorProjects(projects) ?
                   projects.result.projects.length ?
-                  <Form.Select onSelect={handleSelectProject}>
+                  <Form.Select onChange={handleSelectProject}>
                     {
                       projects?.result?.projects &&
                       projects.result.projects.map((project, index) => (

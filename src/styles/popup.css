@@ -87,6 +87,9 @@ a {
 
 .time-entries-project {
     font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .time-entries-play > svg:hover {
@@ -176,4 +179,28 @@ a {
 
 .form-control:disabled {
     background-color: #cecece;
+}
+
+.timer_section {
+    vertical-align: middle;
+    font-size: 26px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    cursor: pointer;
+    color: #0056b3;
+}
+
+.disabled {
+    cursor: auto;
+    opacity: 20%;
+}
+
+.timer_hms {
+    margin: 0px;
+    font-weight: bold;
 }
