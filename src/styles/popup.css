@@ -179,8 +179,25 @@ a {
 }
 
 .timer_section {
-    display: inline-block;
     vertical-align: middle;
-    padding-left: 0px;
     font-size: 26px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    cursor: pointer;
+    color: #0056b3;
+}
+
+.disabled {
+    cursor: auto;
+    opacity: 20%;
+}
+
+.timer_hms {
+    margin: 0px;
+    font-weight: bold;
 }

@@ -4,6 +4,8 @@ import {BsFillPlayFill} from 'react-icons/bs';
 import {BsPauseFill} from 'react-icons/bs';
 import {BsStopFill} from 'react-icons/bs';
 
+export type TimerStatus = 'PAUSED' | 'STARTED' | 'RESETTED'
+
 /*
  * Timer that shows timer or start/pause/stop
  */
@@ -13,30 +15,48 @@ const ZeitTimer = ({
   handleStopTimer,
   handlePauseTimer,
   handleResumeTimer,
+  status,
 }: {
     timer: number
     handleStartTimer: () => void
     handleStopTimer: () => void
     handlePauseTimer: () => void
     handleResumeTimer: () => void
+    status: TimerStatus
 }) => {
   return (
-    <div className="timer_section">
+    <div
+      className="timer_section d-flex align-items-center mx-auto"
+    >
       {toZeitTimer(timer)}
       <BsFillPlayFill
-        onClick={handleStartTimer}
-        className="clickable"
-        size={35}
+        onClick={
+          status === 'PAUSED' ?
+           handleResumeTimer : status === 'RESETTED'?
+           handleStartTimer : () => {}
+        }
+        className={status === 'PAUSED' || status === 'RESETTED' ?
+                  'clickable' : 'disabled'}
+        size={45}
       />
       <BsPauseFill
-        onClick={handlePauseTimer}
-        className="disabled"
-        size={35}
+        onClick={
+          status === 'STARTED' ?
+          handlePauseTimer : () => {}
+        }
+        className={
+          status === 'STARTED' ?
+                  'clickable' : 'disabled'
+        }
+        size={45}
       />
       <BsStopFill
-        onClick={handleStopTimer}
-        className="fas fa-stop clickable"
-        size={35}
+        onClick={status === 'STARTED' ? handleStopTimer : () => {}}
+        className={
+          status === 'STARTED' ?
+                  'clickable' : 'disabled'
+        }
+        size={45}
       />
     </div>
   );

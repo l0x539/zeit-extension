@@ -24,7 +24,7 @@ import {
 import Editor from './Editor';
 import QuestionModal from './QuestionModal';
 import {isErrorTimer, Settings, Timer} from '../utils/types';
-import ZeitTimer from './ZeitTimer';
+import ZeitTimer, {TimerStatus} from './ZeitTimer';
 
 const calculateTime: (
   start: string,
@@ -79,6 +79,10 @@ const Header: () => JSX.Element = () => {
   const [workingOn, setWorkingOn] = React.useState('');
   const [timer, setTimer] = React.useState(0);
   const [isOn, setIsOn] = React.useState(false);
+  const [status, setTimerStatus]: [
+    TimerStatus,
+    React.Dispatch<React.SetStateAction<TimerStatus>>
+  ] = React.useState('RESETTED');
   const startTimer = useFetcher(StartTimerHook);
   const resetTimer = useFetcher(ResetTimerHook);
   const resumeTimer = useFetcher(ResumeTimerHook);
@@ -134,12 +138,14 @@ const Header: () => JSX.Element = () => {
       switch (timerStatus.message) {
         case 'Timer was paused already':
           setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
+          setTimerStatus('PAUSED');
 
           setQuestionOpen(true);
           break;
         case 'Timer paused':
           setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
           resumeTimer({apiKey: token});
+          setTimerStatus('STARTED');
           setIsOn(true);
           break;
         default:
@@ -150,6 +156,7 @@ const Header: () => JSX.Element = () => {
   }, []);
 
   const handleStartTimer = () => {
+    setTimerStatus('STARTED');
     setComment(workingOn);
     startTimer({apiKey: token});
     setIsOn(true);
@@ -160,19 +167,25 @@ const Header: () => JSX.Element = () => {
   };
 
   const handlePauseTimer = () => {
+    setTimerStatus('PAUSED');
+
     setIsOn(false);
     pauseTimer({apiKey: token});
   };
 
   const handleStopTimer = () => {
+    setIsOn(false);
+    setTimerStatus('RESETTED');
     setWorkingOn('');
     setEditorOpen(false);
-    setIsOn(false);
-    setTimer(0);
     resetCache();
+    setTimeout(() => {
+      setTimer(0);
+    }, 1000);
   };
 
   const handleResetTimer = () => {
+    setTimerStatus('RESETTED');
     handleClearComment();
     setIsOn(false);
     setWorkingOn('');
@@ -186,6 +199,7 @@ const Header: () => JSX.Element = () => {
   };
 
   const handleResumeTimer = async () => {
+    setTimerStatus('STARTED');
     const res = await resumeTimer({apiKey: token});
     setTimer(calculateTime(res.start, res.pause_total));
 
@@ -260,6 +274,7 @@ const Header: () => JSX.Element = () => {
             handleStopTimer={handleOpenEditor}
             handlePauseTimer={handlePauseTimer}
             handleResumeTimer={handleResumeTimer}
+            status={status}
           />
         </InputGroup>
       </div>
