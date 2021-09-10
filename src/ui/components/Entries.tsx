@@ -74,7 +74,7 @@ const HeaderEntry = ({total}: {total: number}) => {
         <div className="row">
           <div className="time-entries-day col">Last 24 Hours</div>
           <div className={`time-entries-total-and-time 
-                           d-flex justify-content-end col`}>
+                           d-flex justify-content-center col`}>
             <div className="time-entries-total">
               {'Total:'}
             </div>
