@@ -19,6 +19,11 @@ export const notify = (title: string, description: string) => {
         title: title,
         message: description,
         priority: 2,
+      },
+      function(id) {
+        setTimeout(function() {
+          chrome.notifications.clear(id);
+        }, 3000);
       });
     }
   });
