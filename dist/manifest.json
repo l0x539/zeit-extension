@@ -20,7 +20,9 @@
     "permissions": [
       "alarms",
       "storage",
-      "notifications"
+      "notifications",
+      "background",
+      "contextMenus"
     ],
     "optional_permissions": [
       "unlimitedStorage"

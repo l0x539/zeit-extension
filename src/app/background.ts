@@ -14,18 +14,18 @@ chrome.runtime.onConnect.addListener(function(port) {
   }
 });
 
-chrome.windows.onRemoved.addListener(function() {
-  chrome.storage.local.get('apiKey', async function(result) {
-    chrome.storage.local.get('settings', async (results) => {
-      if (results?.settings?.StopBrowser) {
-        await request('/api/v1/usr/time_records/pause', 'POST',
-            {},
-            result.apiKey,
-        );
-      }
-    });
-  });
-});
+// chrome.windows.onRemoved.addListener(function() {
+//   chrome.storage.local.get('apiKey', async function(result) {
+//     chrome.storage.local.get('settings', async (results) => {
+//       if (results?.settings?.StopBrowser) {
+//         await request('/api/v1/usr/time_records/pause', 'POST',
+//             {},
+//             result.apiKey,
+//         );
+//       }
+//     });
+//   });
+// });
 
 chrome.windows.onCreated.addListener(function() {
   chrome.storage.local.get('apiKey', async function(result) {
@@ -93,5 +93,18 @@ const startStop = () => {
     }
   });
 };
+
+// context Right Click
+chrome.contextMenus.create({
+  id: 'start-stop-right',
+  title: 'Start/Pause Timer',
+  contexts: ['all'],
+});
+
+chrome.contextMenus.onClicked.addListener((i, tab) => {
+  if (i.menuItemId === 'start-stop-right') {
+    startStop();
+  }
+});
 
 registerCommandAction(startStop, 'start-stop', 'settings');
