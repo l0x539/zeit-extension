@@ -216,7 +216,10 @@ const Header: () => JSX.Element = () => {
         setQuestionOpen={setQuestionOpen}
         question={'Would you like to resume your last record?'}
         handleAccept={handleResumeTimer}
-        handleRefuse={handleResetTimer} />
+        handleRefuse={() => {
+          setQuestionOpen(false)
+          ;
+        }} />
       <div className={`page-header d-flex align-items-center 
                        justify-content-between`}>
         <div onClick={() => {
