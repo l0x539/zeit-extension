@@ -36,8 +36,8 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
                  handleVisitProject(project);
                }} key={index} className="row time-entry mx-auto">
                  <div className="time-entries-info col m-auto">
-                   <div className="time-entries-desc">
-                     {projects[project][0].project_name}
+                   <div className="time-entries-desc h6">
+                     {projects[project][0].project_name}:
                    </div>
                    {/* <a className="time-entries-project">
                      Last worked on:
