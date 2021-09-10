@@ -2,11 +2,21 @@ import * as React from 'react';
 import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
-import {StopTimerHook, getProjectsHook} from '../utils/api';
+import {
+  // StopTimerHook,
+  getProjectsHook,
+  request,
+  StartStopTimerHook,
+} from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
-// import DatePicker from "react-datepicker";
-// import {toTimer} from '../utils/functions';
+import DatePicker from 'react-datepicker';
+import {
+  fromTimeString,
+  toShortDate,
+  toTimer,
+  toUTC,
+} from '../utils/functions';
 import {isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
@@ -15,43 +25,70 @@ import {isErrorProjects, ProjectResult} from '../utils/types';
 const Editor = ({
   editorOpen,
   setEditorOpen,
-  fromTime,
-  toTime,
-  pauseTime,
   workingOn: comment,
   setWorkingOn,
   stopTimerHandler,
   handleResetTimer,
 }: {
-        editorOpen: boolean,
-        setEditorOpen: (value: boolean) => void,
-        fromTime: number,
-        toTime: number,
-        pauseTime: number,
-        workingOn: string,
-        setWorkingOn: (value: string) => void,
-        stopTimerHandler: () => void,
-        handleResetTimer: () => void,
-    }) => {
+  editorOpen: boolean,
+  setEditorOpen: (value: boolean) => void,
+  workingOn: string,
+  setWorkingOn: (value: string) => void,
+  stopTimerHandler: () => void,
+  handleResetTimer: () => void,
+}) => {
   const [error, setError] = React.useState('');
   const {token} = React.useContext(AuthContext);
-  const stopTimer = useFetcher(StopTimerHook);
+  // const stopTimer = useFetcher(StopTimerHook);
+  const startStopTimer = useFetcher(StartStopTimerHook);
+
+  const [pause, setPause] = React.useState('');
+  const [from, setFrom] = React.useState('');
+  const [to, setTo] = React.useState('');
+  const [date, setDate] = React.useState(new Date());
+
+  // pause resume to get infos.
+  React.useEffect(() => {
+    if (editorOpen) {
+      request(
+          '/api/v1/usr/time_records/pause',
+          'POST',
+          {},
+          token).then((res) => {
+        if (res.message === 'Timer paused') {
+          request('/api/v1/usr/time_records/resume', 'POST', {}, token);
+        }
+        if (res.pause) {
+          setDate(new Date(res.start));
+          setPause(toTimer(res.pause_total));
+          setFrom(toUTC(res.start));
+          setTo(toUTC(Date()));
+        }
+      })
+      ;
+    }
+  }, [editorOpen]);
+
+  // if (pauseTimer?.message === 'Timer paused') {
+  //   useResource(ResumeTimerHook, {apiKey: token});
+  // }
+
+
   const projects: ProjectResult = useResource(
       getProjectsHook,
-      {apiKey: token, params: '',
+      {
+        apiKey: token, params: '',
       });
-  // const [date, setDate] = React.useState('')
-  // const [from, setFrom] = React.useState(fromTime)
-  // const [pause, setPause] = React.useState(pauseTime)
-  // const [to, setTo] = React.useState(toTime)
+
+
   const [projectId, setProjectId] = React.useState(
       !isErrorProjects(projects)?
-      projects.result && projects.result.projects.length?
+      projects.result && projects.result.projects?.length?
       projects.result.projects[0].id :'':'');
 
   React.useEffect(() => {
     if (!isErrorProjects(projects)) {
-      if (projects?.result.projects.length < 1) {
+      if (projects?.result.projects?.length < 1) {
         setError('Please create a project first');
         setWorkingOn('');
       }
@@ -59,18 +96,22 @@ const Editor = ({
   }, [projects]);
 
 
-  //   const handleDateChange = (value, format) => {
-  //     setError('');
-  //     // setDate(value)
-  //     console.log('format', format);
-  //   };
+  const handleDateChange = (value, format) => {
+    setError('');
+    setDate(new Date(value));
+  };
 
   const handleStopTimer = async () => {
     if (projectId.length > 0) {
-      const result = await stopTimer({
+      const result = await startStopTimer({
         apiKey: token,
         projectId,
-        comment});
+        comment,
+        date: toShortDate(date),
+        startTime: from,
+        stopTime: to,
+        pause,
+      });
       if (result.error && result.error.length > 0) {
         setError(result.error);
       } else {
@@ -105,7 +146,7 @@ const Editor = ({
       }
       <Form className="form-horizontal">
         <div className="row">
-          <div className="col-md-8">
+          <div className="col-8">
             <div className="mb-3">
               <Form.Label className="form-label">Project</Form.Label>
               <div>
@@ -148,51 +189,61 @@ const Editor = ({
             </div> */}
         </div>
 
-        {/* <div className="mb-3">
-            <div className="row">
-                <div className="col-md-3">
-                    <Form.Label className="form-label">Date</Form.Label>
-                    <DatePicker
-                    selected={date}
-                    onChange={handleDateChange}
-                    className="form-control"
-                    customInput={
-                        <FormControl
-                        value={date}
-                        />
-                    }
-                />
-                </div>
-                <div className="col-md-2">
-                    <Form.Label className="form-label">From</Form.Label>
-                    <FormControl
-                    defaultValue={toTimer(from)}
-                    onChange={(e) => {setFrom(e.target.value), setError('')}}
-                    />
-                </div>
-                <div className="col-md-2">
-                    <Form.Label className="form-label">To</Form.Label>
-                    <FormControl
-                    defaultValue={toTimer(to)}
-                    onChange={(e) => {setTo(e.target.value), setError('')}}
-                    />
-                </div>
-                <div className="col-md-2">
-                    <Form.Label className="form-label">Pause</Form.Label>
-                    <FormControl
-                    defaultValue={toTimer(pause)}
-                    onChange={(e) => {setPause(e.target.value), setError('')}}
-                    />
-                </div>
-                <div className="col-md-3">
-                    <Form.Label className="form-label">Duration</Form.Label>
-                    <FormControl
-                    value={toTimer(to-from)}
-                    disabled
-                    />
-                </div>
+        <div className="mb-3">
+          <div className="row">
+            <div className="col-6">
+              <Form.Label className="form-label">Date</Form.Label>
+              <DatePicker
+                selected={date}
+                onChange={handleDateChange}
+                className="form-control"
+                customInput={
+                  <FormControl
+                    value={date.toDateString()}
+                  />
+                }
+              />
             </div>
-        </div> */}
+            <div className="row">
+              <div className="col-4">
+                <Form.Label className="form-label">From</Form.Label>
+                <FormControl
+                  value={from}
+                  onChange={(e) => {
+                    setFrom(e.target.value), setError('');
+                  }}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Label className="form-label">To</Form.Label>
+                <FormControl
+                  value={to}
+                  onChange={(e) => {
+                    setTo(e.target.value), setError('');
+                  }}
+                />
+              </div>
+              <div className="col-4">
+                <Form.Label className="form-label">Pause</Form.Label>
+                <FormControl
+                  value={pause}
+                  onChange={(e) => {
+                    setPause(e.target.value), setError('');
+                  }}
+                />
+              </div>
+            </div>
+            <div className="col-4">
+              <Form.Label className="form-label">Duration</Form.Label>
+              <FormControl
+                value={toTimer(fromTimeString(to)-
+                  fromTimeString(from)-
+                  fromTimeString(pause))}
+                disabled
+              />
+            </div>
+          </div>
+        </div>
         <div className="mb-3">
           <Form.Label className="form-label">Comment</Form.Label>
           <FormControl

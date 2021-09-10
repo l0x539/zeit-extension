@@ -347,9 +347,6 @@ const Header: () => JSX.Element = () => {
       <Editor
         editorOpen={editorOpen}
         setEditorOpen={setEditorOpen}
-        fromTime={0}
-        toTime={0}
-        pauseTime={0}
         workingOn={workingOn}
         setWorkingOn={setWorkingOn}
         handleResetTimer={handleResetTimer}
