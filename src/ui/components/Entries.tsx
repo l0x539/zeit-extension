@@ -10,9 +10,9 @@ const sortByProject = (entries: TimeEntry[]) => {
   }, {});
 };
 
-const sumAmount = (entries: TimeEntry[]) => {
-  return entries.reduce((i, entry) => i + (entry.amount*0.01), 0);
-};
+// const sumAmount = (entries: TimeEntry[]) => {
+//   return entries.reduce((i, entry) => i + (entry.amount*0.01), 0);
+// };
 
 const sumDuration = (entries: TimeEntry[]) => {
   return entries.reduce((i, entry) => i + entry.duration, 0);
@@ -39,17 +39,17 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
                    <div className="time-entries-desc">
                      {projects[project][0].project_name}
                    </div>
-                   <a className="time-entries-project">
+                   {/* <a className="time-entries-project">
                      Last worked on:
                      {projects[project][projects[project].length - 1].comment}
 
-                   </a>
+                   </a> */}
                  </div>
                  <div className={`time-entries-total-and-time  m-auto 
                                d-flex justify-content-around col-5`}>
-                   <div className="time-entries-total">
-                      ${sumAmount(projects[project]) /* in cents */}
-                   </div>
+                   {/* <div className="time-entries-total">
+                      ${sumAmount(projects[project])}
+                   </div> */}
                    <div className="ml-1 time-entries-total-time">
                      {toTimer(sumDuration(projects[project]))}
                    </div>
