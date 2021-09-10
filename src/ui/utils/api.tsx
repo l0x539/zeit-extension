@@ -74,6 +74,40 @@ export const StopTimerHook = new Endpoint(({apiKey, projectId, comment}:{
 });
 
 
+export const StartStopTimerHook = new Endpoint(({
+  apiKey,
+  projectId,
+  comment,
+  date,
+  startTime,
+  stopTime,
+  pause,
+}:{
+  apiKey: string,
+  projectId: string,
+  comment: string,
+  date: string,
+  startTime: string,
+  stopTime: string,
+  pause: string
+}) => {
+  return request('/api/v1/usr/time_records/start_stop', 'POST',
+      {
+        project_id: projectId,
+        comment,
+        activity: null,
+        hourly_wage_category: 'default',
+        date: date,
+        date_format: '%d/%m/%Y',
+        start_time: startTime,
+        stop_time: stopTime,
+        pause: pause,
+      },
+      apiKey,
+  );
+}); // TODO: Change handleStop to handleStartStop on Editor.tsx
+
+
 // Projects
 export const getProjectsHook = new Endpoint(({apiKey, params}:{
     apiKey: string,

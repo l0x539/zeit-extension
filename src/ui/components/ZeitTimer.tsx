@@ -51,9 +51,10 @@ const ZeitTimer = ({
         size={45}
       />
       <BsStopFill
-        onClick={status === 'STARTED' ? handleStopTimer : () => {}}
+        onClick={status === 'STARTED' || status === 'PAUSED' ?
+          handleStopTimer : () => {}}
         className={
-          status === 'STARTED' ?
+          status === 'STARTED' || status === 'PAUSED' ?
                   'clickable' : 'disabled'
         }
         size={45}
