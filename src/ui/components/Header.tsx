@@ -124,6 +124,7 @@ const Header: () => JSX.Element = () => {
 
 
   registerCommandAction(() => {
+    setTimerStatus(isOn?'PAUSED':'STARTED');
     setIsOn(!isOn);
   }, 'start-stop', 'settings');
 
