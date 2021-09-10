@@ -75,6 +75,10 @@ const startStop = () => {
         result.apiKey,
     );
     if (start.error || start.message === 'Timer was started already') {
+      if (start.error?.includes('apiKey')) {
+        notify('Zeit.io', 'You\'re not logged in.');
+        return;
+      }
       const pause = await request('/api/v1/usr/time_records/pause', 'POST',
           {},
           result.apiKey,
