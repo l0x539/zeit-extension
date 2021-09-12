@@ -15,7 +15,7 @@ const QuestionModal = ({
     questionOpen: boolean;
     setQuestionOpen: (value: boolean) => void;
     title: string;
-    question: string;
+    question: JSX.Element;
     handleAccept: React.MouseEventHandler<HTMLButtonElement>;
     handleRefuse: React.MouseEventHandler<HTMLButtonElement>;
 }) => {

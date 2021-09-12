@@ -75,6 +75,11 @@ const Header: () => JSX.Element = () => {
 
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [questionOpen, setQuestionOpen] = React.useState(false);
+  const [
+    canAskPauseQuestion,
+    setCanAskPauseQuestion,
+  ] = React.useState(false);
+
   const [editorOpen, setEditorOpen] = React.useState(false);
   const [workingOn, setWorkingOn] = React.useState('');
   const [timer, setTimer] = React.useState(0);
@@ -200,6 +205,10 @@ const Header: () => JSX.Element = () => {
   };
 
   const handleResumeTimer = async () => {
+    setSettings({
+      ...settings,
+      askPause: !canAskPauseQuestion,
+    });
     setTimerStatus('STARTED');
     const res = await resumeTimer({apiKey: token});
     setTimer(calculateTime(res.start, res.pause_total));
@@ -207,20 +216,42 @@ const Header: () => JSX.Element = () => {
     setQuestionOpen(false);
     setIsOn(true);
   };
-
+  setCanAskPauseQuestion;
 
   return (
     <div className="shadow-sm main-header fixed-top">
+      {settings.askPause ?
       <QuestionModal
         title={'Active clock detected.'}
         questionOpen={questionOpen}
         setQuestionOpen={setQuestionOpen}
-        question={'Would you like to resume your last record?'}
+        question={<div>
+          <div className="row">
+            <Form.Check
+              type={'checkbox'}
+              id={`ask-again`}
+              label={`Don't ask me again`}
+              checked={canAskPauseQuestion}
+              onChange={(e) => {
+                setCanAskPauseQuestion(e.target.checked);
+              }}
+            />
+          </div>
+          <div className="row">
+            Would you like to resume your last record?
+          </div>
+        </div>}
         handleAccept={handleResumeTimer}
         handleRefuse={() => {
+          setSettings({
+            ...settings,
+            askPause: !canAskPauseQuestion,
+          });
           setQuestionOpen(false)
           ;
-        }} />
+        }} /> :
+        null
+      }
       <div className={`page-header d-flex align-items-center 
                        justify-content-between`}>
         <div onClick={() => {

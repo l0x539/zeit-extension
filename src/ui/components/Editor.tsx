@@ -3,6 +3,7 @@ import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
 import {
+  // getProjectsCollaborationsHook,
   // StopTimerHook,
   getProjectsHook,
   request,
@@ -80,6 +81,11 @@ const Editor = ({
         apiKey: token, params: '',
       });
 
+  // const projectsCollabortions: ProjectResult = useResource(
+  //     getProjectsCollaborationsHook,
+  //     {
+  //       apiKey: token, params: '',
+  //     }); // TODO: check if projects collaboration is also listed.
 
   const [projectId, setProjectId] = React.useState(
       !isErrorProjects(projects)?

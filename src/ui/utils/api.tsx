@@ -115,3 +115,17 @@ export const getProjectsHook = new Endpoint(({apiKey, params}:{
 }) => {
   return request('/api/v1/usr/projects', 'GET', null, apiKey, params);
 });
+
+// Projects Collaborations
+export const getProjectsCollaborationsHook = new Endpoint(({apiKey, params}:{
+  apiKey: string,
+  params: string
+}) => {
+  return request(
+      '/api/v1/usr/projects/collaborations',
+      'GET',
+      null,
+      apiKey,
+      params,
+  );
+});

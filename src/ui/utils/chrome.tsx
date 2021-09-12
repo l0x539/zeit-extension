@@ -54,4 +54,5 @@ export const useSettings = createChromeStorageStateHookLocal('settings', {
   StopBrowser: false,
   alarmReminder: false,
   notifications: true,
+  askPause: true,
 });
