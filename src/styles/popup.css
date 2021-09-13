@@ -5,14 +5,23 @@
 }
 
 body {
-    width: 400px;
-    min-height: 400px;
+    min-width: 400px;
+    min-height: 600px;
     font-family: Verdana, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
     background-color: #e3e8ee;
 }
 
 a {
     text-decoration:none
+}
+
+label {
+    font-weight: bold;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
 }
 
 .popup-padded {
@@ -66,7 +75,6 @@ a {
 }
 
 .time-entry {
-    height: 60px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.2s ease;
@@ -86,7 +94,7 @@ a {
 }
 
 .time-entries-project {
-    font-size: 10px;
+    font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -203,4 +211,14 @@ a {
 .timer_hms {
     margin: 0px;
     font-weight: bold;
+}
+
+.btn-primary.blue {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.pointer {
+    cursor: pointer;
 }

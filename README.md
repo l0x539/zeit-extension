@@ -9,15 +9,15 @@ Clone this repository, and then, in this directory:
 1. Run `yarn` or `npm i` to install npm packages.
 2. Run `yarn start` or `npm run start` to build the project and watch files.
 3. Open chrome and go to `Settings > Extensions` and enable developer mode (Top right).
-4. Click on `Load unpacked` and select `dist/` folder from the project.
+4. Click on `Load unpacked` and select `dist/` folder from the project repository.
 
-The extension is now ready to be developed, any changes on the repository will reflect to the extension.
+The extension is now ready to be developed, any changes on the repository will reflect on the extension.
 
 ![Add extension to chrome](https://i.imgur.com/umrnGJM.png)
 
 ## Building the extension
 
-To build the extension simply Click on `Pack extension` and browse extension root to `dist/` folder, you can optionallt add a private key file.
+To build the extension simply Click on `Pack extension` and browse extension root to `dist/` folder, you can optionally add a private key file.
 
 To test the built extension drag and drop the created `*.crx` file into chrome.
 

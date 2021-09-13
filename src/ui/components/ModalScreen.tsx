@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Modal} from 'react-bootstrap';
+import {Scrollbars} from 'react-custom-scrollbars';
 
 /*
  * Full screen modal.
@@ -13,20 +14,26 @@ const ModalScreen = ({modalOpen, setModalOpen, title, children, footer=null}: {
 }) => {
   return (
     <Modal show={modalOpen} fullscreen onHide={() => setModalOpen(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {children}
+      <Scrollbars
+        autoHide
+        style={{height: '100vh'}}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {children}
 
-      </Modal.Body>
-      {
+        </Modal.Body>
+        {
                 footer?
                 <Modal.Footer>
                   {footer}
                 </Modal.Footer> :
                 null
-      }
+        }
+      </Scrollbars>
+
     </Modal>
   );
 };

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {toZeitTimer} from '../utils/functions';
-import {BsFillPlayFill} from 'react-icons/bs';
-import {BsPauseFill} from 'react-icons/bs';
-import {BsStopFill} from 'react-icons/bs';
+import {FaPlay} from 'react-icons/fa';
+import {FaPause} from 'react-icons/fa';
+import {FaStop} from 'react-icons/fa';
 
 export type TimerStatus = 'PAUSED' | 'STARTED' | 'RESETTED'
 
@@ -29,7 +29,7 @@ const ZeitTimer = ({
       className="timer_section d-flex align-items-center mx-auto"
     >
       {toZeitTimer(timer)}
-      <BsFillPlayFill
+      <FaPlay
         onClick={
           status === 'PAUSED' ?
            handleResumeTimer : status === 'RESETTED'?
@@ -37,9 +37,9 @@ const ZeitTimer = ({
         }
         className={status === 'PAUSED' || status === 'RESETTED' ?
                   'clickable' : 'disabled'}
-        size={45}
+        size={26}
       />
-      <BsPauseFill
+      <FaPause
         onClick={
           status === 'STARTED' ?
           handlePauseTimer : () => {}
@@ -48,16 +48,16 @@ const ZeitTimer = ({
           status === 'STARTED' ?
                   'clickable' : 'disabled'
         }
-        size={45}
+        size={26}
       />
-      <BsStopFill
+      <FaStop
         onClick={status === 'STARTED' || status === 'PAUSED' ?
           handleStopTimer : () => {}}
         className={
           status === 'STARTED' || status === 'PAUSED' ?
                   'clickable' : 'disabled'
         }
-        size={45}
+        size={26}
       />
     </div>
   );

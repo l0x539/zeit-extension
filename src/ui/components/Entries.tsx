@@ -28,39 +28,30 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
     <div className="pb-4">
       <div className="content">
         <HeaderEntry total={total} />
-        <div className="shadow-sm time-entries mx-4 my-2 p-2">
-          <div>
-            {entries?.length ?
-             Object.keys(projects).map((project: string, index: number) => (
-               <div onClick={() => {
-                 handleVisitProject(project);
-               }} key={index} className="row time-entry mx-auto">
-                 <div className="time-entries-info col m-auto">
-                   <div className="time-entries-desc h6">
-                     {projects[project][0].project_name}:
+        <div className="shadow-sm time-entries mx-4 my-2 px-3 py-2">
+          {entries?.length ?
+             Object.keys(projects).map((project: string, index: number) => {
+               const timing = sumDuration(projects[project]);
+               if (timing > 0) {
+                 return (
+                   <div onClick={() => {
+                     handleVisitProject(project);
+                   }}
+                   key={index}
+                   className="row py-4 time-entry">
+                     <div className="col-9 time-entries-project">
+                       {projects[project][0].project_name}:
+                     </div>
+                     <div className="col-3 d-flex justify-content-end">
+                       {toTimer(timing)}
+                     </div>
                    </div>
-                   {/* <a className="time-entries-project">
-                     Last worked on:
-                     {projects[project][projects[project].length - 1].comment}
-
-                   </a> */}
-                 </div>
-                 <div className={`time-entries-total-and-time  m-auto 
-                               d-flex justify-content-around col-5`}>
-                   {/* <div className="time-entries-total">
-                      ${sumAmount(projects[project])}
-                   </div> */}
-                   <div className="ml-1 time-entries-total-time">
-                     {toTimer(sumDuration(projects[project]))}
-                   </div>
-                   {/* <div className="time-entries-play">
-                    <BsPlay size={20} />
-                </div> */}
-                 </div>
-               </div>
-             )):
+                 );
+               } else {
+                 return <></>;
+               }
+             }):
             <div className="m-auto">No time records today, Start now!</div>}
-          </div>
         </div>
       </div>
     </div>
@@ -69,18 +60,13 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
 
 const HeaderEntry = ({total}: {total: number}) => {
   return (
-    <div className="shadow-sm time-entries-head mx-4 p-2">
+    <div className="shadow-sm time-entries-head mx-4 px-3 py-2">
       <div>
         <div className="row">
-          <div className="time-entries-day col">Last 24 Hours</div>
-          <div className={`time-entries-total-and-time 
-                           d-flex justify-content-center col`}>
-            <div className="time-entries-total">
-              {'Total:'}
-            </div>
-            <div className="ml-1 time-entries-total-time">
-              {toTimer(total)}
-            </div>
+          <div className="col-8">Today</div>
+          <div className="col-4 d-flex justify-content-end">
+            {'Total: '}
+            {toTimer(total)}
           </div>
         </div>
       </div>

@@ -181,4 +181,5 @@ export type Settings = {
     StopBrowser: boolean,
     alarmReminder: boolean,
     notifications: boolean
+    askPause: boolean,
 }

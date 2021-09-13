@@ -3,8 +3,7 @@ import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
 import {
-  // StopTimerHook,
-  getProjectsHook,
+  getProjectsBookableHook,
   request,
   StartStopTimerHook,
 } from '../utils/api';
@@ -73,27 +72,24 @@ const Editor = ({
   //   useResource(ResumeTimerHook, {apiKey: token});
   // }
 
-
-  const projects: ProjectResult = useResource(
-      getProjectsHook,
+  const allProjects: ProjectResult = useResource(
+      getProjectsBookableHook,
       {
         apiKey: token, params: '',
       });
 
-
   const [projectId, setProjectId] = React.useState(
-      !isErrorProjects(projects)?
-      projects.result && projects.result.projects?.length?
-      projects.result.projects[0].id :'':'');
+    !isErrorProjects(allProjects) &&
+     allProjects.result.projects.length > 0?
+     allProjects.result.projects[0].id: '');
 
   React.useEffect(() => {
-    if (!isErrorProjects(projects)) {
-      if (projects?.result.projects?.length < 1) {
-        setError('Please create a project first');
-        setWorkingOn('');
-      }
+    if (!isErrorProjects(allProjects) &&
+     allProjects.result.projects.length < 1) {
+      setError('Please create a project first');
+      setWorkingOn('');
     }
-  }, [projects]);
+  }, [allProjects]);
 
 
   const handleDateChange = (value, format) => {
@@ -126,6 +122,10 @@ const Editor = ({
     setProjectId(e.target.value);
   };
 
+  const duration = fromTimeString(to)-
+  fromTimeString(from)-
+  fromTimeString(pause);
+
   return (
     <ModalScreen
       modalOpen={editorOpen}
@@ -135,7 +135,11 @@ const Editor = ({
         <>
           <Button variant="secondary"
             onClick={handleResetTimer}>Discard Time</Button>
-          <Button variant="primary" onClick={handleStopTimer}>Save</Button>
+          <Button
+            variant="primary"
+            onClick={handleStopTimer}
+            className="blue"
+          >Save</Button>
         </>
       )} >
       {error.length > 0 ?
@@ -144,18 +148,25 @@ const Editor = ({
         </Alert> :
         null
       }
+      {/* <p>
+        Your configured timezone is
+        <span style={{fontWeight: 'bold'}}>{'\'Paris\''}</span>
+        . You can change it <a href="#" onClick={() => {
+          chrome.tabs.create({url: 'https://zeit.io/en/settings/localization'});
+        }}>here</a>.
+      </p> */}
       <Form className="form-horizontal">
         <div className="row">
-          <div className="col-8">
+          <div className="col-md-8">
             <div className="mb-3">
               <Form.Label className="form-label">Project</Form.Label>
               <div>
-                {!isErrorProjects(projects) ?
-                  projects.result.projects.length ?
+                {
+                 !isErrorProjects(allProjects) &&
+                  allProjects.result.projects?.length ?
                   <Form.Select onChange={handleSelectProject}>
                     {
-                      projects?.result?.projects &&
-                      projects.result.projects.map((project, index) => (
+                      allProjects.result.projects.map((project, index) => (
                         <option key={index} value={project.id}>
                           {project.name}
                         </option>
@@ -168,30 +179,27 @@ const Editor = ({
                   cursor: 'pointer',
                 }} onClick={() => {
                   chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
-                }}>create a project now!</a></div>:
-                <div>No projects yet, <a style={{
-                  color: 'blueviolet',
-                  cursor: 'pointer',
-                }} onClick={() => {
-                  chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
                 }}>create a project now!</a></div>}
               </div>
             </div>
           </div>
           {/* <div className="col-md-4" id="hourly_wage_section">
-                <div className="mb-3">
-                    <Form.Label className="form-label">Hourly wage</Form.Label>
-                    <Form.Select disabled>
-                        <option>${}</option>
-                    </Form.Select>
-                </div>
+            <div className="mb-3">
+              <Form.Label className="form-label">Hourly wage</Form.Label>
+              <Form.Select disabled>
+                <option>${
+                  !isErrorProjects(allProjects) && allProjects.result.projects.
+                      reduce((p, v) => v.id === projectId ?
+                  v.hourly_wage : p, 0)}</option>
+              </Form.Select>
+            </div>
 
-            </div> */}
+          </div> */}
         </div>
 
         <div className="mb-3">
           <div className="row">
-            <div className="col-6">
+            <div className="col-md-3">
               <Form.Label className="form-label">Date</Form.Label>
               <DatePicker
                 selected={date}
@@ -204,41 +212,37 @@ const Editor = ({
                 }
               />
             </div>
-            <div className="row">
-              <div className="col-4">
-                <Form.Label className="form-label">From</Form.Label>
-                <FormControl
-                  value={from}
-                  onChange={(e) => {
-                    setFrom(e.target.value), setError('');
-                  }}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Label className="form-label">To</Form.Label>
-                <FormControl
-                  value={to}
-                  onChange={(e) => {
-                    setTo(e.target.value), setError('');
-                  }}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Label className="form-label">Pause</Form.Label>
-                <FormControl
-                  value={pause}
-                  onChange={(e) => {
-                    setPause(e.target.value), setError('');
-                  }}
-                />
-              </div>
+            <div className="col-md-2">
+              <Form.Label className="form-label">From</Form.Label>
+              <FormControl
+                value={from}
+                onChange={(e) => {
+                  setFrom(e.target.value), setError('');
+                }}
+              />
             </div>
-            <div className="col-4">
+            <div className="col-md-2">
+              <Form.Label className="form-label">To</Form.Label>
+              <FormControl
+                value={to}
+                onChange={(e) => {
+                  setTo(e.target.value), setError('');
+                }}
+              />
+            </div>
+            <div className="col-md-2">
+              <Form.Label className="form-label">Pause</Form.Label>
+              <FormControl
+                value={pause}
+                onChange={(e) => {
+                  setPause(e.target.value), setError('');
+                }}
+              />
+            </div>
+            <div className="col-md-3">
               <Form.Label className="form-label">Duration</Form.Label>
               <FormControl
-                value={toTimer(fromTimeString(to)-
-                  fromTimeString(from)-
-                  fromTimeString(pause))}
+                value={toTimer(duration > 0 ? duration: 0)}
                 disabled
               />
             </div>
