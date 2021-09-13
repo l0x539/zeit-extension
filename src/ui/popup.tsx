@@ -8,7 +8,6 @@ import * as ReactDOM from 'react-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/popup.css';
-import '@fortawesome/fontawesome-svg-core/styles.css';
 import Track from './pages/Track';
 import {CacheProvider} from '@rest-hooks/core';
 import AuthContext from './contexts/AuthContexts';
