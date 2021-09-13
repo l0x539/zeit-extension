@@ -7,7 +7,6 @@ import {FiSettings} from 'react-icons/fi';
 import {InputGroup, Dropdown, Form} from 'react-bootstrap';
 import {
   registerCommandAction,
-  reload,
   useComment,
   useSettings,
 } from '../utils/chrome';
@@ -262,7 +261,7 @@ const Header: () => JSX.Element = () => {
           </span>
         </div>
         <div className="header__icon-button d-flex align-items-center">
-          <BiRefresh size={35} onClick={() => reload()} />
+          <BiRefresh size={35} onClick={() => resetCache()} />
           <Dropdown
             align={{lg: 'start'}}
           >
