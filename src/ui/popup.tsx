@@ -8,27 +8,25 @@ import * as ReactDOM from 'react-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/popup.css';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import Track from './pages/Track';
 import {CacheProvider} from '@rest-hooks/core';
 import AuthContext from './contexts/AuthContexts';
 import {useStore} from './utils/chrome';
-import ErrorBoundary from './components/ErrorBoundaries';
 import ProtectedPage from './components/Layout/ProtectedPage';
 import Loading from './components/Loading';
 
 const App = () => {
   return (
-    <ErrorBoundary>
-      <React.Suspense fallback={<Loading />}>
-        <CacheProvider>
-          <AuthProvider >
-            <ProtectedPage>
-              <Track />
-            </ProtectedPage>
-          </AuthProvider>
-        </CacheProvider>
-      </React.Suspense>
-    </ErrorBoundary>
+    <CacheProvider>
+      <AuthProvider >
+        <React.Suspense fallback={<Loading />}>
+          <ProtectedPage>
+            <Track />
+          </ProtectedPage>
+        </React.Suspense>
+      </AuthProvider>
+    </CacheProvider>
   );
 };
 
