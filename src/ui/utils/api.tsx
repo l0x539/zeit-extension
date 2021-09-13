@@ -129,3 +129,17 @@ export const getProjectsCollaborationsHook = new Endpoint(({apiKey, params}:{
       params,
   );
 });
+
+// Projects Bookable
+export const getProjectsBookableHook = new Endpoint(({apiKey, params}:{
+  apiKey: string,
+  params: string
+}) => {
+  return request(
+      '/api/v1/usr/projects_bookable',
+      'GET',
+      null,
+      apiKey,
+      params,
+  );
+});

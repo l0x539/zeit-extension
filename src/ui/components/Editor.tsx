@@ -1,12 +1,9 @@
 import * as React from 'react';
 import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
-import {useFetcher} from '@rest-hooks/core';
+import {useFetcher, useResource} from '@rest-hooks/core';
 import {
-  // getProjectsCollaborationsHook,
-  // getProjectsCollaborationsHook,
-  // StopTimerHook,
-  // getProjectsHook,
+  getProjectsBookableHook,
   request,
   StartStopTimerHook,
 } from '../utils/api';
@@ -19,7 +16,7 @@ import {
   toTimer,
   toUTC,
 } from '../utils/functions';
-// import {isErrorProjects} from '../utils/types';
+import {isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -44,7 +41,6 @@ const Editor = ({
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
 
-  const [allProjects, setProjects] = React.useState([]);
   const [pause, setPause] = React.useState('');
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
@@ -76,49 +72,20 @@ const Editor = ({
   //   useResource(ResumeTimerHook, {apiKey: token});
   // }
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      const response = await request(
-          '/api/v1/usr/projects',
-          'GET',
-          null,
-          token,
-          '',
-      );
-      let projects = [];
-      if (response.error) {
-        setError(response.error);
-      } else {
-        projects = projects.concat(response.result.projects);
-      }
-      const collabResponse = await request(
-          '/api/v1/usr/projects/collaborations',
-          'GET',
-          null,
-          token,
-          '',
-      );
-      if (collabResponse.error) {
-        setError(collabResponse.error);
-      } else {
-        projects = projects.concat(collabResponse.result.projects);
-      }
-      if (projects.length) {
-        setError('');
-        setProjectId(projects[0].id);
-      };
-      setProjects(projects);
-    };
-    if (editorOpen) {
-      fetchData();
-    }
-  }, [editorOpen]);
+  const allProjects: ProjectResult = useResource(
+      getProjectsBookableHook,
+      {
+        apiKey: token, params: '',
+      });
 
   const [projectId, setProjectId] = React.useState(
-    allProjects.length>0?allProjects[0].id: 0);
+    !isErrorProjects(allProjects) &&
+     allProjects.result.projects.length > 0?
+     allProjects.result.projects[0].id: '');
 
   React.useEffect(() => {
-    if (allProjects.length < 1) {
+    if (!isErrorProjects(allProjects) &&
+     allProjects.result.projects.length < 1) {
       setError('Please create a project first');
       setWorkingOn('');
     }
@@ -195,11 +162,11 @@ const Editor = ({
               <Form.Label className="form-label">Project</Form.Label>
               <div>
                 {
-                 allProjects.length ?
+                 !isErrorProjects(allProjects) &&
+                  allProjects.result.projects?.length ?
                   <Form.Select onChange={handleSelectProject}>
                     {
-                      allProjects &&
-                      allProjects.map((project, index) => (
+                      allProjects.result.projects.map((project, index) => (
                         <option key={index} value={project.id}>
                           {project.name}
                         </option>
@@ -216,18 +183,18 @@ const Editor = ({
               </div>
             </div>
           </div>
-          <div className="col-md-4" id="hourly_wage_section">
+          {/* <div className="col-md-4" id="hourly_wage_section">
             <div className="mb-3">
               <Form.Label className="form-label">Hourly wage</Form.Label>
               <Form.Select disabled>
                 <option>${
-                  allProjects.
+                  !isErrorProjects(allProjects) && allProjects.result.projects.
                       reduce((p, v) => v.id === projectId ?
                   v.hourly_wage : p, 0)}</option>
               </Form.Select>
             </div>
 
-          </div>
+          </div> */}
         </div>
 
         <div className="mb-3">
