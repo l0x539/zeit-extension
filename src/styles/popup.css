@@ -5,14 +5,23 @@
 }
 
 body {
-    width: 400px;
-    min-height: 400px;
+    min-width: 400px;
+    min-height: 600px;
     font-family: Verdana, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
     background-color: #e3e8ee;
 }
 
 a {
     text-decoration:none
+}
+
+label {
+    font-weight: bold;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
 }
 
 .popup-padded {

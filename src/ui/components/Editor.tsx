@@ -1,11 +1,12 @@
 import * as React from 'react';
 import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
-import {useFetcher, useResource} from '@rest-hooks/core';
+import {useFetcher} from '@rest-hooks/core';
 import {
   // getProjectsCollaborationsHook,
+  // getProjectsCollaborationsHook,
   // StopTimerHook,
-  getProjectsHook,
+  // getProjectsHook,
   request,
   StartStopTimerHook,
 } from '../utils/api';
@@ -18,7 +19,7 @@ import {
   toTimer,
   toUTC,
 } from '../utils/functions';
-import {isErrorProjects, ProjectResult} from '../utils/types';
+// import {isErrorProjects} from '../utils/types';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -42,7 +43,15 @@ const Editor = ({
   const {token} = React.useContext(AuthContext);
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
+  if (editorOpen) {
+    document.body.style.minHeight = '538px';
+    document.body.style.minWidth = '800px';
+  } else {
+    document.body.style.minHeight = '600px';
+    document.body.style.minWidth = '400px';
+  }
 
+  const [allProjects, setProjects] = React.useState([]);
   const [pause, setPause] = React.useState('');
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState('');
@@ -74,32 +83,53 @@ const Editor = ({
   //   useResource(ResumeTimerHook, {apiKey: token});
   // }
 
-
-  const projects: ProjectResult = useResource(
-      getProjectsHook,
-      {
-        apiKey: token, params: '',
-      });
-
-  // const projectsCollabortions: ProjectResult = useResource(
-  //     getProjectsCollaborationsHook,
-  //     {
-  //       apiKey: token, params: '',
-  //     }); // TODO: check if projects collaboration is also listed.
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const response = await request(
+          '/api/v1/usr/projects',
+          'GET',
+          null,
+          token,
+          '',
+      );
+      let projects = [];
+      if (response.error) {
+        setError(response.error);
+      } else {
+        projects = projects.concat(response.result.projects);
+      }
+      const collabResponse = await request(
+          '/api/v1/usr/projects/collaborations',
+          'GET',
+          null,
+          token,
+          '',
+      );
+      if (collabResponse.error) {
+        setError(collabResponse.error);
+      } else {
+        projects = projects.concat(collabResponse.result.projects);
+      }
+      if (projects.length) {
+        setError('');
+        setProjectId(projects[0].id);
+      };
+      setProjects(projects);
+    };
+    if (editorOpen) {
+      fetchData();
+    }
+  }, [editorOpen]);
 
   const [projectId, setProjectId] = React.useState(
-      !isErrorProjects(projects)?
-      projects.result && projects.result.projects?.length?
-      projects.result.projects[0].id :'':'');
+    allProjects.length>0?allProjects[0].id: 0);
 
   React.useEffect(() => {
-    if (!isErrorProjects(projects)) {
-      if (projects?.result.projects?.length < 1) {
-        setError('Please create a project first');
-        setWorkingOn('');
-      }
+    if (allProjects.length < 1) {
+      setError('Please create a project first');
+      setWorkingOn('');
     }
-  }, [projects]);
+  }, [allProjects]);
 
 
   const handleDateChange = (value, format) => {
@@ -132,6 +162,10 @@ const Editor = ({
     setProjectId(e.target.value);
   };
 
+  const duration = fromTimeString(to)-
+  fromTimeString(from)-
+  fromTimeString(pause);
+
   return (
     <ModalScreen
       modalOpen={editorOpen}
@@ -150,18 +184,25 @@ const Editor = ({
         </Alert> :
         null
       }
+      {/* <p>
+        Your configured timezone is
+        <span style={{fontWeight: 'bold'}}>{'\'Paris\''}</span>
+        . You can change it <a href="#" onClick={() => {
+          chrome.tabs.create({url: 'https://zeit.io/en/settings/localization'});
+        }}>here</a>.
+      </p> */}
       <Form className="form-horizontal">
         <div className="row">
           <div className="col-8">
             <div className="mb-3">
               <Form.Label className="form-label">Project</Form.Label>
               <div>
-                {!isErrorProjects(projects) ?
-                  projects.result.projects.length ?
+                {
+                 allProjects.length ?
                   <Form.Select onChange={handleSelectProject}>
                     {
-                      projects?.result?.projects &&
-                      projects.result.projects.map((project, index) => (
+                      allProjects &&
+                      allProjects.map((project, index) => (
                         <option key={index} value={project.id}>
                           {project.name}
                         </option>
@@ -174,30 +215,27 @@ const Editor = ({
                   cursor: 'pointer',
                 }} onClick={() => {
                   chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
-                }}>create a project now!</a></div>:
-                <div>No projects yet, <a style={{
-                  color: 'blueviolet',
-                  cursor: 'pointer',
-                }} onClick={() => {
-                  chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
                 }}>create a project now!</a></div>}
               </div>
             </div>
           </div>
-          {/* <div className="col-md-4" id="hourly_wage_section">
-                <div className="mb-3">
-                    <Form.Label className="form-label">Hourly wage</Form.Label>
-                    <Form.Select disabled>
-                        <option>${}</option>
-                    </Form.Select>
-                </div>
+          <div className="col-md-4" id="hourly_wage_section">
+            <div className="mb-3">
+              <Form.Label className="form-label">Hourly wage</Form.Label>
+              <Form.Select disabled>
+                <option>${
+                  allProjects.
+                      reduce((p, v) => v.id === projectId ?
+                  v.hourly_wage : p, 0)}</option>
+              </Form.Select>
+            </div>
 
-            </div> */}
+          </div>
         </div>
 
         <div className="mb-3">
           <div className="row">
-            <div className="col-6">
+            <div className="col-3">
               <Form.Label className="form-label">Date</Form.Label>
               <DatePicker
                 selected={date}
@@ -210,41 +248,37 @@ const Editor = ({
                 }
               />
             </div>
-            <div className="row">
-              <div className="col-4">
-                <Form.Label className="form-label">From</Form.Label>
-                <FormControl
-                  value={from}
-                  onChange={(e) => {
-                    setFrom(e.target.value), setError('');
-                  }}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Label className="form-label">To</Form.Label>
-                <FormControl
-                  value={to}
-                  onChange={(e) => {
-                    setTo(e.target.value), setError('');
-                  }}
-                />
-              </div>
-              <div className="col-4">
-                <Form.Label className="form-label">Pause</Form.Label>
-                <FormControl
-                  value={pause}
-                  onChange={(e) => {
-                    setPause(e.target.value), setError('');
-                  }}
-                />
-              </div>
+            <div className="col-2">
+              <Form.Label className="form-label">From</Form.Label>
+              <FormControl
+                value={from}
+                onChange={(e) => {
+                  setFrom(e.target.value), setError('');
+                }}
+              />
             </div>
-            <div className="col-4">
+            <div className="col-2">
+              <Form.Label className="form-label">To</Form.Label>
+              <FormControl
+                value={to}
+                onChange={(e) => {
+                  setTo(e.target.value), setError('');
+                }}
+              />
+            </div>
+            <div className="col-2">
+              <Form.Label className="form-label">Pause</Form.Label>
+              <FormControl
+                value={pause}
+                onChange={(e) => {
+                  setPause(e.target.value), setError('');
+                }}
+              />
+            </div>
+            <div className="col-3">
               <Form.Label className="form-label">Duration</Form.Label>
               <FormControl
-                value={toTimer(fromTimeString(to)-
-                  fromTimeString(from)-
-                  fromTimeString(pause))}
+                value={toTimer(duration > 0 ? duration: 0)}
                 disabled
               />
             </div>

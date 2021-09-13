@@ -20,10 +20,10 @@ const Track = () => {
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${moment().startOf('day').
+        params: `?from=${moment().
             format('YYYY-MM-DD')}&to=${moment().add(1, 'day')
             .format('YYYY-MM-DD')}`,
-      }); // Last 24 hours.
+      }); // Today working time.
 
   if (timeRecords.error) {
     logout();
