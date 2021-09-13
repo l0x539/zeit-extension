@@ -4,7 +4,6 @@ import {BiRefresh} from 'react-icons/bi';
 import {ImExit} from 'react-icons/im';
 import {GrPowerReset} from 'react-icons/gr';
 import {FiSettings} from 'react-icons/fi';
-import {BsBoxArrowUpRight} from 'react-icons/bs';
 import {InputGroup, Dropdown, Form} from 'react-bootstrap';
 import {
   registerCommandAction,
@@ -263,9 +262,6 @@ const Header: () => JSX.Element = () => {
           </span>
         </div>
         <div className="header__icon-button d-flex align-items-center">
-          <BsBoxArrowUpRight size={25} onClick={() => {
-            chrome.tabs.create({url: 'https://zeit.io/en/dashboard'});
-          }} />
           <BiRefresh size={35} onClick={() => reload()} />
           <Dropdown
             align={{lg: 'start'}}
