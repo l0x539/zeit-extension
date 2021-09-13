@@ -213,3 +213,9 @@ p {
     margin: 0px;
     font-weight: bold;
 }
+
+.btn-primary.blue {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}

@@ -43,13 +43,6 @@ const Editor = ({
   const {token} = React.useContext(AuthContext);
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
-  if (editorOpen) {
-    document.body.style.minHeight = '538px';
-    document.body.style.minWidth = '800px';
-  } else {
-    document.body.style.minHeight = '600px';
-    document.body.style.minWidth = '400px';
-  }
 
   const [allProjects, setProjects] = React.useState([]);
   const [pause, setPause] = React.useState('');
@@ -175,7 +168,11 @@ const Editor = ({
         <>
           <Button variant="secondary"
             onClick={handleResetTimer}>Discard Time</Button>
-          <Button variant="primary" onClick={handleStopTimer}>Save</Button>
+          <Button
+            variant="primary"
+            onClick={handleStopTimer}
+            className="blue"
+          >Save</Button>
         </>
       )} >
       {error.length > 0 ?
@@ -193,7 +190,7 @@ const Editor = ({
       </p> */}
       <Form className="form-horizontal">
         <div className="row">
-          <div className="col-8">
+          <div className="col-md-8">
             <div className="mb-3">
               <Form.Label className="form-label">Project</Form.Label>
               <div>
@@ -235,7 +232,7 @@ const Editor = ({
 
         <div className="mb-3">
           <div className="row">
-            <div className="col-3">
+            <div className="col-md-3">
               <Form.Label className="form-label">Date</Form.Label>
               <DatePicker
                 selected={date}
@@ -248,7 +245,7 @@ const Editor = ({
                 }
               />
             </div>
-            <div className="col-2">
+            <div className="col-md-2">
               <Form.Label className="form-label">From</Form.Label>
               <FormControl
                 value={from}
@@ -257,7 +254,7 @@ const Editor = ({
                 }}
               />
             </div>
-            <div className="col-2">
+            <div className="col-md-2">
               <Form.Label className="form-label">To</Form.Label>
               <FormControl
                 value={to}
@@ -266,7 +263,7 @@ const Editor = ({
                 }}
               />
             </div>
-            <div className="col-2">
+            <div className="col-md-2">
               <Form.Label className="form-label">Pause</Form.Label>
               <FormControl
                 value={pause}
@@ -275,7 +272,7 @@ const Editor = ({
                 }}
               />
             </div>
-            <div className="col-3">
+            <div className="col-md-3">
               <Form.Label className="form-label">Duration</Form.Label>
               <FormControl
                 value={toTimer(duration > 0 ? duration: 0)}
