@@ -42,10 +42,10 @@ chrome.windows.onCreated.addListener(function() {
               result.apiKey,
           );
           if (!resume.error) {
-            notify('Zeit.io', 'Timer Resumed');
+            notify('ZEIT.IO', 'Timer Resumed');
           }
         } else {
-          notify('Zeit.io', 'Timer Started');
+          notify('ZEIT.IO', 'Timer Started');
         }
       }
     });
@@ -61,7 +61,7 @@ chrome.windows.onRemoved.addListener(function() {
             result.apiKey,
         );
         if (!pause.error) {
-          notify('Zeit.io', 'Timer Paused');
+          notify('ZEIT.IO', 'Timer Paused');
         }
       }
     });
@@ -76,7 +76,7 @@ const startStop = () => {
     );
     if (start.error || start.message === 'Timer was started already') {
       if (start.error?.includes('apiKey')) {
-        notify('Zeit.io', 'You\'re not logged in.');
+        notify('ZEIT.IO', 'You\'re not logged in.');
         return;
       }
       const pause = await request('/api/v1/usr/time_records/pause', 'POST',
@@ -88,12 +88,12 @@ const startStop = () => {
             {},
             result.apiKey,
         );
-        notify('Zeit.io', 'Timer Resumed');
+        notify('ZEIT.IO', 'Timer Resumed');
       } else {
-        notify('Zeit.io', 'Timer Paused');
+        notify('ZEIT.IO', 'Timer Paused');
       }
     } else if (!start.error || start.error === '') {
-      notify('Zeit.io', 'Timer Started');
+      notify('ZEIT.IO', 'Timer Started');
     }
   });
 };
