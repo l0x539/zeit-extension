@@ -15,9 +15,10 @@ import {
   resolveDateFormat,
   toShortDate,
   toTimer,
+  toTimeZone,
   toUTC,
 } from '../utils/functions';
-import {isErrorProjects, ProjectResult} from '../utils/types';
+import {isErrorAuth, isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -61,8 +62,10 @@ const Editor = ({
         if (res.pause) {
           setDate(new Date(res.start));
           setPause(toTimer(res.pause_total));
-          setFrom(toUTC(res.start));
-          setTo(toUTC(Date()));
+          setFrom(!isErrorAuth(userInfos) && userInfos.timezone?
+          toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
+          setTo(!isErrorAuth(userInfos) && userInfos.timezone?
+          toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
         }
       })
       ;
