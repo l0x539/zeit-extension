@@ -58,7 +58,7 @@ IconToggleList.displayName = 'IconToggleList';
 const Header: () => JSX.Element = () => {
   const {token, logout} = React.useContext(AuthContext);
   // const [clock, setClock, isPersistent, error]  = useClock();
-  const timerStatus: Timer = useResource(PauseTimerHook, {apiKey: token});
+  const timerStatus: Timer = useResource(ResumeTimerHook, {apiKey: token});
   const [comment, setComment]: [
     string,
     (value: string) => void,
@@ -139,19 +139,18 @@ const Header: () => JSX.Element = () => {
   }, [comment]);
 
   React.useEffect(() => {
-    console.log('timerStatus', timerStatus);
-
     if (!isErrorTimer(timerStatus)) {
       switch (timerStatus.message) {
-        case 'Timer was paused already':
+        case 'Timer was resumed':
+          pauseTimer({apiKey: token});
           setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
           setTimerStatus('PAUSED');
 
           setQuestionOpen(true);
+
           break;
-        case 'Timer paused':
+        case 'No pause was started':
           setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
-          resumeTimer({apiKey: token});
           setTimerStatus('STARTED');
           setIsOn(true);
           break;
@@ -159,6 +158,10 @@ const Header: () => JSX.Element = () => {
           resetTimer({apiKey: token});
           break;
       }
+    } else if (timerStatus.error === 'Nothing to resume') {
+      setTimer(calculateTime(timerStatus.start, timerStatus['pause_total']));
+      setTimerStatus('STARTED');
+      setIsOn(true);
     }
   }, []);
 

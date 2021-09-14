@@ -139,13 +139,21 @@ export type ProjectResult = {
 
 const isHasErrorTimer = (
     timer: Timer,
-): timer is { error: string } => {
+): timer is {
+    error: string,
+    start: string,
+    'pause_total': number
+} => {
   return timer.hasOwnProperty('error');
 };
 
 export const isErrorTimer = (
     timer: Timer,
-): timer is { error: string } => {
+): timer is {
+    error: string,
+    start: string,
+    'pause_total': number
+} => {
   if (isHasErrorTimer(timer)) {
     if (timer.error.length > 0) {
       return true;
@@ -159,7 +167,9 @@ export type Timer = {
     start: string,
     'pause_total': number
 } | {
-    error: string
+    error: string,
+    start: string,
+    'pause_total': number
 }
 
 export const isErrorAuth = (
