@@ -82,6 +82,7 @@ export const StartStopTimerHook = new Endpoint(({
   startTime,
   stopTime,
   pause,
+  dateFormat,
 }:{
   apiKey: string,
   projectId: string,
@@ -89,7 +90,8 @@ export const StartStopTimerHook = new Endpoint(({
   date: string,
   startTime: string,
   stopTime: string,
-  pause: string
+  pause: string,
+  dateFormat: string
 }) => {
   return request('/api/v1/usr/time_records/start_stop', 'POST',
       {
@@ -98,7 +100,7 @@ export const StartStopTimerHook = new Endpoint(({
         activity: null,
         hourly_wage_category: 'default',
         date: date,
-        date_format: '%d/%m/%Y',
+        date_format: dateFormat??'%d/%m/%Y',
         start_time: startTime,
         stop_time: stopTime,
         pause: pause,

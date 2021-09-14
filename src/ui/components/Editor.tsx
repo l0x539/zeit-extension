@@ -12,6 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
   fromTimeString,
+  resolveDateFormat,
   toShortDate,
   toTimer,
   toUTC,
@@ -37,7 +38,7 @@ const Editor = ({
   handleResetTimer: () => void,
 }) => {
   const [error, setError] = React.useState('');
-  const {token} = React.useContext(AuthContext);
+  const {token, userInfos} = React.useContext(AuthContext);
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
 
@@ -107,6 +108,7 @@ const Editor = ({
         startTime: from,
         stopTime: to,
         pause,
+        dateFormat: userInfos['date_format']??undefined,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
@@ -205,6 +207,8 @@ const Editor = ({
                 selected={date}
                 onChange={handleDateChange}
                 className="form-control"
+                dateFormat={userInfos['date_format'] ?
+                  resolveDateFormat(userInfos['date_format']): undefined}
                 customInput={
                   <FormControl
                     value={date.toDateString()}

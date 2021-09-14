@@ -29,7 +29,7 @@ const Login = () => {
       if (isErrorAuth(res)) {
         setError(res.error);
       } else if (res.success) {
-        loginUser(res.apiKey);
+        loginUser(res);
       }
     } else {
       setError('Missing fields!');

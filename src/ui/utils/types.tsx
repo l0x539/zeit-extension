@@ -169,8 +169,14 @@ export const isErrorAuth = (
 };
 
 export type Auth = {
+    success: boolean,
     apiKey: string,
-    success: string
+    firstname: string,
+    lastname: string,
+    timezone: string,
+    language: string,
+    'date_format': string,
+    organisations: string[]
 } | {
     error: string
 }

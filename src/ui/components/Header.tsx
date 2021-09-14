@@ -139,6 +139,8 @@ const Header: () => JSX.Element = () => {
   }, [comment]);
 
   React.useEffect(() => {
+    console.log('timerStatus', timerStatus);
+
     if (!isErrorTimer(timerStatus)) {
       switch (timerStatus.message) {
         case 'Timer was paused already':
@@ -215,7 +217,6 @@ const Header: () => JSX.Element = () => {
     setQuestionOpen(false);
     setIsOn(true);
   };
-  setCanAskPauseQuestion;
 
   return (
     <div className="shadow-sm main-header fixed-top">

@@ -36,6 +36,10 @@ export const toShortDate = (date) => {
   }/${_date.getUTCMonth()+1}/${_date.getUTCFullYear()}`;
 };
 
+export const resolveDateFormat = (zeitFormat: string) => zeitFormat
+    .replace('%d', 'dd')
+    .replace('%m', 'MM').replace('%Y', 'yyyy');
+
 export const toLocal = (time) => {
   const date = new Date(time);
   return `${leftJustify(
