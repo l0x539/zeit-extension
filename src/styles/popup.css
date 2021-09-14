@@ -212,6 +212,10 @@ p {
     font-weight: bold;
 }
 
+.timer-icon > svg {
+    display: block;
+}
+
 .btn-primary.blue {
     background-color: #007bff;
     color: white;
