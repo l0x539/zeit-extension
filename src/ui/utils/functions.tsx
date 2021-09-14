@@ -64,15 +64,15 @@ export const fromTimeString = (time: string) => {
 export const toZeitTimer = (time) => {
   return (
     <>
-      <label id="hours" className="timer_hms">
+      <label className="timer_hms">
         {leftJustify(Math.floor(time/3600).toLocaleString(), 2, '0')}
       </label>
       :
-      <label id="hours" className="timer_hms">
+      <label className="timer_hms">
         {leftJustify((Math.floor(time/60)%60).toLocaleString(), 2, '0')}
       </label>
       :
-      <label id="hours" className="timer_hms">
+      <label className="timer_hms">
         {leftJustify((time%60).toLocaleString(), 2, '0')}</label>
     </>
   );

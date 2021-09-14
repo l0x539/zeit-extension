@@ -26,39 +26,41 @@ const ZeitTimer = ({
 }) => {
   return (
     <div
-      className="timer_section d-flex align-items-center mx-auto"
+      className="timer_section d-flex align-items-center mx-auto px-1"
     >
       {toZeitTimer(timer)}
-      <FaPlay
-        onClick={
+      <div className="mx-1 timer-icon">
+        <FaPlay
+          onClick={
           status === 'PAUSED' ?
            handleResumeTimer : status === 'RESETTED'?
            handleStartTimer : () => {}
-        }
-        className={status === 'PAUSED' || status === 'RESETTED' ?
+          }
+          className={status === 'PAUSED' || status === 'RESETTED' ?
                   'clickable' : 'disabled'}
-        size={26}
-      />
-      <FaPause
-        onClick={
+          size={26}
+        />
+      </div>
+      <div className="timer-icon">
+        <FaPause
+          onClick={
           status === 'STARTED' ?
           handlePauseTimer : () => {}
-        }
-        className={
+          }
+          className={
           status === 'STARTED' ?
                   'clickable' : 'disabled'
-        }
-        size={26}
-      />
-      <FaStop
-        onClick={status === 'STARTED' || status === 'PAUSED' ?
-          handleStopTimer : () => {}}
-        className={
-          status === 'STARTED' || status === 'PAUSED' ?
-                  'clickable' : 'disabled'
-        }
-        size={26}
-      />
+          }
+          size={26}
+        />
+      </div>
+      <div className="mx-1 timer-icon">
+        <FaStop
+          onClick={handleStopTimer}
+          className={'clickable'}
+          size={26}
+        />
+      </div>
     </div>
   );
 };
