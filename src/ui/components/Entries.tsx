@@ -39,10 +39,10 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
                    }}
                    key={index}
                    className="row py-4 time-entry">
-                     <div className="col-9 time-entries-project">
+                     <div className="col-8 time-entries-project">
                        {projects[project][0].project_name}:
                      </div>
-                     <div className="col-3 d-flex justify-content-end">
+                     <div className="col-4 d-flex justify-content-end">
                        {toTimer(timing)}
                      </div>
                    </div>
@@ -60,14 +60,11 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
 
 const HeaderEntry = ({total}: {total: number}) => {
   return (
-    <div className="shadow-sm time-entries-head mx-4 px-3 py-2">
-      <div>
-        <div className="row">
-          <div className="col-8">Today</div>
-          <div className="col-4 d-flex justify-content-end">
-            {'Total: '}
-            {toTimer(total)}
-          </div>
+    <div className="shadow-sm time-entries mx-4 px-3 py-2">
+      <div className="row">
+        <div className="col-8 font-weight-bold">Today</div>
+        <div className="col-4 d-flex justify-content-end font-weight-bold">
+          {toTimer(total)}
         </div>
       </div>
     </div>
