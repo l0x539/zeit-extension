@@ -11,9 +11,10 @@ import '../styles/popup.css';
 import Track from './pages/Track';
 import {CacheProvider} from '@rest-hooks/core';
 import AuthContext from './contexts/AuthContexts';
-import {useStore} from './utils/chrome';
+import {useStore, useUserInfos} from './utils/chrome';
 import ProtectedPage from './components/Layout/ProtectedPage';
 import Loading from './components/Loading';
+import {Auth, isErrorAuth} from './utils/types';
 
 const App = () => {
   return (
@@ -38,16 +39,26 @@ const AuthProvider = ({children}: {
         boolean,
         string
     ] = useStore();
+  const [userInfos, setUserInfos]: [
+      Auth,
+      (value: Auth) => void,
+      boolean,
+      string
+  ] = useUserInfos();
   const value = {
     token: isPersistent && apiKey ? apiKey : '',
     loggedIn: isPersistent && apiKey && (apiKey.length > 0),
-    login: (apiKey: string) => {
-      setApiKey(apiKey);
+    login: (res: Auth) => {
+      if (!isErrorAuth(res)) {
+        setApiKey(res.apiKey);
+        setUserInfos(res);
+      }
     },
     logout: () => {
       setApiKey(null);
       // reload()
     },
+    userInfos,
   };
 
   return (

@@ -12,11 +12,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
   fromTimeString,
+  resolveDateFormat,
   toShortDate,
   toTimer,
+  toTimeZone,
   toUTC,
 } from '../utils/functions';
-import {isErrorProjects, ProjectResult} from '../utils/types';
+import {isErrorAuth, isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -37,7 +39,7 @@ const Editor = ({
   handleResetTimer: () => void,
 }) => {
   const [error, setError] = React.useState('');
-  const {token} = React.useContext(AuthContext);
+  const {token, userInfos} = React.useContext(AuthContext);
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
 
@@ -60,8 +62,10 @@ const Editor = ({
         if (res.pause) {
           setDate(new Date(res.start));
           setPause(toTimer(res.pause_total));
-          setFrom(toUTC(res.start));
-          setTo(toUTC(Date()));
+          setFrom(!isErrorAuth(userInfos) && userInfos.timezone?
+          toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
+          setTo(!isErrorAuth(userInfos) && userInfos.timezone?
+          toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
         }
       })
       ;
@@ -107,6 +111,7 @@ const Editor = ({
         startTime: from,
         stopTime: to,
         pause,
+        dateFormat: userInfos['date_format']??undefined,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
@@ -205,6 +210,8 @@ const Editor = ({
                 selected={date}
                 onChange={handleDateChange}
                 className="form-control"
+                dateFormat={userInfos['date_format'] ?
+                  resolveDateFormat(userInfos['date_format']): undefined}
                 customInput={
                   <FormControl
                     value={date.toDateString()}
