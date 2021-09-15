@@ -414,11 +414,9 @@ export const toUTC = (time) => {
 
 export const toTimeZone = (time, timezone) => {
   const date = moment(time).tz(timezone);
-  console.log('timezone', timezone);
-  console.log('moment:', date.format());
-  return `${leftJustify(date.hours(),
+  return `${leftJustify(date.hours().toString(),
       2,
-      '0')}:${leftJustify(date.minutes(),
+      '0')}:${leftJustify(date.minutes().toString(),
       2,
       '0')}`;
 };
@@ -449,8 +447,14 @@ export const toLocal = (time) => {
 
 export const toTimer = (time) => {
   return `${leftJustify(Math.floor(time/3600)
-      .toLocaleString(), 2, '0')}:${leftJustify((Math.floor(time/60)%60)
-      .toLocaleString(), 2, '0')}`;
+      .toString(), 2, '0')}:${leftJustify((Math.floor(time/60)%60)
+      .toString(), 2, '0')}`;
+};
+
+export const toTimerHM = (time: number) => {
+  return `${leftJustify(Math.floor(time/60)
+      .toString(), 2, '0')}:${leftJustify((time%60)
+      .toString(), 2, '0')}`;
 };
 
 export const fromTimeString = (time: string) => {
@@ -479,4 +483,22 @@ export const toZeitTimer = (time) => {
 export const toTime = (timer: string) => {
   const timerList = timer.split(':');
   return (+timerList[0]) * 60 * 60 + (+timerList[1]) * 60 + (+timerList[2]);
+};
+
+export const toTimeHM = (timer: string) => {
+  const timerList = timer.split(':');
+  return (+timerList[0]) * 60 * 60 + (+timerList[1]) * 60;
+};
+
+export const isInt = (str) => {
+  return !isNaN(str) && Number.isInteger(parseFloat(str));
+};
+
+export const intMinMax = (parsed: number, min: number, max: number) => {
+  return Math.min(Math.max(parsed, min), max).toString();
+};
+
+export const setHMTimer = (hours: number, minutes: number) => {
+  return `${leftJustify(intMinMax(hours, 0, 23), 2, '0')
+  }:${leftJustify(intMinMax(minutes, 0, 59), 2, '0')}`;
 };

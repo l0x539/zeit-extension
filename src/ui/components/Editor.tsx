@@ -12,9 +12,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
   fromTimeString,
+  isInt,
   resolveDateFormat,
+  setHMTimer,
   toShortDate,
+  toTimeHM,
   toTimer,
+  toTimerHM,
   toTimeZone,
   toUTC,
 } from '../utils/functions';
@@ -127,6 +131,27 @@ const Editor = ({
     setProjectId(e.target.value);
   };
 
+  // React.FocusEvent<HTMLInputElement>
+  const handleOnBlurHoursMinutes = (
+      time: string,
+      setValue: (time: string) => void,
+  ) => {
+    if (time.includes(':')) {
+      const timeHM = time.split(':');
+      const hours = timeHM[0];
+      const minutes = timeHM[1];
+      if (isInt(hours) && isInt(minutes)) {
+        setValue(setHMTimer(parseInt(hours), parseInt(minutes)));
+      } else {
+        setValue('00:00');
+      }
+    } else if (isInt(time)) {
+      setValue(toTimerHM(parseInt(time)));
+    } else {
+      setValue('00:00');
+    }
+  };
+
   const duration = fromTimeString(to)-
   fromTimeString(from)-
   fromTimeString(pause);
@@ -222,18 +247,28 @@ const Editor = ({
             <div className="col-md-2">
               <Form.Label className="form-label">From</Form.Label>
               <FormControl
+                isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
                 value={from}
                 onChange={(e) => {
                   setFrom(e.target.value), setError('');
+                }}
+                onBlur={(e) => {
+                  handleOnBlurHoursMinutes(e.target.value, setFrom),
+                  setError('');
                 }}
               />
             </div>
             <div className="col-md-2">
               <Form.Label className="form-label">To</Form.Label>
               <FormControl
+                isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
                 value={to}
                 onChange={(e) => {
                   setTo(e.target.value), setError('');
+                }}
+                onBlur={(e) => {
+                  handleOnBlurHoursMinutes(e.target.value, setTo),
+                  setError('');
                 }}
               />
             </div>
@@ -243,6 +278,10 @@ const Editor = ({
                 value={pause}
                 onChange={(e) => {
                   setPause(e.target.value), setError('');
+                }}
+                onBlur={(e) => {
+                  handleOnBlurHoursMinutes(e.target.value, setPause),
+                  setError('');
                 }}
               />
             </div>
