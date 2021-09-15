@@ -229,3 +229,7 @@ p {
 .font-weight-bold {
     font-weight: bold;
 }
+
+.form-text {
+    font-size: 0.875em;
+}

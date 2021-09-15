@@ -160,18 +160,8 @@ const Editor = ({
     <ModalScreen
       modalOpen={editorOpen}
       setModalOpen={setEditorOpen}
-      title={'Edit'}
-      footer={(
-        <>
-          <Button variant="secondary"
-            onClick={handleResetTimer}>Discard Time</Button>
-          <Button
-            variant="primary"
-            onClick={handleStopTimer}
-            className="blue"
-          >Save</Button>
-        </>
-      )} >
+      title={'Time Recording'}
+    >
       {error.length > 0 ?
         <Alert variant={'danger'} onClose={() => setError('')} dismissible>
           {error}
@@ -226,72 +216,73 @@ const Editor = ({
 
           </div> */}
         </div>
-
-        <div className="mb-3">
-          <div className="row">
-            <div className="col-md-3">
-              <Form.Label className="form-label">Date</Form.Label>
-              <DatePicker
-                selected={date}
-                onChange={handleDateChange}
-                className="form-control"
-                dateFormat={userInfos['date_format'] ?
+        <div className="row mb-2">
+          <div className="col-12">
+            <Form.Label className="form-label">Date</Form.Label>
+            <DatePicker
+              selected={date}
+              onChange={handleDateChange}
+              className="form-control"
+              dateFormat={userInfos['date_format'] ?
                   resolveDateFormat(userInfos['date_format']): undefined}
-                customInput={
-                  <FormControl
-                    value={date.toDateString()}
-                  />
-                }
-              />
-            </div>
-            <div className="col-md-2">
-              <Form.Label className="form-label">From</Form.Label>
-              <FormControl
-                isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
-                value={from}
-                onChange={(e) => {
-                  setFrom(e.target.value), setError('');
-                }}
-                onBlur={(e) => {
-                  handleOnBlurHoursMinutes(e.target.value, setFrom),
-                  setError('');
-                }}
-              />
-            </div>
-            <div className="col-md-2">
-              <Form.Label className="form-label">To</Form.Label>
-              <FormControl
-                isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
-                value={to}
-                onChange={(e) => {
-                  setTo(e.target.value), setError('');
-                }}
-                onBlur={(e) => {
-                  handleOnBlurHoursMinutes(e.target.value, setTo),
-                  setError('');
-                }}
-              />
-            </div>
-            <div className="col-md-2">
-              <Form.Label className="form-label">Pause</Form.Label>
-              <FormControl
-                value={pause}
-                onChange={(e) => {
-                  setPause(e.target.value), setError('');
-                }}
-                onBlur={(e) => {
-                  handleOnBlurHoursMinutes(e.target.value, setPause),
-                  setError('');
-                }}
-              />
-            </div>
-            <div className="col-md-3">
-              <Form.Label className="form-label">Duration</Form.Label>
-              <FormControl
-                value={toTimer(duration > 0 ? duration: 0)}
-                disabled
-              />
-            </div>
+              customInput={
+                <FormControl
+                  value={date.toDateString()}
+                />
+              }
+            />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-4">
+            <FormControl
+              isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
+              value={from}
+              onChange={(e) => {
+                setFrom(e.target.value), setError('');
+              }}
+              onBlur={(e) => {
+                handleOnBlurHoursMinutes(e.target.value, setFrom),
+                setError('');
+              }}
+            />
+            <FormLabel label="From" />
+          </div>
+          <div className="col-4">
+            <FormControl
+              isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
+              value={to}
+              onChange={(e) => {
+                setTo(e.target.value), setError('');
+              }}
+              onBlur={(e) => {
+                handleOnBlurHoursMinutes(e.target.value, setTo),
+                setError('');
+              }}
+            />
+            <FormLabel label="To" />
+          </div>
+          <div className="col-4">
+            <FormControl
+              value={pause}
+              onChange={(e) => {
+                setPause(e.target.value), setError('');
+              }}
+              onBlur={(e) => {
+                handleOnBlurHoursMinutes(e.target.value, setPause),
+                setError('');
+              }}
+            />
+            <FormLabel label="Pause" />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-4">
+            <Form.Label className="form-label">Duration</Form.Label>
+            <FormControl
+              value={toTimer(duration > 0 ? duration: 0)}
+              disabled
+            />
           </div>
         </div>
         <div className="mb-3">
@@ -304,10 +295,28 @@ const Editor = ({
               setWorkingOn(e.target.value), setError('');
             }}
           />
-
         </div>
       </Form>
+      <div className="d-flex justify-content-end">
+        <Button variant="secondary"
+          onClick={handleResetTimer}
+          className="mx-1"
+        >Discard Time</Button>
+        <Button
+          variant="primary"
+          onClick={handleStopTimer}
+          className="blue"
+        >Save</Button>
+      </div>
     </ModalScreen>
+  );
+};
+
+const FormLabel = ({label}: {label: string}) => {
+  return (
+    <Form.Label as="small" className="align-top form-text mt-1 text-muted">
+      {label}
+    </Form.Label>
   );
 };
 
