@@ -147,7 +147,8 @@ const isHasErrorTimer = (
 ): timer is {
     error: string,
     start: string,
-    'pause_total': number
+    'pause_total': number,
+    status: number,
 } => {
   return timer.hasOwnProperty('error');
 };
@@ -157,7 +158,8 @@ export const isErrorTimer = (
 ): timer is {
     error: string,
     start: string,
-    'pause_total': number
+    'pause_total': number,
+    status: number
 } => {
   if (isHasErrorTimer(timer)) {
     if (timer.error.length > 0) {
@@ -170,11 +172,13 @@ export const isErrorTimer = (
 export type Timer = {
     message: string,
     start: string,
-    'pause_total': number
+    'pause_total': number,
+    status: number
 } | {
     error: string,
     start: string,
-    'pause_total': number
+    'pause_total': number,
+    status: number
 }
 
 export const isErrorAuth = (

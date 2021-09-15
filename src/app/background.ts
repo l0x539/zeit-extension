@@ -35,16 +35,16 @@ chrome.windows.onCreated.addListener(function() {
             {},
             result.apiKey,
         );
-        if (start.error || start.message === 'Timer was started already') {
+        if (start.status === 200) {
           const resume = await request('/api/v1/usr/time_records/resume',
               'POST',
               {},
               result.apiKey,
           );
-          if (!resume.error) {
+          if (resume.status === 201) {
             notify('ZEIT.IO', 'Timer Resumed');
           }
-        } else {
+        } else if (start.status === 201) {
           notify('ZEIT.IO', 'Timer Started');
         }
       }
@@ -60,7 +60,7 @@ chrome.windows.onRemoved.addListener(function() {
             {},
             result.apiKey,
         );
-        if (!pause.error) {
+        if (pause.status !== 200) {
           notify('ZEIT.IO', 'Timer Paused');
         }
       }
@@ -74,25 +74,24 @@ const startStop = () => {
         {},
         result.apiKey,
     );
-    if (start.error || start.message === 'Timer was started already') {
-      if (start.error?.includes('apiKey')) {
-        notify('ZEIT.IO', 'You\'re not logged in.');
-        return;
-      }
+    if (start.status === 404) {
+      notify('ZEIT.IO', 'You\'re not logged in.');
+      return;
+    } else if (start.status === 200) {
       const pause = await request('/api/v1/usr/time_records/pause', 'POST',
           {},
           result.apiKey,
       );
-      if (pause.error || pause.message === 'Timer was paused already') {
+      if (pause.status === 200) {
         await request('/api/v1/usr/time_records/resume', 'POST',
             {},
             result.apiKey,
         );
         notify('ZEIT.IO', 'Timer Resumed');
-      } else {
+      } else if (pause.status === 201) {
         notify('ZEIT.IO', 'Timer Paused');
       }
-    } else if (!start.error || start.error === '') {
+    } else if (start.status === 201) {
       notify('ZEIT.IO', 'Timer Started');
     }
   });
