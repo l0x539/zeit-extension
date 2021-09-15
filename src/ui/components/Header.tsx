@@ -157,7 +157,8 @@ const Header: () => JSX.Element = () => {
           resetTimer({apiKey: token});
           break;
       }
-    } else if (timerStatus.error === 'Nothing to resume') {
+    } else if (timerStatus.error === 'Nothing to resume' &&
+                timerStatus.start !== '0') {
       setTimer(calculateTime(timerStatus.start, timerStatus['pause_total']));
       setTimerStatus('STARTED');
       setIsOn(true);
