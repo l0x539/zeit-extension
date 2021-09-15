@@ -89,10 +89,15 @@ type Curreny = 'AFN' | 'EUR' | 'ALL' | 'DZD' | 'USD' | 'EUR' | 'AOA' | 'XCD' |
                'ZMK' | 'ZWC' | 'ZWD' | 'ZWD' | 'ZWN' | 'ZWR' | 'XFO' | 'XRE' |
                'XFU'
 
+type Activity = {
+    id: string,
+    name: string
+}
 
 type Project = {
     id: string,
     name: string,
+    activities: Activity[],
     identifier: string,
     description: string,
     'project_no': string,
