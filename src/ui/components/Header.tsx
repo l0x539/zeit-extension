@@ -139,8 +139,8 @@ const Header: () => JSX.Element = () => {
 
   React.useEffect(() => {
     if (!isErrorTimer(timerStatus)) {
-      switch (timerStatus.message) {
-        case 'Timer was resumed':
+      switch (timerStatus.status) {
+        case 201:
           pauseTimer({apiKey: token});
           setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
           setTimerStatus('PAUSED');
@@ -148,7 +148,7 @@ const Header: () => JSX.Element = () => {
           setQuestionOpen(true);
 
           break;
-        case 'No pause was started':
+        case 400:
           setTimer(calculateTime(timerStatus.start, timerStatus.pause_total));
           setTimerStatus('STARTED');
           setIsOn(true);
@@ -157,7 +157,7 @@ const Header: () => JSX.Element = () => {
           resetTimer({apiKey: token});
           break;
       }
-    } else if (timerStatus.error === 'Nothing to resume' &&
+    } else if (timerStatus.status === 400 &&
                 timerStatus.start !== '0') {
       setTimer(calculateTime(timerStatus.start, timerStatus['pause_total']));
       setTimerStatus('STARTED');

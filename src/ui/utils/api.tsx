@@ -21,7 +21,7 @@ export const request = (
       apiKey,
     },
     body: data ? JSON.stringify(data) : undefined,
-  }).then((res) => res.json());
+  }).then((res) => ({status: res.status, data: res.json()}));
 };
 
 // Authentication
@@ -29,7 +29,8 @@ export const loginHook = new Endpoint(({email, password}: {
     email: string,
     password: string
 }) => {
-  return request('/api/v1/authenticate', 'POST', {email, password});
+  return request('/api/v1/authenticate', 'POST', {email, password})
+      .then((res) => res.data);
 });
 
 // Time Records
@@ -37,31 +38,37 @@ export const getTimeRecordsHook = new Endpoint(({apiKey, params}:{
     apiKey: string,
     params: string
 }) => {
-  return request('/api/v1/usr/time_records', 'GET', null, apiKey, params);
+  return request('/api/v1/usr/time_records', 'GET', null, apiKey, params)
+      .then((res) => res.data);
 });
 
 export const StartTimerHook = new Endpoint(({apiKey}:{
     apiKey: string
 }) => {
-  return request('/api/v1/usr/time_records/start', 'POST', {}, apiKey);
+  return request('/api/v1/usr/time_records/start', 'POST', {}, apiKey)
+      .then((res) => res.data);
 });
 
 export const PauseTimerHook = new Endpoint(({apiKey}:{
     apiKey: string
 }) => {
-  return request('/api/v1/usr/time_records/pause', 'POST', {}, apiKey);
+  return request('/api/v1/usr/time_records/pause', 'POST', {}, apiKey)
+      .then((res) => res.data);
 });
 
 export const ResumeTimerHook = new Endpoint(({apiKey}:{
     apiKey: string
 }) => {
-  return request('/api/v1/usr/time_records/resume', 'POST', {}, apiKey);
+  return request('/api/v1/usr/time_records/resume', 'POST', {}, apiKey)
+      .then((res) => res.data
+          .then((response) => ({status: res.status, ...response})));
 });
 
 export const ResetTimerHook = new Endpoint(({apiKey}:{
     apiKey: string
 }) => {
-  return request('/api/v1/usr/time_records/reset', 'POST', {}, apiKey);
+  return request('/api/v1/usr/time_records/reset', 'POST', {}, apiKey)
+      .then((res) => res.data);
 });
 
 export const StopTimerHook = new Endpoint(({apiKey, projectId, comment}:{
@@ -70,7 +77,7 @@ export const StopTimerHook = new Endpoint(({apiKey, projectId, comment}:{
     comment: string
 }) => {
   return request('/api/v1/usr/time_records/stop', 'POST',
-      {project_id: projectId, comment}, apiKey);
+      {project_id: projectId, comment}, apiKey).then((res) => res.data);
 });
 
 
@@ -108,7 +115,7 @@ export const StartStopTimerHook = new Endpoint(({
         pause: pause,
       },
       apiKey,
-  );
+  ).then((res) => res.data);
 }); // TODO: Change handleStop to handleStartStop on Editor.tsx
 
 
@@ -117,7 +124,8 @@ export const getProjectsHook = new Endpoint(({apiKey, params}:{
     apiKey: string,
     params: string
 }) => {
-  return request('/api/v1/usr/projects', 'GET', null, apiKey, params);
+  return request('/api/v1/usr/projects', 'GET', null, apiKey, params)
+      .then((res) => res.data);
 });
 
 // Projects Collaborations
@@ -131,7 +139,7 @@ export const getProjectsCollaborationsHook = new Endpoint(({apiKey, params}:{
       null,
       apiKey,
       params,
-  );
+  ).then((res) => res.data);
 });
 
 // Projects Bookable
@@ -145,5 +153,5 @@ export const getProjectsBookableHook = new Endpoint(({apiKey, params}:{
       null,
       apiKey,
       params,
-  );
+  ).then((res) => res.data);
 });

@@ -59,18 +59,20 @@ const Editor = ({
           '/api/v1/usr/time_records/pause',
           'POST',
           {},
-          token).then((res) => {
-        if (res.message === 'Timer paused') {
+          token).then((response) => {
+        if (response.status === 201) { // Timer paused
           request('/api/v1/usr/time_records/resume', 'POST', {}, token);
         }
-        if (res.pause) {
-          setDate(new Date(res.start));
-          setPause(toTimer(res.pause_total));
-          setFrom(!isErrorAuth(userInfos) && userInfos.timezone?
-          toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
-          setTo(!isErrorAuth(userInfos) && userInfos.timezone?
-          toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
-        }
+        response.data.then((res) => {
+          if (res.pause) {
+            setDate(new Date(res.start));
+            setPause(toTimer(res.pause_total));
+            setFrom(!isErrorAuth(userInfos) && userInfos.timezone?
+            toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
+            setTo(!isErrorAuth(userInfos) && userInfos.timezone?
+            toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
+          }
+        });
       })
       ;
     }
