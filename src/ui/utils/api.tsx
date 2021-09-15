@@ -155,3 +155,15 @@ export const getProjectsBookableHook = new Endpoint(({apiKey, params}:{
       params,
   ).then((res) => res.data);
 });
+
+// Projects Bookable
+export const getUserInfos = new Endpoint(({apiKey}:{
+  apiKey: string,
+}) => {
+  return request(
+      '/api/v1/usr',
+      'GET',
+      null,
+      apiKey,
+  ).then((res) => res.data);
+});
