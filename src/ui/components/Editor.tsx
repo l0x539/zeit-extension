@@ -91,6 +91,13 @@ const Editor = ({
      allProjects.result.projects.length > 0?
      allProjects.result.projects[0].id: '');
 
+  const [activityName, setActivityName] = React.useState(
+    !isErrorProjects(allProjects) &&
+     allProjects.result.projects.length > 0 &&
+     allProjects.result.projects[0].activities?.length > 0?
+     allProjects.result.projects[0].activities[0].name :
+    null);
+
   React.useEffect(() => {
     if (!isErrorProjects(allProjects) &&
      allProjects.result.projects.length < 1) {
@@ -98,7 +105,6 @@ const Editor = ({
       setWorkingOn('');
     }
   }, [allProjects]);
-
 
   const handleDateChange = (value, format) => {
     setError('');
@@ -116,6 +122,7 @@ const Editor = ({
         stopTime: to,
         pause,
         dateFormat: userInfos['date_format']??undefined,
+        activityName,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
@@ -128,7 +135,17 @@ const Editor = ({
   };
 
   const handleSelectProject = (e) => {
-    setProjectId(e.target.value);
+    const selection = e.target.value.split['-'];
+    const suffix = selection[0];
+    switch (suffix) {
+      case 'project':
+        setProjectId(selection[1]);
+        break;
+      case 'activity':
+        setProjectId(selection[1]);
+        setActivityName(selection[2]);
+        break;
+    }
   };
 
   // React.FocusEvent<HTMLInputElement>
@@ -187,7 +204,17 @@ const Editor = ({
                   <Form.Select onChange={handleSelectProject}>
                     {
                       allProjects.result.projects.map((project, index) => (
-                        <option key={index} value={project.id}>
+                        project.activities.length?
+                        <optgroup key={index} label={project.name}>
+                          {project.activities.map((activity, i) => (
+                            <option
+                              key={i}
+                              value={`activity-${project.id}-${activity.name}`}
+                            >
+                              {project.name}/{activity.name}
+                            </option>))}
+                        </optgroup> :
+                        <option key={index} value={`project-${project.id}`}>
                           {project.name}
                         </option>
                       ))
