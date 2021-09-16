@@ -195,12 +195,11 @@ const Editor = ({
         }}>here</a>.
       </p> */}
       <Form className="form-horizontal">
-        <div className="row">
+        <div className="row mb-3">
           <div className="col-md-8">
-            <div className="mb-3">
-              <Form.Label className="form-label">Project</Form.Label>
-              <div>
-                {
+            <Form.Label className="form-label">Project</Form.Label>
+            <div>
+              {
                  !isErrorProjects(allProjects) &&
                   allProjects.result.projects?.length ?
                   <Form.Select onChange={handleSelectProject}>
@@ -229,7 +228,6 @@ const Editor = ({
                 }} onClick={() => {
                   chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
                 }}>create a project now!</a></div>}
-              </div>
             </div>
           </div>
           {/* <div className="col-md-4" id="hourly_wage_section">
@@ -305,7 +303,7 @@ const Editor = ({
             <FormLabel label="Pause" />
           </div>
         </div>
-        <div className="row">
+        <div className="row mb-3">
           <div className="col-4">
             <Form.Label className="form-label">Duration</Form.Label>
             <FormControl
@@ -314,7 +312,7 @@ const Editor = ({
             />
           </div>
         </div>
-        <div className="mb-3">
+        <div className="mb-2">
           <Form.Label className="form-label">Comment</Form.Label>
           <FormControl
             as="textarea"
