@@ -14,7 +14,7 @@ import AuthContext from './contexts/AuthContexts';
 import {useStore, useUserInfos} from './utils/chrome';
 import ProtectedPage from './components/Layout/ProtectedPage';
 import Loading from './components/Loading';
-import {Auth, isErrorAuth} from './utils/types';
+import {Auth, isErrorAuth, UserInfos} from './utils/types';
 
 const App = () => {
   return (
@@ -40,8 +40,8 @@ const AuthProvider = ({children}: {
         string
     ] = useStore();
   const [userInfos, setUserInfos]: [
-      Auth,
-      (value: Auth) => void,
+      UserInfos,
+      (value: UserInfos) => void,
       boolean,
       string
   ] = useUserInfos();
@@ -51,8 +51,10 @@ const AuthProvider = ({children}: {
     login: (res: Auth) => {
       if (!isErrorAuth(res)) {
         setApiKey(res.apiKey);
-        setUserInfos(res);
       }
+    },
+    setUserInfo: (userResponse: UserInfos) => {
+      setUserInfos(userResponse);
     },
     logout: () => {
       setApiKey(null);

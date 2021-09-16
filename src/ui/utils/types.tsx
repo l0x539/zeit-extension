@@ -200,6 +200,32 @@ export type Auth = {
     error: string
 }
 
+// UserInfos guarde type
+
+
+export const isErrorUserInfos = (
+    result: UserInfosResponse,
+): result is { error: string } => {
+  return result.hasOwnProperty('error');
+};
+
+export type UserInfosResponse = {
+    user: UserInfos
+} | {
+    error: string
+}
+
+export type UserInfos = {
+    salutation: string,
+    firstname: string,
+    lastname: string,
+    username: string | null,
+    email: string,
+    timezone: string,
+    language: string,
+    'date_format': string
+}
+
 export type Settings = {
     startStop: boolean,
     startBrowser: boolean,

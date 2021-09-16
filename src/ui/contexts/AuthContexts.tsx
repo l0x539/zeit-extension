@@ -1,5 +1,5 @@
 import {createContext} from 'react';
-import {Auth} from '../utils/types';
+import {Auth, UserInfos} from '../utils/types';
 
 /*
  * Auth context, hold apiKey and authentication logic
@@ -8,13 +8,15 @@ const AuthContext = createContext<{
     token: string;
     loggedIn: boolean;
     login:(res: Auth) => void;
+    setUserInfo: (value: UserInfos) => void;
     logout: () => void;
-    userInfos: Auth
+    userInfos: UserInfos
         }>({
           token: null,
           loggedIn: false,
           login: () => {},
           logout: () => {},
+          setUserInfo: () => {},
           userInfos: null,
         });
 

@@ -21,7 +21,13 @@ import {
 } from '../utils/api';
 import Editor from './Editor';
 import QuestionModal from './QuestionModal';
-import {isErrorTimer, Settings, Timer} from '../utils/types';
+import {
+  isErrorTimer,
+  isErrorUserInfos,
+  Settings,
+  Timer,
+  UserInfosResponse,
+} from '../utils/types';
 import ZeitTimer, {TimerStatus} from './ZeitTimer';
 
 const calculateTime: (
@@ -51,13 +57,22 @@ ref: React.RefObject<HTMLDivElement>) => (
 
 IconToggleList.displayName = 'IconToggleList';
 
+interface IHeader {
+  userInfos: UserInfosResponse
+}
+
 /*
  * App Header that handles the timer.
  */
-const Header: () => JSX.Element = () => {
-  const {token, logout} = React.useContext(AuthContext);
+const Header: React.FC<IHeader> = ({
+  userInfos,
+}) => {
+  const {token, logout, setUserInfo} = React.useContext(AuthContext);
   // const [clock, setClock, isPersistent, error]  = useClock();
-  const timerStatus: Timer = useResource(ResumeTimerHook, {apiKey: token});
+  const timerStatus: Timer = useResource(
+      ResumeTimerHook, {apiKey: token},
+  );
+
   const [comment, setComment]: [
     string,
     (value: string) => void,
@@ -91,6 +106,12 @@ const Header: () => JSX.Element = () => {
   const resumeTimer = useFetcher(ResumeTimerHook);
   const pauseTimer = useFetcher(PauseTimerHook);
   const resetCache = useResetter();
+
+  React.useEffect(() => {
+    if (!isErrorUserInfos(userInfos)) {
+      setUserInfo(userInfos.user);
+    }
+  }, []);
 
   const handleSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.id) {

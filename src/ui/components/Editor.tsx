@@ -22,7 +22,7 @@ import {
   toTimeZone,
   toUTC,
 } from '../utils/functions';
-import {isErrorAuth, isErrorProjects, ProjectResult} from '../utils/types';
+import {isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -67,9 +67,9 @@ const Editor = ({
           if (res.pause) {
             setDate(new Date(res.start));
             setPause(toTimer(res.pause_total));
-            setFrom(!isErrorAuth(userInfos) && userInfos.timezone?
+            setFrom(userInfos.timezone?
             toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
-            setTo(!isErrorAuth(userInfos) && userInfos.timezone?
+            setTo(userInfos.timezone?
             toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
           }
         });

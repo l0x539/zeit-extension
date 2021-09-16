@@ -3,12 +3,13 @@ import * as React from 'react';
 import Header from '../components/Header';
 import Entries from '../components/Entries';
 import {useResource} from '@rest-hooks/core';
-import {getTimeRecordsHook} from '../utils/api';
+import {getTimeRecordsHook, getUserInfos} from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import {BiLoader} from 'react-icons/bi';
 import moment = require('moment')
 
 import {Scrollbars} from 'react-custom-scrollbars';
+import {UserInfosResponse} from '../utils/types';
 
 /*
  * Hold time records entries (currently main app page)
@@ -16,6 +17,10 @@ import {Scrollbars} from 'react-custom-scrollbars';
 const Track = () => {
   const {logout, token} = React.useContext(AuthContext);
   document.body.style.minHeight = '600px';
+
+  const userInfos: UserInfosResponse = useResource(
+      getUserInfos, {apiKey: token},
+  );
 
   const timeRecords = useResource(getTimeRecordsHook,
       {
@@ -31,7 +36,9 @@ const Track = () => {
 
   return (
     <div className="my-auto">
-      <Header />
+      <Header
+        userInfos={userInfos}
+      />
       {
         timeRecords?.result?.time_records?
         <Scrollbars
