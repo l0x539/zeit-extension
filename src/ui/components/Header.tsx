@@ -70,7 +70,10 @@ const Header: React.FC<IHeader> = ({
   const {token, logout, setUserInfo} = React.useContext(AuthContext);
   // const [clock, setClock, isPersistent, error]  = useClock();
   const timerStatus: Timer = useResource(
-      ResumeTimerHook, {apiKey: token},
+      ResumeTimerHook, {
+        apiKey: token,
+        state: 'resume',
+      },
   );
 
   const [comment, setComment]: [
@@ -175,6 +178,8 @@ const Header: React.FC<IHeader> = ({
           setIsOn(true);
           break;
         default:
+          console.log('resseting', timerStatus);
+
           resetTimer({apiKey: token});
           break;
       }
