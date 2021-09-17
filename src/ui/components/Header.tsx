@@ -3,7 +3,7 @@ import {BsList} from 'react-icons/bs';
 import {BiRefresh} from 'react-icons/bi';
 import {ImExit} from 'react-icons/im';
 import {GrPowerReset} from 'react-icons/gr';
-import {FiSettings} from 'react-icons/fi';
+// import {FiSettings} from 'react-icons/fi';
 import {InputGroup, Dropdown, Form} from 'react-bootstrap';
 import {
   registerCommandAction,
@@ -70,7 +70,10 @@ const Header: React.FC<IHeader> = ({
   const {token, logout, setUserInfo} = React.useContext(AuthContext);
   // const [clock, setClock, isPersistent, error]  = useClock();
   const timerStatus: Timer = useResource(
-      ResumeTimerHook, {apiKey: token},
+      ResumeTimerHook, {
+        apiKey: token,
+        state: 'resume',
+      },
   );
 
   const [comment, setComment]: [
@@ -175,6 +178,8 @@ const Header: React.FC<IHeader> = ({
           setIsOn(true);
           break;
         default:
+          console.log('resseting', timerStatus);
+
           resetTimer({apiKey: token});
           break;
       }
@@ -297,7 +302,7 @@ const Header: React.FC<IHeader> = ({
             }} as={IconToggleList}></Dropdown.Toggle>
             <Dropdown.Menu>
 
-              <Dropdown.Item
+              {/* <Dropdown.Item
                 eventKey="1"
                 className="d-flex justify-content-start"
                 onClick={() => {
@@ -305,7 +310,7 @@ const Header: React.FC<IHeader> = ({
                 }}>
                 <FiSettings size={20} />
                 <div className="px-2">Settings</div>
-              </Dropdown.Item>
+              </Dropdown.Item> */}
               <Dropdown.Item
                 eventKey="1"
                 className="d-flex justify-content-start"

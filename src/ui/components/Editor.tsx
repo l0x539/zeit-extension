@@ -6,12 +6,15 @@ import {
   getProjectsBookableHook,
   request,
   StartStopTimerHook,
+  getTimeRecordsHook,
 } from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
   fromTimeString,
+  getLastTimeRecords,
+  getFromValue,
   isInt,
   resolveDateFormat,
   setHMTimer,
@@ -22,6 +25,7 @@ import {
   toTimeZone,
   toUTC,
 } from '../utils/functions';
+import * as moment from 'moment';
 import {isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
@@ -47,10 +51,20 @@ const Editor = ({
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
 
-  const [pause, setPause] = React.useState('');
+  const timeRecords = useResource(getTimeRecordsHook,
+      {
+        apiKey: token,
+        params: `?from=${moment().
+            format('YYYY-MM-DD')}&to=${moment().add(1, 'day')
+            .format('YYYY-MM-DD')}`,
+      }); // Today working time.
+
+  const [pause, setPause] = React.useState('00:00');
   const [from, setFrom] = React.useState('');
-  const [to, setTo] = React.useState('');
+  const [to, setTo] = React.useState(userInfos.timezone?
+    toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
   const [date, setDate] = React.useState(new Date());
+
 
   // pause resume to get infos.
   React.useEffect(() => {
@@ -69,8 +83,14 @@ const Editor = ({
             setPause(toTimer(res.pause_total));
             setFrom(userInfos.timezone?
             toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
-            setTo(userInfos.timezone?
-            toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
+          } else {
+            const lastRecord = getLastTimeRecords(
+                timeRecords.result?.time_records,
+            );
+            console.log('setting');
+
+            setFrom(getFromValue(
+                lastRecord?.stop_time ?? '', userInfos.timezone));
           }
         });
       })
@@ -180,6 +200,18 @@ const Editor = ({
       modalOpen={editorOpen}
       setModalOpen={setEditorOpen}
       title={'Time Recording'}
+      footer={
+        <>
+          <Button variant="secondary"
+            onClick={handleResetTimer}
+          >Discard Time</Button>
+          <Button
+            variant="primary"
+            onClick={handleStopTimer}
+            className="blue"
+          >Save</Button>
+        </>
+      }
     >
       {error.length > 0 ?
         <Alert variant={'danger'} onClose={() => setError('')} dismissible>
@@ -244,7 +276,7 @@ const Editor = ({
           </div> */}
         </div>
         <div className="row mb-2">
-          <div className="col-12">
+          <div className="col-6">
             <Form.Label className="form-label">Date</Form.Label>
             <DatePicker
               selected={date}
@@ -257,6 +289,14 @@ const Editor = ({
                   value={date.toDateString()}
                 />
               }
+            />
+          </div>
+          <div className="col-1"></div>
+          <div className="col-5">
+            <Form.Label className="form-label">Duration</Form.Label>
+            <FormControl
+              value={toTimer(duration > 0 ? duration: 0)}
+              disabled
             />
           </div>
         </div>
@@ -303,15 +343,6 @@ const Editor = ({
             <FormLabel label="Pause" />
           </div>
         </div>
-        <div className="row mb-3">
-          <div className="col-4">
-            <Form.Label className="form-label">Duration</Form.Label>
-            <FormControl
-              value={toTimer(duration > 0 ? duration: 0)}
-              disabled
-            />
-          </div>
-        </div>
         <div className="mb-2">
           <Form.Label className="form-label">Comment</Form.Label>
           <FormControl
@@ -324,17 +355,6 @@ const Editor = ({
           />
         </div>
       </Form>
-      <div className="d-flex justify-content-end">
-        <Button variant="secondary"
-          onClick={handleResetTimer}
-          className="mx-1"
-        >Discard Time</Button>
-        <Button
-          variant="primary"
-          onClick={handleStopTimer}
-          className="blue"
-        >Save</Button>
-      </div>
     </ModalScreen>
   );
 };

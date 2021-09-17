@@ -6,7 +6,7 @@ import {useResource} from '@rest-hooks/core';
 import {getTimeRecordsHook, getUserInfos} from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import {BiLoader} from 'react-icons/bi';
-import moment = require('moment')
+import * as moment from 'moment';
 
 import {Scrollbars} from 'react-custom-scrollbars';
 import {UserInfosResponse} from '../utils/types';
@@ -19,7 +19,10 @@ const Track = () => {
   document.body.style.minHeight = '600px';
 
   const userInfos: UserInfosResponse = useResource(
-      getUserInfos, {apiKey: token},
+      getUserInfos, {
+        apiKey: token,
+        state: 'infos',
+      },
   );
 
   const timeRecords = useResource(getTimeRecordsHook,

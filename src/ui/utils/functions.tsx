@@ -452,9 +452,14 @@ export const toTimer = (time) => {
 };
 
 export const toTimerHM = (time: number) => {
-  return `${leftJustify(Math.floor(time/60)
-      .toString(), 2, '0')}:${leftJustify((time%60)
-      .toString(), 2, '0')}`;
+  if (time >= 24) {
+    return `${leftJustify(Math.floor(time/60)
+        .toString(), 2, '0')}:${leftJustify((time%60)
+        .toString(), 2, '0')}`;
+  } else {
+    return `${leftJustify(time
+        .toString(), 2, '0')}:00`;
+  }
 };
 
 export const fromTimeString = (time: string) => {
@@ -502,3 +507,31 @@ export const setHMTimer = (hours: number, minutes: number) => {
   return `${leftJustify(intMinMax(hours, 0, 23), 2, '0')
   }:${leftJustify(intMinMax(minutes, 0, 59), 2, '0')}`;
 };
+
+export const getFromValue = (lastTo: string, timezone: string | null = null) => {
+  let date;
+  if (lastTo .length && moment().isBetween(moment(), moment().add(1, 'day').subtract(2, 'hours'))) {
+    if (timezone) {
+      date = moment(lastTo).tz(timezone);
+    } else {
+      date = moment(lastTo);
+    }
+  } else {
+    date = moment().subtract(2, 'hours');
+  }
+  return `${leftJustify(date.hours().toString(),
+      2,
+      '0')}:${leftJustify(date.minutes().toString(),
+      2,
+      '0')}`;
+};
+
+export const getLastTimeRecords = (t) => {
+  return t?.reduce((p, n) => moment(new Date(p.stop_time)).isBefore(moment(new Date(n.stop_time))) ? n : p, t[0]);
+}
+;
+
+export const sortLatestTimeRecords = (t) => {
+  return t?.sort((p, n) => moment(new Date(p.stop_time)).unix() - moment(new Date(n.stop_time)).unix());
+}
+;
