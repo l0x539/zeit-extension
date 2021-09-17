@@ -16,21 +16,20 @@ const ModalScreen = ({modalOpen, setModalOpen, title, children, footer=null}: {
     <Modal show={modalOpen} fullscreen onHide={() => setModalOpen(false)}>
       <Scrollbars
         autoHide
-        style={{height: '100vh'}}
+        // style={{height: '100vh'}}
       >
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="mb-5">
           {children}
-
         </Modal.Body>
         {
-                footer?
-                <Modal.Footer>
-                  {footer}
-                </Modal.Footer> :
-                null
+          footer?
+          <Modal.Footer>
+            {footer}
+          </Modal.Footer> :
+          null
         }
       </Scrollbars>
 
