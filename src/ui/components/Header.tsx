@@ -178,8 +178,6 @@ const Header: React.FC<IHeader> = ({
           setIsOn(true);
           break;
         default:
-          console.log('resseting', timerStatus);
-
           resetTimer({apiKey: token});
           break;
       }
@@ -296,10 +294,13 @@ const Header: React.FC<IHeader> = ({
           <Dropdown
             align={{lg: 'start'}}
           >
-            <Dropdown.Toggle style={{
-              height: 35,
-              width: 35,
-            }} as={IconToggleList}></Dropdown.Toggle>
+            <Dropdown.Toggle
+              style={{
+                height: 35,
+                width: 35,
+              }}
+              as={IconToggleList}
+            />
             <Dropdown.Menu>
 
               {/* <Dropdown.Item

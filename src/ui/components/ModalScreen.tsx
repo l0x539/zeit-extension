@@ -24,13 +24,11 @@ const ModalScreen = ({modalOpen, setModalOpen, title, children, footer=null}: {
         <Modal.Body className="mb-5">
           {children}
         </Modal.Body>
-        {
-          footer?
+        {footer ? (
           <Modal.Footer>
             {footer}
-          </Modal.Footer> :
-          null
-        }
+          </Modal.Footer>
+        ) : null}
       </Scrollbars>
 
     </Modal>

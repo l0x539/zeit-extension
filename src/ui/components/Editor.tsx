@@ -54,17 +54,13 @@ const Editor = ({
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${moment().
-            format('YYYY-MM-DD')}&to=${moment().add(1, 'day')
-            .format('YYYY-MM-DD')}`,
+        params: `?from=${moment().format('YYYY-MM-DD')}&to=${moment().add(1, 'day').format('YYYY-MM-DD')}`,
       }); // Today working time.
 
   const [pause, setPause] = React.useState('00:00');
   const [from, setFrom] = React.useState('');
-  const [to, setTo] = React.useState(userInfos.timezone?
-    toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
+  const [to, setTo] = React.useState(userInfos.timezone ? toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
   const [date, setDate] = React.useState(new Date());
-
 
   // pause resume to get infos.
   React.useEffect(() => {
@@ -87,7 +83,6 @@ const Editor = ({
             const lastRecord = getLastTimeRecords(
                 timeRecords.result?.time_records,
             );
-            console.log('setting');
 
             setFrom(getFromValue(
                 lastRecord?.stop_time ?? '', userInfos.timezone));
@@ -343,16 +338,20 @@ const Editor = ({
             <FormLabel label="Pause" />
           </div>
         </div>
-        <div className="mb-2">
-          <Form.Label className="form-label">Comment</Form.Label>
-          <FormControl
-            as="textarea"
-            rows={4}
-            value={comment}
-            onChange={(e) => {
-              setWorkingOn(e.target.value), setError('');
-            }}
-          />
+        <div className="row mb-2">
+          <div className="col-12">
+            <div className="mb-2">
+              <Form.Label className="form-label">Comment</Form.Label>
+              <FormControl
+                as="textarea"
+                rows={4}
+                value={comment}
+                onChange={(e) => {
+                  setWorkingOn(e.target.value), setError('');
+                }}
+              />
+            </div>
+          </div>
         </div>
       </Form>
     </ModalScreen>

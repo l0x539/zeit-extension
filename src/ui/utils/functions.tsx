@@ -528,10 +528,8 @@ export const getFromValue = (lastTo: string, timezone: string | null = null) => 
 
 export const getLastTimeRecords = (t) => {
   return t?.reduce((p, n) => moment(new Date(p.stop_time)).isBefore(moment(new Date(n.stop_time))) ? n : p, t[0]);
-}
-;
+};
 
 export const sortLatestTimeRecords = (t) => {
   return t?.sort((p, n) => moment(new Date(p.stop_time)).unix() - moment(new Date(n.stop_time)).unix());
-}
-;
+};

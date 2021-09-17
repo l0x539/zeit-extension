@@ -128,13 +128,11 @@ type Result = {
     projects: Project[]
 }
 
-
 export const isErrorProjects = (
     projects: ProjectResult,
 ): projects is { error: string } => {
   return projects.hasOwnProperty('error');
 };
-
 
 export type ProjectResult = {
     result: Result
