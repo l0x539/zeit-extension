@@ -452,9 +452,14 @@ export const toTimer = (time) => {
 };
 
 export const toTimerHM = (time: number) => {
-  return `${leftJustify(Math.floor(time/60)
-      .toString(), 2, '0')}:${leftJustify((time%60)
-      .toString(), 2, '0')}`;
+  if (time >= 24) {
+    return `${leftJustify(Math.floor(time/60)
+        .toString(), 2, '0')}:${leftJustify((time%60)
+        .toString(), 2, '0')}`;
+  } else {
+    return `${leftJustify(time
+        .toString(), 2, '0')}:00`;
+  }
 };
 
 export const fromTimeString = (time: string) => {
