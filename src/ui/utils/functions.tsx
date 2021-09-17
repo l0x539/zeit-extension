@@ -421,11 +421,11 @@ export const toTimeZone = (time, timezone) => {
       '0')}`;
 };
 
-export const toShortDate = (date) => {
+export const toShortDate = (date: Date, format: string) => {
   const _date = new Date(date);
-  return `${
-    _date.getUTCDate()
-  }/${_date.getUTCMonth()+1}/${_date.getUTCFullYear()}`;
+  return (format.replace('dd', `${_date.getUTCDate()}`)
+      .replace('MM', `${_date.getUTCMonth()+1}`)
+      .replace('yyyy', `${_date.getUTCFullYear()}`));
 };
 
 export const resolveDateFormat = (zeitFormat: string) => zeitFormat
@@ -510,14 +510,18 @@ export const setHMTimer = (hours: number, minutes: number) => {
 
 export const getFromValue = (lastTo: string, timezone: string | null = null) => {
   let date;
-  if (lastTo .length && moment().isBetween(moment(), moment().add(1, 'day').subtract(2, 'hours'))) {
+  if (lastTo.length && moment().isBetween(moment().startOf('day'), moment().add(1, 'hours'))) {
     if (timezone) {
       date = moment(lastTo).tz(timezone);
     } else {
       date = moment(lastTo);
     }
   } else {
-    date = moment().subtract(2, 'hours');
+    if (timezone) {
+      date = moment().subtract(2, 'hours').tz(timezone);
+    } else {
+      date = moment().subtract(2, 'hours');
+    }
   }
   return `${leftJustify(date.hours().toString(),
       2,

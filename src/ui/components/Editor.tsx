@@ -61,6 +61,9 @@ const Editor = ({
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState(userInfos.timezone ? toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
   const [date, setDate] = React.useState(new Date());
+  const dateFormat = React.useMemo(() => userInfos['date_format'] ?
+    resolveDateFormat(userInfos['date_format']): 'dd/MM/yyyy',
+  [userInfos.date_format]);
 
   // pause resume to get infos.
   React.useEffect(() => {
@@ -134,7 +137,7 @@ const Editor = ({
         apiKey: token,
         projectId,
         comment,
-        date: toShortDate(date),
+        date: toShortDate(date, dateFormat),
         startTime: from,
         stopTime: to,
         pause,
