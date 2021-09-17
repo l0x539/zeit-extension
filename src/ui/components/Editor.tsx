@@ -6,12 +6,15 @@ import {
   getProjectsBookableHook,
   request,
   StartStopTimerHook,
+  getTimeRecordsHook,
 } from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
   fromTimeString,
+  getLastTimeRecords,
+  getFromValue,
   isInt,
   resolveDateFormat,
   setHMTimer,
@@ -22,6 +25,7 @@ import {
   toTimeZone,
   toUTC,
 } from '../utils/functions';
+import * as moment from 'moment';
 import {isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
@@ -47,10 +51,20 @@ const Editor = ({
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
 
-  const [pause, setPause] = React.useState('');
+  const timeRecords = useResource(getTimeRecordsHook,
+      {
+        apiKey: token,
+        params: `?from=${moment().
+            format('YYYY-MM-DD')}&to=${moment().add(1, 'day')
+            .format('YYYY-MM-DD')}`,
+      }); // Today working time.
+
+  const [pause, setPause] = React.useState('00:00');
   const [from, setFrom] = React.useState('');
-  const [to, setTo] = React.useState('');
+  const [to, setTo] = React.useState(userInfos.timezone?
+    toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
   const [date, setDate] = React.useState(new Date());
+
 
   // pause resume to get infos.
   React.useEffect(() => {
@@ -69,8 +83,14 @@ const Editor = ({
             setPause(toTimer(res.pause_total));
             setFrom(userInfos.timezone?
             toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
-            setTo(userInfos.timezone?
-            toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
+          } else {
+            const lastRecord = getLastTimeRecords(
+                timeRecords.result?.time_records,
+            );
+            console.log('setting');
+
+            setFrom(getFromValue(
+                lastRecord?.stop_time ?? '', userInfos.timezone));
           }
         });
       })
