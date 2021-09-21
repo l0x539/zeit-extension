@@ -155,8 +155,9 @@ const Editor = ({
   };
 
   const handleSelectProject = (e) => {
-    const selection = e.target.value.split['-'];
+    const selection = e.target.value.split('-');
     const suffix = selection[0];
+
     switch (suffix) {
       case 'project':
         setProjectId(selection[1]);
