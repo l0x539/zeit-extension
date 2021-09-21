@@ -63,7 +63,8 @@ const Editor = ({
   const [date, setDate] = React.useState(new Date());
   const dateFormat = React.useMemo(() => userInfos['date_format'] ?
     resolveDateFormat(userInfos['date_format']): 'dd/MM/yyyy',
-  [userInfos.date_format]);
+    [userInfos.date_format]);
+
 
   // pause resume to get infos.
   React.useEffect(() => {
@@ -283,24 +284,11 @@ const Editor = ({
               className="form-control"
               dateFormat={userInfos['date_format'] ?
                   resolveDateFormat(userInfos['date_format']): undefined}
-              customInput={
-                <FormControl
-                  value={date.toDateString()}
-                />
-              }
+              customInput={ <FormControl value={date.toDateString()} /> }
             />
           </div>
-          <div className="col-1"></div>
-          <div className="col-5">
-            <Form.Label className="form-label">Duration</Form.Label>
-            <FormControl
-              value={toTimer(duration > 0 ? duration: 0)}
-              disabled
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-4">
+          <div className="col-3">
+            <Form.Label className="form-label">From</Form.Label>
             <FormControl
               isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
               value={from}
@@ -312,9 +300,9 @@ const Editor = ({
                 setError('');
               }}
             />
-            <FormLabel label="From" />
           </div>
-          <div className="col-4">
+          <div className="col-3">
+            <Form.Label className="form-label">To</Form.Label>
             <FormControl
               isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
               value={to}
@@ -326,9 +314,10 @@ const Editor = ({
                 setError('');
               }}
             />
-            <FormLabel label="To" />
           </div>
-          <div className="col-4">
+        </div>
+        <div className="row">
+          <div className="col-6">
             <FormControl
               value={pause}
               onChange={(e) => {
@@ -340,6 +329,10 @@ const Editor = ({
               }}
             />
             <FormLabel label="Pause" />
+          </div>
+          <div className="col-6">
+            <FormControl value={toTimer(duration > 0 ? duration: 0)} disabled />
+            <FormLabel label="Duration" />
           </div>
         </div>
         <div className="row mb-2">

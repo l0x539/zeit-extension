@@ -25,10 +25,9 @@ const Track = () => {
       },
   );
 
-
   React.useEffect(() => {
     if (!isErrorUserInfos(userInfos)) {
-      setUserInfo(userInfos.user);
+        setUserInfo(userInfos.user);
     }
   }, []);
 
