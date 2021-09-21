@@ -7,6 +7,7 @@ import {
   request,
   StartStopTimerHook,
   getTimeRecordsHook,
+  getHourlyWageHook,
 } from '../utils/api';
 import AuthContext from '../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -24,6 +25,8 @@ import {
   toTimerHM,
   toTimeZone,
   toUTC,
+  resolveCurrency,
+  resolveWageCategory,
 } from '../utils/functions';
 import * as moment from 'moment';
 import {isErrorProjects, ProjectResult} from '../utils/types';
@@ -57,13 +60,15 @@ const Editor = ({
         params: `?from=${moment().format('YYYY-MM-DD')}&to=${moment().add(1, 'day').format('YYYY-MM-DD')}`,
       }); // Today working time.
 
+  const [hourlyWageCategory, setHourlyWageCategory] = React.useState('default');
+
   const [pause, setPause] = React.useState('00:00');
   const [from, setFrom] = React.useState('');
   const [to, setTo] = React.useState(userInfos.timezone ? toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
   const [date, setDate] = React.useState(new Date());
   const dateFormat = React.useMemo(() => userInfos['date_format'] ?
     resolveDateFormat(userInfos['date_format']): 'dd/MM/yyyy',
-    [userInfos.date_format]);
+  [userInfos.date_format]);
 
 
   // pause resume to get infos.
@@ -144,6 +149,7 @@ const Editor = ({
         pause,
         dateFormat: userInfos['date_format']??undefined,
         activityName,
+        hourlyWageCategory,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
@@ -200,18 +206,6 @@ const Editor = ({
       modalOpen={editorOpen}
       setModalOpen={setEditorOpen}
       title={'Time Recording'}
-      footer={
-        <>
-          <Button variant="secondary"
-            onClick={handleResetTimer}
-          >Discard Time</Button>
-          <Button
-            variant="primary"
-            onClick={handleStopTimer}
-            className="blue"
-          >Save</Button>
-        </>
-      }
     >
       {error.length > 0 ?
         <Alert variant={'danger'} onClose={() => setError('')} dismissible>
@@ -227,7 +221,7 @@ const Editor = ({
         }}>here</a>.
       </p> */}
       <Form className="form-horizontal">
-        <div className="row mb-3">
+        <div className="row mb-2">
           <div className="col-md-8">
             <Form.Label className="form-label">Project</Form.Label>
             <div>
@@ -262,18 +256,12 @@ const Editor = ({
                 }}>create a project now!</a></div>}
             </div>
           </div>
-          {/* <div className="col-md-4" id="hourly_wage_section">
-            <div className="mb-3">
-              <Form.Label className="form-label">Hourly wage</Form.Label>
-              <Form.Select disabled>
-                <option>${
-                  !isErrorProjects(allProjects) && allProjects.result.projects.
-                      reduce((p, v) => v.id === projectId ?
-                  v.hourly_wage : p, 0)}</option>
-              </Form.Select>
-            </div>
-
-          </div> */}
+        </div>
+        <div className="row mb-2">
+          <HourlyWage
+            projectId={projectId}
+            setHourlyWageCategory={setHourlyWageCategory}
+          />
         </div>
         <div className="row mb-2">
           <div className="col-6">
@@ -350,6 +338,17 @@ const Editor = ({
             </div>
           </div>
         </div>
+        <div className="d-flex justify-content-end">
+          <Button variant="secondary"
+            onClick={handleResetTimer}
+            className="mx-1"
+          >Discard Time</Button>
+          <Button
+            variant="primary"
+            onClick={handleStopTimer}
+            className="blue"
+          >Save</Button>
+        </div>
       </Form>
     </ModalScreen>
   );
@@ -360,6 +359,46 @@ const FormLabel = ({label}: {label: string}) => {
     <Form.Label as="small" className="align-top form-text mt-1 text-muted">
       {label}
     </Form.Label>
+  );
+};
+
+const HourlyWage = (
+    {projectId, setHourlyWageCategory} : {
+    projectId:
+    string,
+    setHourlyWageCategory: (categ: string) => void
+  }) => {
+  const {token} = React.useContext(AuthContext);
+  const hourlyWage = useResource(getHourlyWageHook, {apiKey: token, projectId});
+
+  React.useEffect(() => {
+    if (hourlyWage?.result?.hourly_wages?.length) {
+      setHourlyWageCategory(hourlyWage?.result?.hourly_wages[0]);
+    }
+  }, [hourlyWage?.result?.hourly_wages]);
+
+  const handleChangeSelect = (e) => {
+    setHourlyWageCategory(e.target.value);
+  };
+
+  return (
+    <div className="col-md-8">
+      <Form.Label className="form-label">Hourly wage</Form.Label>
+      <Form.Select
+        onChange={handleChangeSelect}
+        disabled={hourlyWage?.result?.hourly_wages?.length <= 1}
+      >
+        {hourlyWage?.result?.hourly_wages.map((wage, i) => {
+          return (
+            <option value={wage.category} key={i}>
+              {`${resolveWageCategory(wage.category,
+              )} ${wage.value} ${resolveCurrency(hourlyWage?.result?.currency,
+              )}`}
+            </option>
+          );
+        })}
+      </Form.Select>
+    </div>
   );
 };
 

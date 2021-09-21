@@ -42,6 +42,18 @@ export const getTimeRecordsHook = new Endpoint(({apiKey, params}:{
       .then((res) => res.data);
 });
 
+export const getHourlyWageHook = new Endpoint(({apiKey, projectId}:{
+  apiKey: string,
+  projectId: string
+}) => {
+  return request(
+      `/api/v1/usr/projects/${projectId}/hourly_wages`,
+      'GET',
+      null,
+      apiKey,
+  ).then((res) => res.data);
+});
+
 export const StartTimerHook = new Endpoint(({apiKey}:{
     apiKey: string
 }) => {
@@ -91,6 +103,7 @@ export const StartStopTimerHook = new Endpoint(({
   pause,
   dateFormat,
   activityName,
+  hourlyWageCategory,
 }:{
   apiKey: string,
   projectId: string,
@@ -100,14 +113,15 @@ export const StartStopTimerHook = new Endpoint(({
   stopTime: string,
   pause: string,
   dateFormat: string,
-  activityName: string
+  activityName: string,
+  hourlyWageCategory: string
 }) => {
   return request('/api/v1/usr/time_records/start_stop', 'POST',
       {
         project_id: projectId,
         comment,
         activity: activityName,
-        hourly_wage_category: 'default',
+        hourly_wage_category: hourlyWageCategory,
         date: date,
         date_format: dateFormat??'%d/%m/%Y',
         start_time: startTime,
