@@ -21,7 +21,7 @@ const ModalScreen = ({modalOpen, setModalOpen, title, children, footer=null}: {
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="mb-5">
+        <Modal.Body className="pb-5 mb-1">
           {children}
         </Modal.Body>
         {footer ? (
