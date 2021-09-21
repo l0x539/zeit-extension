@@ -3,6 +3,7 @@
         "sourceMap": true,
         "target": "es6",
         "module": "commonjs",
+        "lib": ["es6", "dom", "es2017"],
         "jsx": "react"
     },
     "exclude": [

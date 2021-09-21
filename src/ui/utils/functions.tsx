@@ -5,6 +5,7 @@
 
 import moment = require('moment-timezone');
 import * as React from 'react';
+import {CURRENCIES, WAGE_CATEGORIES} from './constants';
 
 moment.tz.add([
   'Abidjan|LMT GMT|g.8 0|01|-2ldXH.Q|48e5',
@@ -536,4 +537,14 @@ export const getLastTimeRecords = (t) => {
 
 export const sortLatestTimeRecords = (t) => {
   return t?.sort((p, n) => moment(new Date(p.stop_time)).unix() - moment(new Date(n.stop_time)).unix());
+};
+
+export const resolveCurrency = (cur: string) => {
+  if (Object.keys(CURRENCIES).includes(cur)) return CURRENCIES[cur];
+  else return '$';
+};
+
+export const resolveWageCategory = (categ: string) => {
+  if (Object.keys(WAGE_CATEGORIES).includes(categ)) return WAGE_CATEGORIES[categ];
+  else return '$';
 };
