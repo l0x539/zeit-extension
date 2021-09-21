@@ -23,7 +23,6 @@ import Editor from './Editor';
 import QuestionModal from './QuestionModal';
 import {
   isErrorTimer,
-  isErrorUserInfos,
   Settings,
   Timer,
   UserInfosResponse,
@@ -67,7 +66,7 @@ interface IHeader {
 const Header: React.FC<IHeader> = ({
   userInfos,
 }) => {
-  const {token, logout, setUserInfo} = React.useContext(AuthContext);
+  const {token, logout} = React.useContext(AuthContext);
   // const [clock, setClock, isPersistent, error]  = useClock();
   const timerStatus: Timer = useResource(
       ResumeTimerHook, {
@@ -109,12 +108,6 @@ const Header: React.FC<IHeader> = ({
   const resumeTimer = useFetcher(ResumeTimerHook);
   const pauseTimer = useFetcher(PauseTimerHook);
   const resetCache = useResetter();
-
-  React.useEffect(() => {
-    if (!isErrorUserInfos(userInfos)) {
-      setUserInfo(userInfos.user);
-    }
-  }, []);
 
   const handleSettings = (e: React.ChangeEvent<HTMLInputElement>) => {
     switch (e.target.id) {

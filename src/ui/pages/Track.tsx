@@ -9,13 +9,13 @@ import {BiLoader} from 'react-icons/bi';
 import * as moment from 'moment';
 
 import {Scrollbars} from 'react-custom-scrollbars';
-import {UserInfosResponse} from '../utils/types';
+import {isErrorUserInfos, UserInfosResponse} from '../utils/types';
 
 /*
  * Hold time records entries (currently main app page)
  */
 const Track = () => {
-  const {logout, token} = React.useContext(AuthContext);
+  const {logout, token, setUserInfo} = React.useContext(AuthContext);
   document.body.style.minHeight = '600px';
 
   const userInfos: UserInfosResponse = useResource(
@@ -24,6 +24,13 @@ const Track = () => {
         state: 'infos',
       },
   );
+
+
+  React.useEffect(() => {
+    if (!isErrorUserInfos(userInfos)) {
+      setUserInfo(userInfos.user);
+    }
+  }, []);
 
   const timeRecords = useResource(getTimeRecordsHook,
       {
