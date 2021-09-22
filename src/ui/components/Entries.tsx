@@ -29,32 +29,35 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
       <div className="content">
         <HeaderEntry total={total} />
         {entries?.length ?
-             Object.keys(projects).map((project: string, index: number) => {
-               const timing = sumDuration(projects[project]);
-               if (timing > 0) {
-                 return (
-                   <div className="shadow-sm time-entries mx-4 my-3 px-3 py-2">
-                     <div onClick={() => {
-                       handleVisitProject(project);
-                     }}
-                     key={index}
-                     className="row py-2 time-entry">
-                       <div className="col-8">
-                         {projects[project][0].project_name}:
-                       </div>
-                       <div className="col-4 d-flex justify-content-end">
-                         {toTimer(timing)}
-                       </div>
-                     </div>
-                   </div>
-                 );
-               } else {
-                 return <></>;
-               }
-             }):
-             <div className="shadow-sm time-entries mx-4 my-3 px-3 py-4">
-               <div className="m-auto">No time records today, Start now!</div>
-             </div>}
+          Object.keys(projects).map((project: string, index: number) => {
+            const timing = sumDuration(projects[project]);
+            if (timing > 0) {
+              return (
+                <div className="shadow-sm time-entries mx-4 my-3 px-3 py-2">
+                  <div
+                    className="row py-2 time-entry"
+                    key={index}
+                    onClick={() => handleVisitProject(project)}
+                  >
+                    <div className="col-8">
+                      {projects[project][0].project_name}:
+                    </div>
+                    <div className="col-4 d-flex justify-content-end">
+                      {toTimer(timing)}
+                    </div>
+                  </div>
+                </div>
+              );
+            } else {
+              return <></>;
+            }
+          })
+          : (
+            <div className="shadow-sm time-entries mx-4 my-3 px-3 py-4">
+              <div className="m-auto">No time records today, Start now!</div>
+            </div>
+          )
+        }
       </div>
     </div>
   );
