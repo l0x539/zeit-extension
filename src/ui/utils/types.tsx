@@ -94,7 +94,11 @@ type Activity = {
     name: string
 }
 
-type Project = {
+type Label = {
+    name: string
+}
+
+export type Project = {
     id: string,
     name: string,
     activities: Activity[],
@@ -121,6 +125,8 @@ type Project = {
     'start_date': string,
     'end_date': string,
     closed: boolean,
+    'labels_enabled': boolean,
+    labels: Label[];
     'customer_id': null | string | number
 }
 
