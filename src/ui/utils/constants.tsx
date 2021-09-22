@@ -3,7 +3,7 @@
  */
 export const CURRENCIES = {
   'USD': '$',
-  'EUR': '€',
+  'EUR': '\u20AC',
 };
 export const WAGE_CATEGORIES = {
   default: '',
