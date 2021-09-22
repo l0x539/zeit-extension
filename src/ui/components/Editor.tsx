@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-  Alert,
-  Button,
-  Form,
-  FormControl,
-} from 'react-bootstrap';
+import {Alert, Button, Form, FormControl} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
 import {
@@ -34,9 +29,7 @@ import {
   resolveWageCategory,
 } from '../utils/functions';
 import * as moment from 'moment';
-import {isErrorProjects, Project, ProjectResult} from '../utils/types';
-import {Typeahead} from 'react-bootstrap-typeahead';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
+import {isErrorProjects, ProjectResult} from '../utils/types';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -76,10 +69,6 @@ const Editor = ({
   const dateFormat = React.useMemo(() => userInfos['date_format'] ?
     resolveDateFormat(userInfos['date_format']): 'dd/MM/yyyy',
   [userInfos.date_format]);
-  const [selectedLabels, setSelectedLabels]: [
-    string[],
-    (label: string[]) => void
-  ] = React.useState([]);
 
 
   // pause resume to get infos.
@@ -128,11 +117,6 @@ const Editor = ({
      allProjects.result.projects.length > 0?
      allProjects.result.projects[0].id: '');
 
-  const [curProject, setCurProject] = React.useState(
-      !isErrorProjects(allProjects) &&
-       allProjects.result.projects.length > 0?
-       allProjects.result.projects[0]: null);
-
   const [activityName, setActivityName] = React.useState(
     !isErrorProjects(allProjects) &&
      allProjects.result.projects.length > 0 &&
@@ -166,7 +150,6 @@ const Editor = ({
         dateFormat: userInfos['date_format']??undefined,
         activityName,
         hourlyWageCategory,
-        labels: selectedLabels.length? selectedLabels.join() : null,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
@@ -181,20 +164,13 @@ const Editor = ({
   const handleSelectProject = (e) => {
     const selection = e.target.value.split('-');
     const suffix = selection[0];
-    setProjectId(selection[1]);
-    if (!isErrorProjects(allProjects)) {
-      setCurProject(allProjects.result.projects.
-          reduce((prev, project) => {
-            if (project.id === selection[1]) {
-              return project;
-            } else return prev;
-          }, null));
-    }
+
     switch (suffix) {
       case 'project':
         setProjectId(selection[1]);
         break;
       case 'activity':
+        setProjectId(selection[1]);
         setActivityName(selection[2]);
         break;
     }
@@ -362,11 +338,6 @@ const Editor = ({
             </div>
           </div>
         </div>
-        <LabelsInput
-          project={curProject}
-          selectedLabels={selectedLabels}
-          setSelectedLabels={setSelectedLabels}
-        />
         <div className="d-flex justify-content-end">
           <Button variant="secondary"
             onClick={handleResetTimer}
@@ -428,32 +399,6 @@ const HourlyWage = (
         })}
       </Form.Select>
     </div>
-  );
-};
-
-const LabelsInput = ({
-  project,
-  selectedLabels,
-  setSelectedLabels,
-}: {
-  project: Project,
-  selectedLabels: string[],
-  setSelectedLabels: (label) => void,
-}) => {
-  return (
-    project.labels_enabled? (
-      <div className="col-md-8">
-        <Form.Label className="form-label">Labels</Form.Label>
-        <Typeahead
-          id="labels"
-          onChange={setSelectedLabels}
-          options={project.labels.map((label) => label.name)}
-          placeholder="Choose labels..."
-          selected={selectedLabels}
-          multiple
-        />
-      </div>
-    ): null
   );
 };
 
