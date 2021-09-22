@@ -2,9 +2,9 @@ import {useFetcher} from '@rest-hooks/core';
 import {useLoading} from '@rest-hooks/hooks';
 import * as React from 'react';
 import {Alert, Button, Form, FormControl} from 'react-bootstrap';
-import AuthContext from '../contexts/AuthContexts';
-import {loginHook} from '../utils/api';
-import {Auth, isErrorAuth} from '../utils/types';
+import AuthContext from '../../contexts/AuthContexts';
+import {loginHook} from '../../utils/api';
+import {Auth, isErrorAuth} from '../../utils/types';
 
 /*
  * Login Page

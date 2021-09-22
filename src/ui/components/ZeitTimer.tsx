@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {toZeitTimer} from '../utils/functions';
+import {toZeitTimer} from '../../utils/functions';
 import {FaPlay} from 'react-icons/fa';
 import {FaPause} from 'react-icons/fa';
 import {FaStop} from 'react-icons/fa';

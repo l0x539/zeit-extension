@@ -1,8 +1,39 @@
-import {request} from '../ui/utils/api';
-import {notify, registerCommandAction} from '../ui/utils/chrome';
+import {request} from '../utils/api';
+import {notify, registerCommandAction} from '../utils/chrome';
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   console.log('Background got a message!');
+  if (message.message == 'github-start-stop') {
+    startStop(sendResponse);
+    // chrome.tabs.create({
+    //   active: true,
+    //   url: '../popup.html',
+    // }, null);
+  } else if (message.message == 'github-status') {
+    console.log('hi1');
+
+    chrome.storage.local.get('apiKey', async function(result) {
+      chrome.storage.local.get('settings', async (results) => {
+        const pause = await request('/api/v1/usr/time_records/pause',
+            'POST',
+            {},
+            result.apiKey,
+        );
+        if (pause.status === 200) {
+          return sendResponse({status: 'PAUSED'});
+        } else if (pause.status === 201) {
+          request('/api/v1/usr/time_records/resume',
+              'POST',
+              {},
+              result.apiKey,
+          );
+          return sendResponse({status: 'STARTED'});
+        } else if (pause.status === 201) {
+          return sendResponse({status: 'STOPPED'});
+        }
+      });
+    });
+  }
   sendResponse({});
 });
 
@@ -68,13 +99,14 @@ chrome.windows.onRemoved.addListener(function() {
   });
 });
 
-const startStop = () => {
-  chrome.storage.local.get('apiKey', async function(result) {
+const startStop = async (sendResponse=undefined) => {
+  return await chrome.storage.local.get('apiKey', async function(result) {
     const start = await request('/api/v1/usr/time_records/start', 'POST',
         {},
         result.apiKey,
     );
     if (start.status === 404) {
+      if (sendResponse) sendResponse({status: 'ERROR'});
       notify('ZEIT.IO', 'You\'re not logged in.');
       return;
     } else if (start.status === 200) {
@@ -87,13 +119,20 @@ const startStop = () => {
             {},
             result.apiKey,
         );
+        if (sendResponse) sendResponse({status: 'STARTED'});
         notify('ZEIT.IO', 'Timer Resumed');
+        return;
       } else if (pause.status === 201) {
+        if (sendResponse) sendResponse({status: 'PAUSED'});
         notify('ZEIT.IO', 'Timer Paused');
+        return;
       }
     } else if (start.status === 201) {
+      if (sendResponse) sendResponse({status: 'STARTED'});
       notify('ZEIT.IO', 'Timer Started');
+      return;
     }
+    if (sendResponse) sendResponse({status: 'STOPPED'});
   });
 };
 

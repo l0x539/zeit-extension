@@ -8,8 +8,8 @@ import {
   StartStopTimerHook,
   getTimeRecordsHook,
   getHourlyWageHook,
-} from '../utils/api';
-import AuthContext from '../contexts/AuthContexts';
+} from '../../utils/api';
+import AuthContext from '../../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
@@ -27,9 +27,9 @@ import {
   toUTC,
   resolveCurrency,
   resolveWageCategory,
-} from '../utils/functions';
+} from '../../utils/functions';
 import * as moment from 'moment';
-import {isErrorProjects, ProjectResult} from '../utils/types';
+import {isErrorProjects, ProjectResult} from '../../utils/types';
 
 /*
  * Edit time records posting information when the timer is stopped.

@@ -9,8 +9,8 @@ import {
   registerCommandAction,
   useComment,
   useSettings,
-} from '../utils/chrome';
-import AuthContext from '../contexts/AuthContexts';
+} from '../../utils/chrome';
+import AuthContext from '../../contexts/AuthContexts';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResetter, useResource} from '@rest-hooks/core';
 import {
@@ -18,7 +18,7 @@ import {
   ResetTimerHook,
   PauseTimerHook,
   ResumeTimerHook,
-} from '../utils/api';
+} from '../../utils/api';
 import Editor from './Editor';
 import QuestionModal from './QuestionModal';
 import {
@@ -26,7 +26,7 @@ import {
   Settings,
   Timer,
   UserInfosResponse,
-} from '../utils/types';
+} from '../../utils/types';
 import ZeitTimer, {TimerStatus} from './ZeitTimer';
 
 const calculateTime: (

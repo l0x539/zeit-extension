@@ -18,6 +18,7 @@
       "service_worker": "js/background.js"
     },
     "permissions": [
+      "activeTab",
       "alarms",
       "storage",
       "notifications",
@@ -37,6 +38,15 @@
         ],
         "js": [
           "js/content.js"
+        ]
+      },
+      {
+        "matches": [
+          "https://*.github.com/*/*/issues/*"
+        ],
+        "run_at" : "document_idle",
+        "js": [
+          "js/github.js"
         ]
       }
     ],

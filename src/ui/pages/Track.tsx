@@ -3,13 +3,13 @@ import * as React from 'react';
 import Header from '../components/Header';
 import Entries from '../components/Entries';
 import {useResource} from '@rest-hooks/core';
-import {getTimeRecordsHook, getUserInfos} from '../utils/api';
-import AuthContext from '../contexts/AuthContexts';
+import {getTimeRecordsHook, getUserInfos} from '../../utils/api';
+import AuthContext from '../../contexts/AuthContexts';
 import {BiLoader} from 'react-icons/bi';
 import * as moment from 'moment';
 
 import {Scrollbars} from 'react-custom-scrollbars';
-import {isErrorUserInfos, UserInfosResponse} from '../utils/types';
+import {isErrorUserInfos, UserInfosResponse} from '../../utils/types';
 
 /*
  * Hold time records entries (currently main app page)
