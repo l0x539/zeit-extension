@@ -20,7 +20,7 @@ const sumDuration = (entries: TimeEntry[]) => {
 
 const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
   const handleVisitProject = (id: string) => {
-    chrome.tabs.create({url: 'https://zeit.io/en/projects/' + id});
+    chrome.tabs.create({url: 'https://zeit.io/en/times'});
   };
 
   const projects = sortByProject(entries);
