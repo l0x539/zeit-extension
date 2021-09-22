@@ -20,7 +20,7 @@ const sumDuration = (entries: TimeEntry[]) => {
 
 const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
   const handleVisitProject = (id: string) => {
-    chrome.tabs.create({url: 'https://zeit.io/en/projects/' + id});
+    chrome.tabs.create({url: 'https://zeit.io/en/times'});
   };
 
   const projects = sortByProject(entries);
@@ -28,22 +28,23 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
     <div className="pb-4">
       <div className="content">
         <HeaderEntry total={total} />
-        <div className="shadow-sm time-entries mx-4 my-2 px-3 py-2">
-          {entries?.length ?
+        {entries?.length ?
              Object.keys(projects).map((project: string, index: number) => {
                const timing = sumDuration(projects[project]);
                if (timing > 0) {
                  return (
-                   <div onClick={() => {
-                     handleVisitProject(project);
-                   }}
-                   key={index}
-                   className="row py-4 time-entry">
-                     <div className="col-8 time-entries-project">
-                       {projects[project][0].project_name}:
-                     </div>
-                     <div className="col-4 d-flex justify-content-end">
-                       {toTimer(timing)}
+                   <div className="shadow-sm time-entries mx-4 my-3 px-3 py-2">
+                     <div onClick={() => {
+                       handleVisitProject(project);
+                     }}
+                     key={index}
+                     className="row py-2 time-entry">
+                       <div className="col-8">
+                         {projects[project][0].project_name}:
+                       </div>
+                       <div className="col-4 d-flex justify-content-end">
+                         {toTimer(timing)}
+                       </div>
                      </div>
                    </div>
                  );
@@ -51,8 +52,9 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
                  return <></>;
                }
              }):
-            <div className="m-auto">No time records today, Start now!</div>}
-        </div>
+             <div className="shadow-sm time-entries mx-4 my-3 px-3 py-4">
+               <div className="m-auto">No time records today, Start now!</div>
+             </div>}
       </div>
     </div>
   );
@@ -60,8 +62,8 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
 
 const HeaderEntry = ({total}: {total: number}) => {
   return (
-    <div className="shadow-sm time-entries mx-4 px-3 py-2">
-      <div className="row">
+    <div className="shadow-sm time-entries mx-4 my-3 px-3 py-2">
+      <div className="row py-2">
         <div className="col-8 font-weight-bold">Today</div>
         <div className="col-4 d-flex justify-content-end font-weight-bold">
           {toTimer(total)}
