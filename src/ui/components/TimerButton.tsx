@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Button} from 'react-bootstrap';
-import {toTimer} from '../utils/functions';
+import {toTimer} from '../../utils/functions';
 
 /*
  * Timer button that shows timer or start/stop

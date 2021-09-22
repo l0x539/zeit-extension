@@ -13,8 +13,8 @@ import {
   StartStopTimerHook,
   getTimeRecordsHook,
   getHourlyWageHook,
-} from '../utils/api';
-import AuthContext from '../contexts/AuthContexts';
+} from '../../utils/api';
+import AuthContext from '../../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
@@ -32,9 +32,9 @@ import {
   toUTC,
   resolveCurrency,
   resolveWageCategory,
-} from '../utils/functions';
+} from '../../utils/functions';
 import * as moment from 'moment';
-import {isErrorProjects, Project, ProjectResult} from '../utils/types';
+import {isErrorProjects, ProjectResult} from '../utils/types';
 import {Typeahead} from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 
