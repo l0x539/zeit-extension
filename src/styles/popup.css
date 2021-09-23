@@ -243,3 +243,11 @@ button, input[type="submit"], input[type="reset"] {
 .form-text {
     font-size: 0.875em;
 }
+
+.editor {
+    min-height: 460px;
+}
+
+.modal-body {
+    padding-bottom: 1rem!important;;
+}
