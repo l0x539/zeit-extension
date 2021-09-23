@@ -411,6 +411,7 @@ const HourlyWage = (
   };
 
   return (
+    hourlyWage?.result?.hourly_wages?.length?
     <div className="col-md-8">
       <Form.Label className="form-label">Hourly wage</Form.Label>
       <Form.Select
@@ -427,7 +428,7 @@ const HourlyWage = (
           );
         })}
       </Form.Select>
-    </div>
+    </div> : null
   );
 };
 
