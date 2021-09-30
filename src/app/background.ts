@@ -1,42 +1,56 @@
 import {request} from '../utils/api';
 import {notify, registerCommandAction} from '../utils/chrome';
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  console.log('Background got a message!');
-  if (message.message == 'github-start-stop') {
-    startStop(sendResponse);
-    // chrome.tabs.create({
-    //   active: true,
-    //   url: '../popup.html',
-    // }, null);
-  } else if (message.message == 'github-status') {
-    console.log('hi1');
+const sendMessagePromise = (tabId, item) => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(tabId, {item}, (response) => {
+      if (response?.complete) {
+        resolve('fullfilled');
+      } else {
+        reject(Error('Something wrong'));
+      }
+    });
+  });
+};
 
-    chrome.storage.local.get('apiKey', async function(result) {
-      chrome.storage.local.get('settings', async (results) => {
-        const pause = await request('/api/v1/usr/time_records/pause',
-            'POST',
-            {},
-            result.apiKey,
-        );
-        if (pause.status === 200) {
-          return sendResponse({status: 'PAUSED'});
-        } else if (pause.status === 201) {
-          request('/api/v1/usr/time_records/resume',
+chrome.storage.local.get('apiKey', async function(result) {
+  chrome.runtime.onMessage.addListener(
+      async (message, sender, sendResponse) => {
+        console.log('Background got a message!');
+        if (message.message == 'github-start-stop') {
+          startStop(sender.tab.id);
+          // chrome.tabs.create({
+          //   active: true,
+          //   url: '../popup.html',
+          // }, null);
+        } else if (message.message == 'github-initialize') {
+          console.log('hi1');
+
+          console.log('hi2', result.apiKey);
+
+          const pause = await request('/api/v1/usr/time_records/pause',
               'POST',
               {},
               result.apiKey,
           );
-          return sendResponse({status: 'STARTED'});
-        } else if (pause.status === 201) {
-          return sendResponse({status: 'STOPPED'});
+          if (pause.status === 200) {
+            sendMessagePromise(sender.tab.id, 'PAUSED');
+          } else if (pause.status === 201) {
+            request('/api/v1/usr/time_records/resume',
+                'POST',
+                {},
+                result.apiKey,
+            );
+            sendMessagePromise(sender.tab.id, 'STARTED');
+          } else if (pause.status === 401) {
+            sendMessagePromise(sender.tab.id, 'STOPPED');
+          } else if (pause.status === 404) {
+            console.log('sending response1');
+            sendMessagePromise(sender.tab.id, 'ERROR');
+          }
         }
       });
-    });
-  }
-  sendResponse({});
 });
-
 chrome.runtime.onConnect.addListener(function(port) {
   if (port.name === 'Zeit') {
     port.onDisconnect.addListener(function() {
@@ -99,14 +113,14 @@ chrome.windows.onRemoved.addListener(function() {
   });
 });
 
-const startStop = async (sendResponse=undefined) => {
+const startStop = async (tabId=undefined) => {
   return await chrome.storage.local.get('apiKey', async function(result) {
     const start = await request('/api/v1/usr/time_records/start', 'POST',
         {},
         result.apiKey,
     );
     if (start.status === 404) {
-      if (sendResponse) sendResponse({status: 'ERROR'});
+      if (tabId) sendMessagePromise(tabId, 'ERROR');
       notify('ZEIT.IO', 'You\'re not logged in.');
       return;
     } else if (start.status === 200) {
@@ -119,20 +133,20 @@ const startStop = async (sendResponse=undefined) => {
             {},
             result.apiKey,
         );
-        if (sendResponse) sendResponse({status: 'STARTED'});
+        if (tabId) sendMessagePromise(tabId, 'STARTED');
         notify('ZEIT.IO', 'Timer Resumed');
         return;
       } else if (pause.status === 201) {
-        if (sendResponse) sendResponse({status: 'PAUSED'});
+        if (tabId) sendMessagePromise(tabId, 'PAUSED');
         notify('ZEIT.IO', 'Timer Paused');
         return;
       }
     } else if (start.status === 201) {
-      if (sendResponse) sendResponse({status: 'STARTED'});
+      if (tabId) sendMessagePromise(tabId, 'STARTED');
       notify('ZEIT.IO', 'Timer Started');
       return;
     }
-    if (sendResponse) sendResponse({status: 'STOPPED'});
+    if (tabId) sendMessagePromise(tabId, 'STOPPED');
   });
 };
 

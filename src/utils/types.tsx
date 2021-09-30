@@ -232,3 +232,5 @@ export type Settings = {
     notifications: boolean
     askPause: boolean,
 }
+
+export type Status = 'STARTED' | 'STOPPED' | 'PAUSED' | 'ERROR'
