@@ -21,7 +21,7 @@ const App = () => {
   React.useEffect(() => {
     setTimeout(() => {
       chrome.storage.local.set({loading: false});
-    }, 5000);
+    }, 3000);
   }, []);
   return (
     <CacheProvider>
