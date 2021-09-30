@@ -20,6 +20,7 @@ const resolveTimer = (status: Status) => {
 const ZeitGithubButton = () => {
   const [timerStatus, setTimerStatus] = React.useState<Status>('STOPPED');
   const [loading, setLoading] = React.useState<boolean>(true);
+  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   React.useEffect(() => {
     chrome.runtime.sendMessage({message: 'github-initialize'});
@@ -36,12 +37,16 @@ const ZeitGithubButton = () => {
 
 
   const handleStartStop = () => {
-    chrome.runtime.sendMessage({message: 'github-start-stop'},
-        function(resp) {
-          console.log('resp br', resp);
+    try {
+      chrome.runtime.sendMessage({message: 'github-start-stop'},
+          function(resp) {
+            console.log('resp br', resp);
 
-          /* callback */
-        });
+            /* callback */
+          });
+    } catch {
+      forceUpdate();
+    }
   };
 
   const status = resolveTimer(timerStatus);
@@ -54,7 +59,7 @@ const ZeitGithubButton = () => {
         js-selected-navigation-item
         zeit-github`}
       onClick={handleStartStop}
-      style={{cursor: status || loading?'pointer':'none'}}>
+      style={{cursor: status || loading?'pointer':'not-allowed'}}>
       <FavIconSvg />
       {loading?
       <span style={{color: 'gray'}}
