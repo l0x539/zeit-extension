@@ -9,11 +9,11 @@ import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
 import {
   getProjectsBookableHook,
-  request,
   StartStopTimerHook,
   getTimeRecordsHook,
   getHourlyWageHook,
 } from '../../utils/api';
+import {request} from '../../utils/request';
 import AuthContext from '../../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
