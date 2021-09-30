@@ -47,9 +47,10 @@ chrome.storage.local.get('apiKey', async function(result) {
       });
 });
 chrome.runtime.onConnect.addListener(function(port) {
+  chrome.storage.local.set({loading: 'test'});
   if (port.name === 'Zeit') {
     port.onDisconnect.addListener(function() {
-      chrome.runtime.reload();
+      // chrome.runtime.reload();
     });
   }
 });
