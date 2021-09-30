@@ -18,7 +18,6 @@ const resolveTimer = (status: Status) => {
 };
 
 const ZeitGithubButton = () => {
-  const [started, setStarted] = React.useState(false);
   const [timerStatus, setTimerStatus] = React.useState<Status>('STOPPED');
   const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -37,16 +36,12 @@ const ZeitGithubButton = () => {
 
 
   const handleStartStop = () => {
-    if (started) {
-      chrome.runtime.sendMessage({message: 'github-start-stop'},
-          function(resp) {
-            console.log('resp br', resp);
+    chrome.runtime.sendMessage({message: 'github-start-stop'},
+        function(resp) {
+          console.log('resp br', resp);
 
-            /* callback */
-          });
-    } else {
-      setStarted(true);
-    }
+          /* callback */
+        });
   };
 
   const status = resolveTimer(timerStatus);
