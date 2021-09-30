@@ -21,11 +21,11 @@ const App = () => {
   return (
     <CacheProvider>
       <AuthProvider >
-        <React.Suspense fallback={<Loading />}>
-          <ProtectedPage>
-            <Track />
-          </ProtectedPage>
-        </React.Suspense>
+        {/* <React.Suspense fallback={<Loading />} > */}
+        <ProtectedPage>
+          <Track />
+        </ProtectedPage>
+        {/* </React.Suspense> */}
       </AuthProvider>
     </CacheProvider>
   );

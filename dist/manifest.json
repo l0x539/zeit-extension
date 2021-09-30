@@ -44,7 +44,7 @@
         ],
         "run_at" : "document_idle",
         "js": [
-          "js/github.js"
+          "js/integrations.js"
         ]
       }
     ],

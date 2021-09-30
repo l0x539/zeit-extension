@@ -6,7 +6,7 @@ module.exports = {
   watch: true,
   entry: {
     content: './src/app/content.ts',
-    github: './src/github/app.tsx',
+    integrations: './src/extension-integrations/app.tsx',
     background: './src/app/background.ts',
     popup: './src/ui/popup.tsx',
   },
