@@ -1,4 +1,4 @@
-import {request} from '../utils/api';
+import {request} from '../utils/request';
 import {notify, registerCommandAction} from '../utils/chrome';
 
 const sendMessagePromise = (tabId, item) => {
@@ -46,11 +46,16 @@ chrome.storage.local.get('apiKey', async function(result) {
         }
       });
 });
-chrome.runtime.onConnect.addListener(function(port) {
-  chrome.storage.local.set({loading: 'test'});
+chrome.runtime.onConnect.addListener(async function(port) {
+  await chrome.storage.local.set({loading: true});
+
   if (port.name === 'Zeit') {
     port.onDisconnect.addListener(function() {
-      // chrome.runtime.reload();
+      chrome.storage.local.get(['loading'], (result) => {
+        if (result.loading) {
+          chrome.runtime.reload();
+        }
+      });
     });
   }
 });
