@@ -24,10 +24,6 @@ chrome.storage.local.get('apiKey', async function(result) {
           //   url: '../popup.html',
           // }, null);
         } else if (message.message == 'github-initialize') {
-          console.log('hi1');
-
-          console.log('hi2', result.apiKey);
-
           const pause = await request('/api/v1/usr/time_records/pause',
               'POST',
               {},
@@ -45,7 +41,6 @@ chrome.storage.local.get('apiKey', async function(result) {
           } else if (pause.status === 401) {
             sendMessagePromise(sender.tab.id, 'STOPPED');
           } else if (pause.status === 404) {
-            console.log('sending response1');
             sendMessagePromise(sender.tab.id, 'ERROR');
           }
         }
