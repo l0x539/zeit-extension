@@ -13,9 +13,9 @@ const sendMessagePromise = (tabId, item) => {
   });
 };
 
-chrome.storage.local.get('apiKey', async function(result) {
-  chrome.runtime.onMessage.addListener(
-      async (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(
+    async (message, sender, sendResponse) => {
+      chrome.storage.local.get('apiKey', async function(result) {
         console.log('Background got a message!');
         if (message.message == 'github-start-stop') {
           startStop(sender.tab.id);
@@ -45,7 +45,7 @@ chrome.storage.local.get('apiKey', async function(result) {
           }
         }
       });
-});
+    });
 // chrome.runtime.onConnect.addListener(async function(port) {
 //   await chrome.storage.local.set({loading: true});
 
