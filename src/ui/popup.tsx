@@ -18,11 +18,6 @@ import Loading from './components/Loading';
 import {Auth, isErrorAuth, UserInfos} from '../utils/types';
 
 const App = () => {
-  React.useEffect(() => {
-    setTimeout(() => {
-      chrome.storage.local.set({loading: false});
-    }, 3000);
-  }, []);
   return (
     <CacheProvider>
       <AuthProvider >

@@ -46,19 +46,19 @@ chrome.storage.local.get('apiKey', async function(result) {
         }
       });
 });
-chrome.runtime.onConnect.addListener(async function(port) {
-  await chrome.storage.local.set({loading: true});
+// chrome.runtime.onConnect.addListener(async function(port) {
+//   await chrome.storage.local.set({loading: true});
 
-  if (port.name === 'Zeit') {
-    port.onDisconnect.addListener(function() {
-      chrome.storage.local.get(['loading'], (result) => {
-        if (result.loading) {
-          chrome.runtime.reload();
-        }
-      });
-    });
-  }
-});
+//   if (port.name === 'Zeit') {
+//     port.onDisconnect.addListener(function() {
+//       chrome.storage.local.get(['loading'], (result) => {
+//         if (result.loading) {
+//           // chrome.runtime.reload();
+//         }
+//       });
+//     });
+//   }
+// });
 
 // chrome.windows.onRemoved.addListener(function() {
 //   chrome.storage.local.get('apiKey', async function(result) {
