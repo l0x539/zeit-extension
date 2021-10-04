@@ -18,7 +18,6 @@
       "service_worker": "js/background.js"
     },
     "permissions": [
-      "alarms",
       "storage",
       "notifications",
       "background",
