@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useComment, useGithub} from '../../../../utils/chrome';
 import {Status} from '../../../../utils/types';
 import FavIconSvg from '../../../components/FavIconSvg';
 
@@ -17,10 +18,30 @@ const resolveTimer = (status: Status) => {
   }
 };
 
+interface GithubTicket {
+  ticketBase: string
+  ticketType: string
+  title?: string
+  ticketId?: string
+}
+
 const ZeitGithubButton = () => {
   const [timerStatus, setTimerStatus] = React.useState<Status>('STOPPED');
   const [loading, setLoading] = React.useState<boolean>(true);
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
+  const [, setgithubTicket]: [
+    GithubTicket,
+    (value: GithubTicket) => void,
+    boolean,
+    string
+] = useGithub();
+
+  const [, setComment]: [
+    string,
+    (value: string) => void,
+    boolean,
+    string
+  ] = useComment();
 
   React.useEffect(() => {
     chrome.runtime.sendMessage({message: 'github-initialize'});
@@ -34,6 +55,14 @@ const ZeitGithubButton = () => {
         });
   }, []);
 
+  const title = React.useMemo(() => document.querySelector(
+      'h1.gh-header-title .markdown-title',
+  ).textContent, []);
+
+  const ticketId = React.useMemo(() => document.querySelector(
+      'h1.gh-header-title .f1-light',
+  ).textContent, []);
+
 
   const handleStartStop = () => {
     try {
@@ -41,6 +70,13 @@ const ZeitGithubButton = () => {
           function(resp) {
             /* callback */
           });
+      setgithubTicket({
+        ticketBase: document.URL,
+        ticketType: 'Github',
+        title,
+        ticketId,
+      });
+      setComment(`${ticketId} ${title}:`);
     } catch {
       forceUpdate();
     }

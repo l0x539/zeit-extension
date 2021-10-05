@@ -38,6 +38,7 @@ import * as moment from 'moment';
 import {isErrorProjects, Project, ProjectResult} from '../../utils/types';
 import {Typeahead} from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import {useComment} from '../../utils/chrome';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -61,6 +62,13 @@ const Editor = ({
   const {token, userInfos} = React.useContext(AuthContext);
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
+
+  const [storageComment, setStoragComment]: [
+    string,
+    (value: string) => void,
+    boolean,
+    string
+  ] = useComment();
 
   const timeRecords = useResource(getTimeRecordsHook,
       {
@@ -176,6 +184,7 @@ const Editor = ({
       if (result.error && result.error.length > 0) {
         setError(result.error);
       } else {
+        setStoragComment('');
         stopTimerHandler();
       }
     } else {
@@ -362,7 +371,7 @@ const Editor = ({
                 <FormControl
                   as="textarea"
                   rows={3}
-                  value={comment}
+                  value={storageComment?.length? storageComment : comment}
                   onChange={(e) => {
                     setWorkingOn(e.target.value), setError('');
                   }}
@@ -378,7 +387,10 @@ const Editor = ({
         </div>
         <div className="d-flex justify-content-end">
           <Button variant="secondary"
-            onClick={handleResetTimer}
+            onClick={() => {
+              setStoragComment('');
+              handleResetTimer();
+            }}
             className="mx-1"
           >Discard Time</Button>
           <Button
