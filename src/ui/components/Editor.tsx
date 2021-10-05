@@ -1,5 +1,10 @@
 import * as React from 'react';
-import {Alert, Button, Form, FormControl} from 'react-bootstrap';
+import {
+  Alert,
+  Button,
+  Form,
+  FormControl,
+} from 'react-bootstrap';
 import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
 import {
@@ -29,7 +34,13 @@ import {
   resolveWageCategory,
 } from '../../utils/functions';
 import * as moment from 'moment';
+<<<<<<< HEAD
 import {isErrorProjects, ProjectResult} from '../../utils/types';
+=======
+import {isErrorProjects, ProjectResult} from '../utils/types';
+import {Typeahead} from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+>>>>>>> 8daf87efe7e04962ce68ffa9a84aa3983d4036a8
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -57,18 +68,26 @@ const Editor = ({
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${moment().format('YYYY-MM-DD')}&to=${moment().add(1, 'day').format('YYYY-MM-DD')}`,
+        params: `?from=${moment()
+            .format('YYYY-MM-DD')}&to=${moment()
+            .add(1, 'day')
+            .format('YYYY-MM-DD')}`,
       }); // Today working time.
 
   const [hourlyWageCategory, setHourlyWageCategory] = React.useState('default');
 
   const [pause, setPause] = React.useState('00:00');
   const [from, setFrom] = React.useState('');
-  const [to, setTo] = React.useState(userInfos.timezone ? toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
+  const [to, setTo] = React.useState(userInfos.timezone ?
+    toTimeZone(Date(), userInfos.timezone): toUTC(Date()));
   const [date, setDate] = React.useState(new Date());
   const dateFormat = React.useMemo(() => userInfos['date_format'] ?
     resolveDateFormat(userInfos['date_format']): 'dd/MM/yyyy',
   [userInfos.date_format]);
+  const [selectedLabels, setSelectedLabels]: [
+    string[],
+    (label: string[]) => void
+  ] = React.useState([]);
 
 
   // pause resume to get infos.
@@ -117,6 +136,11 @@ const Editor = ({
      allProjects.result.projects.length > 0?
      allProjects.result.projects[0].id: '');
 
+  const [curProject, setCurProject] = React.useState(
+      !isErrorProjects(allProjects) &&
+       allProjects.result.projects.length > 0?
+       allProjects.result.projects[0]: null);
+
   const [activityName, setActivityName] = React.useState(
     !isErrorProjects(allProjects) &&
      allProjects.result.projects.length > 0 &&
@@ -150,6 +174,7 @@ const Editor = ({
         dateFormat: userInfos['date_format']??undefined,
         activityName,
         hourlyWageCategory,
+        labels: selectedLabels.length? selectedLabels.join() : null,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
@@ -164,13 +189,20 @@ const Editor = ({
   const handleSelectProject = (e) => {
     const selection = e.target.value.split('-');
     const suffix = selection[0];
-
+    setProjectId(selection[1]);
+    if (!isErrorProjects(allProjects)) {
+      setCurProject(allProjects.result.projects.
+          reduce((prev, project) => {
+            if (project.id === selection[1]) {
+              return project;
+            } else return prev;
+          }, null));
+    }
     switch (suffix) {
       case 'project':
         setProjectId(selection[1]);
         break;
       case 'activity':
-        setProjectId(selection[1]);
         setActivityName(selection[2]);
         break;
     }
@@ -221,11 +253,12 @@ const Editor = ({
         }}>here</a>.
       </p> */}
       <Form className="form-horizontal">
-        <div className="row mb-2">
-          <div className="col-md-8">
-            <Form.Label className="form-label">Project</Form.Label>
-            <div>
-              {
+        <div className="editor">
+          <div className="row mb-2">
+            <div className="col-md-8">
+              <Form.Label className="form-label">Project</Form.Label>
+              <div>
+                {
                  !isErrorProjects(allProjects) &&
                   allProjects.result.projects?.length ?
                   <Form.Select onChange={handleSelectProject}>
@@ -254,89 +287,97 @@ const Editor = ({
                 }} onClick={() => {
                   chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
                 }}>create a project now!</a></div>}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="row mb-2">
-          <HourlyWage
-            projectId={projectId}
-            setHourlyWageCategory={setHourlyWageCategory}
-          />
-        </div>
-        <div className="row mb-2">
-          <div className="col-6">
-            <Form.Label className="form-label">Date</Form.Label>
-            <DatePicker
-              selected={date}
-              onChange={handleDateChange}
-              className="form-control"
-              dateFormat={userInfos['date_format'] ?
+          <div className="row mb-2">
+            <HourlyWage
+              projectId={projectId}
+              setHourlyWageCategory={setHourlyWageCategory}
+            />
+          </div>
+          <div className="row mb-2">
+            <div className="col-6">
+              <Form.Label className="form-label">Date</Form.Label>
+              <DatePicker
+                selected={date}
+                onChange={handleDateChange}
+                className="form-control"
+                dateFormat={userInfos['date_format'] ?
                   resolveDateFormat(userInfos['date_format']): undefined}
-              customInput={ <FormControl value={date.toDateString()} /> }
-            />
-          </div>
-          <div className="col-3">
-            <Form.Label className="form-label">From</Form.Label>
-            <FormControl
-              isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
-              value={from}
-              onChange={(e) => {
-                setFrom(e.target.value), setError('');
-              }}
-              onBlur={(e) => {
-                handleOnBlurHoursMinutes(e.target.value, setFrom),
-                setError('');
-              }}
-            />
-          </div>
-          <div className="col-3">
-            <Form.Label className="form-label">To</Form.Label>
-            <FormControl
-              isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
-              value={to}
-              onChange={(e) => {
-                setTo(e.target.value), setError('');
-              }}
-              onBlur={(e) => {
-                handleOnBlurHoursMinutes(e.target.value, setTo),
-                setError('');
-              }}
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-6">
-            <FormControl
-              value={pause}
-              onChange={(e) => {
-                setPause(e.target.value), setError('');
-              }}
-              onBlur={(e) => {
-                handleOnBlurHoursMinutes(e.target.value, setPause),
-                setError('');
-              }}
-            />
-            <FormLabel label="Pause" />
-          </div>
-          <div className="col-6">
-            <FormControl value={toTimer(duration > 0 ? duration: 0)} disabled />
-            <FormLabel label="Duration" />
-          </div>
-        </div>
-        <div className="row mb-2">
-          <div className="col-12">
-            <div className="mb-2">
-              <Form.Label className="form-label">Comment</Form.Label>
+                customInput={ <FormControl value={date.toDateString()} /> }
+              />
+            </div>
+            <div className="col-3">
+              <Form.Label className="form-label">From</Form.Label>
               <FormControl
-                as="textarea"
-                rows={4}
-                value={comment}
+                isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
+                value={from}
                 onChange={(e) => {
-                  setWorkingOn(e.target.value), setError('');
+                  setFrom(e.target.value), setError('');
+                }}
+                onBlur={(e) => {
+                  handleOnBlurHoursMinutes(e.target.value, setFrom),
+                  setError('');
+                }}
+              />
+            </div>
+            <div className="col-3">
+              <Form.Label className="form-label">To</Form.Label>
+              <FormControl
+                isInvalid={toTimeHM(to)-toTimeHM(from) < 0}
+                value={to}
+                onChange={(e) => {
+                  setTo(e.target.value), setError('');
+                }}
+                onBlur={(e) => {
+                  handleOnBlurHoursMinutes(e.target.value, setTo),
+                  setError('');
                 }}
               />
             </div>
           </div>
+          <div className="row">
+            <div className="col-6">
+              <FormControl
+                value={pause}
+                onChange={(e) => {
+                  setPause(e.target.value), setError('');
+                }}
+                onBlur={(e) => {
+                  handleOnBlurHoursMinutes(e.target.value, setPause),
+                  setError('');
+                }}
+              />
+              <FormLabel label="Pause" />
+            </div>
+            <div className="col-6">
+              <FormControl
+                value={toTimer(duration > 0 ? duration: 0)}
+                disabled />
+              <FormLabel label="Duration" />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-12">
+              <div className="mb-2">
+                <Form.Label className="form-label">Comment</Form.Label>
+                <FormControl
+                  as="textarea"
+                  rows={3}
+                  value={comment}
+                  onChange={(e) => {
+                    setWorkingOn(e.target.value), setError('');
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <LabelsInput
+            project={curProject}
+            selectedLabels={selectedLabels}
+            setSelectedLabels={setSelectedLabels}
+          />
         </div>
         <div className="d-flex justify-content-end">
           <Button variant="secondary"
@@ -382,6 +423,7 @@ const HourlyWage = (
   };
 
   return (
+    hourlyWage?.result?.hourly_wages?.length?
     <div className="col-md-8">
       <Form.Label className="form-label">Hourly wage</Form.Label>
       <Form.Select
@@ -398,7 +440,33 @@ const HourlyWage = (
           );
         })}
       </Form.Select>
-    </div>
+    </div> : null
+  );
+};
+
+const LabelsInput = ({
+  project,
+  selectedLabels,
+  setSelectedLabels,
+}: {
+  project: Project,
+  selectedLabels: string[],
+  setSelectedLabels: (label) => void,
+}) => {
+  return (
+    project.labels_enabled? (
+      <div className="col-md-8 mb-4">
+        <Form.Label className="form-label">Labels</Form.Label>
+        <Typeahead
+          id="labels"
+          onChange={setSelectedLabels}
+          options={project.labels.map((label) => label.name)}
+          placeholder="Choose labels..."
+          selected={selectedLabels}
+          multiple
+        />
+      </div>
+    ): null
   );
 };
 

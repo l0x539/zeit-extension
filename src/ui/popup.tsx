@@ -5,6 +5,7 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/popup.css';
