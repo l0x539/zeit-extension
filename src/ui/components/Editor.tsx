@@ -34,13 +34,10 @@ import {
   resolveWageCategory,
 } from '../../utils/functions';
 import * as moment from 'moment';
-<<<<<<< HEAD
-import {isErrorProjects, ProjectResult} from '../../utils/types';
-=======
-import {isErrorProjects, ProjectResult} from '../utils/types';
+
+import {isErrorProjects, Project, ProjectResult} from '../../utils/types';
 import {Typeahead} from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
->>>>>>> 8daf87efe7e04962ce68ffa9a84aa3983d4036a8
 
 /*
  * Edit time records posting information when the timer is stopped.
