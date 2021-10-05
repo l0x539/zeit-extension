@@ -18,11 +18,6 @@
       "service_worker": "js/background.js"
     },
     "permissions": [
-<<<<<<< HEAD
-      "activeTab",
-      "alarms",
-=======
->>>>>>> 8daf87efe7e04962ce68ffa9a84aa3983d4036a8
       "storage",
       "notifications",
       "background",
