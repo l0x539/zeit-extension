@@ -29,7 +29,6 @@ const ZeitGithubButton = () => {
   React.useEffect(() => {
     chrome.runtime.onMessage.addListener(
         async (message, sender, sendResponse) => {
-          console.log('receiving message backaend:', message);
           setTimerStatus(message?.item);
           setLoading(false);
         });
@@ -40,8 +39,6 @@ const ZeitGithubButton = () => {
     try {
       chrome.runtime.sendMessage({message: 'github-start-stop'},
           function(resp) {
-            console.log('resp br', resp);
-
             /* callback */
           });
     } catch {

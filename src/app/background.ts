@@ -16,7 +16,6 @@ const sendMessagePromise = (tabId, item) => {
 chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) => {
       chrome.storage.local.get('apiKey', async function(result) {
-        console.log('Background got a message!');
         if (message.message == 'github-start-stop') {
           startStop(sender.tab.id);
           // chrome.tabs.create({
@@ -38,7 +37,7 @@ chrome.runtime.onMessage.addListener(
                 result.apiKey,
             );
             sendMessagePromise(sender.tab.id, 'STARTED');
-          } else if (pause.status === 401) {
+          } else if (pause.status === 401 || pause.status === 400) {
             sendMessagePromise(sender.tab.id, 'STOPPED');
           } else if (pause.status === 404) {
             sendMessagePromise(sender.tab.id, 'ERROR');
