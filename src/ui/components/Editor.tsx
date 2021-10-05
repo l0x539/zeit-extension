@@ -35,10 +35,15 @@ import {
 } from '../../utils/functions';
 import * as moment from 'moment';
 
-import {isErrorProjects, Project, ProjectResult} from '../../utils/types';
+import {
+  isErrorProjects,
+  Project,
+  ProjectResult,
+  Ticket,
+} from '../../utils/types';
 import {Typeahead} from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import {useComment} from '../../utils/chrome';
+import {useComment, useTicket} from '../../utils/chrome';
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -69,6 +74,13 @@ const Editor = ({
     boolean,
     string
   ] = useComment();
+
+  const [ticket]: [
+    Ticket,
+    (value: Ticket) => void,
+    boolean,
+    string
+  ] = useTicket();
 
   const timeRecords = useResource(getTimeRecordsHook,
       {
@@ -180,6 +192,8 @@ const Editor = ({
         activityName,
         hourlyWageCategory,
         labels: selectedLabels.length? selectedLabels.join() : null,
+        ticketBase: ticket.ticketBase,
+        ticketType: ticket.ticketType,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);

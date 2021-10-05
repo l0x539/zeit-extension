@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useComment, useGithub} from '../../../../utils/chrome';
+import {useComment, useTicket} from '../../../../utils/chrome';
 import {Status} from '../../../../utils/types';
 import FavIconSvg from '../../../components/FavIconSvg';
 
@@ -34,7 +34,7 @@ const ZeitGithubButton = () => {
     (value: GithubTicket) => void,
     boolean,
     string
-] = useGithub();
+] = useTicket();
 
   const [, setComment]: [
     string,

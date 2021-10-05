@@ -240,3 +240,10 @@ export type Settings = {
 }
 
 export type Status = 'STARTED' | 'STOPPED' | 'PAUSED' | 'ERROR'
+
+export interface Ticket {
+    ticketBase: string,
+    ticketType: string,
+    title: string,
+    ticketId: string,
+}
