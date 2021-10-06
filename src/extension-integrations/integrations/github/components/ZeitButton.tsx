@@ -3,7 +3,6 @@ import {useComment, useTicket} from '../../../../utils/chrome';
 import {Status} from '../../../../utils/types';
 import FavIconSvg from '../../../components/FavIconSvg';
 
-
 const resolveTimer = (status: Status) => {
   switch (status) {
     case 'STARTED':
@@ -11,7 +10,7 @@ const resolveTimer = (status: Status) => {
     case 'PAUSED':
       return 'Resume';
     case 'STOPPED':
-      return 'START';
+      return 'Start';
     case 'ERROR':
     default:
       return false;
