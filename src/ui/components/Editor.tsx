@@ -68,7 +68,7 @@ const Editor = ({
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
 
-  const [storageComment, setStoragComment]: [
+  const [storageComment, setStorageComment]: [
     string,
     (value: string) => void,
     boolean,
@@ -178,12 +178,17 @@ const Editor = ({
     setDate(new Date(value));
   };
 
+  const cachedComment = React.useMemo(
+    () => storageComment?.length? storageComment : comment
+    , [storageComment, comment]
+  )
+
   const handleStopTimer = async () => {
     if (projectId.length > 0) {
       const result = await startStopTimer({
         apiKey: token,
         projectId,
-        comment,
+        comment: cachedComment,
         date: toShortDate(date, dateFormat),
         startTime: from,
         stopTime: to,
@@ -198,7 +203,7 @@ const Editor = ({
       if (result.error && result.error.length > 0) {
         setError(result.error);
       } else {
-        setStoragComment('');
+        setStorageComment('');
         stopTimerHandler();
       }
     } else {
@@ -385,9 +390,15 @@ const Editor = ({
                 <FormControl
                   as="textarea"
                   rows={3}
-                  value={storageComment?.length? storageComment : comment}
+                  value={cachedComment}
                   onChange={(e) => {
-                    setWorkingOn(e.target.value), setError('');
+                    const value = e.target.value
+                    if (storageComment?.length) {
+                      setStorageComment(value);
+                    } else {
+                      setWorkingOn(value);
+                    }
+                    setError('');
                   }}
                 />
               </div>
@@ -402,7 +413,7 @@ const Editor = ({
         <div className="d-flex justify-content-end">
           <Button variant="secondary"
             onClick={() => {
-              setStoragComment('');
+              setStorageComment('');
               handleResetTimer();
             }}
             className="mx-1"

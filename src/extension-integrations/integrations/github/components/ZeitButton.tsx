@@ -95,7 +95,7 @@ const ZeitGithubButton = () => {
       <FavIconSvg />
       {loading?
       <span style={{color: 'gray'}}
-        data-content={`Login to zeit extension.`}>
+        data-content={`Signin to the ZEIT.IO extension.`}>
           Loading...
       </span>:
       status ?
@@ -103,7 +103,7 @@ const ZeitGithubButton = () => {
         ZEIT.IO {status} Timer
       </span> :
       <span style={{color: 'gray'}}
-        data-content={`Login to zeit extension.`}>
+        data-content={`Signin to the ZEIT.IO extension.`}>
       Login to zeit extension.
       </span>}
       <span className="Counter"></span>
