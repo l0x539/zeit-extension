@@ -69,9 +69,12 @@ const ZeitGithubButton = () => {
           function(resp) {
             /* callback */
           });
+      const segments = document.URL.split('/')
+      segments.pop()
+      segments.push('')
       setgithubTicket({
-        ticketBase: document.URL,
-        ticketType: 'Github',
+        ticketBase: segments.join('/'),
+        ticketType: 'github',
         title,
         ticketId,
       });
