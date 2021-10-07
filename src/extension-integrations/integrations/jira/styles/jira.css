@@ -1,0 +1,40 @@
+.jira-zeit {
+    align-items: baseline;
+    border-width: 0px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    max-width: 100%;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.1s ease-out 0s, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+    white-space: nowrap;
+    background: rgba(9, 30, 66, 0.04);
+    cursor: pointer;
+    height: 2.28571em;
+    line-height: 2.28571em;
+    padding: 0px 10px;
+    vertical-align: middle;
+    width: auto;
+    -webkit-box-pack: center;
+    justify-content: center;
+    font-weight: 600;
+    color: rgb(66, 82, 110) !important;
+    margin-left: 1rem;
+}
+
+.zeit-button {
+    height: 100%;
+}
+
+.jira-zeit a {
+    display: flex;
+    align-items: center;
+}
+.jira-zeit svg {
+    margin-right: 0.2rem;
+}
