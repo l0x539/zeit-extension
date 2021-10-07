@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {useComment, useTicket} from '../../../../utils/chrome';
-import {Status} from '../../../../utils/types';
-import FavIconSvg from '../../../components/FavIconSvg';
+import {useComment, useTicket} from '../../utils/chrome';
+import {Status} from '../../utils/types';
+import FavIconSvg from './FavIconSvg';
 
 const resolveTimer = (status: Status) => {
   switch (status) {
@@ -17,20 +17,30 @@ const resolveTimer = (status: Status) => {
   }
 };
 
-interface GithubTicket {
+interface Ticket {
   ticketBase: string
   ticketType: string
   title?: string
   ticketId?: string
 }
 
-const ZeitGithubButton = () => {
+const ZeitIntegrationButton = (
+    {
+      className,
+      title,
+      ticketId,
+    }:
+  {
+    className: string,
+    title?: string,
+    ticketId?: string
+  }) => {
   const [timerStatus, setTimerStatus] = React.useState<Status>('STOPPED');
   const [loading, setLoading] = React.useState<boolean>(true);
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
-  const [, setgithubTicket]: [
-    GithubTicket,
-    (value: GithubTicket) => void,
+  const [, setTicket]: [
+    Ticket,
+    (value: Ticket) => void,
     boolean,
     string
 ] = useTicket();
@@ -43,7 +53,7 @@ const ZeitGithubButton = () => {
   ] = useComment();
 
   React.useEffect(() => {
-    chrome.runtime.sendMessage({message: 'github-initialize'});
+    chrome.runtime.sendMessage({message: 'integration-initialize'});
   }, []);
 
   React.useEffect(() => {
@@ -54,25 +64,16 @@ const ZeitGithubButton = () => {
         });
   }, []);
 
-  const title = React.useMemo(() => document.querySelector(
-      'h1.gh-header-title .markdown-title',
-  ).textContent, []);
-
-  const ticketId = React.useMemo(() => document.querySelector(
-      'h1.gh-header-title .f1-light',
-  ).textContent, []);
-
-
   const handleStartStop = () => {
     try {
-      chrome.runtime.sendMessage({message: 'github-start-stop'},
+      chrome.runtime.sendMessage({message: 'integration-start-stop'},
           function(resp) {
             /* callback */
           });
-      const segments = document.URL.split('/')
-      segments.pop()
-      segments.push('')
-      setgithubTicket({
+      const segments = document.URL.split('/');
+      segments.pop();
+      segments.push('');
+      setTicket({
         ticketBase: segments.join('/'),
         ticketType: 'github',
         title,
@@ -88,11 +89,7 @@ const ZeitGithubButton = () => {
 
   return (
     <a href="#"
-      className={`UnderlineNav-item 
-        hx_underlinenav-item no-wrap 
-        js-responsive-underlinenav-item 
-        js-selected-navigation-item
-        zeit-github`}
+      className={className}
       onClick={handleStartStop}
       style={{cursor: status || loading?'pointer':'not-allowed'}}>
       <FavIconSvg />
@@ -114,4 +111,4 @@ const ZeitGithubButton = () => {
   );
 };
 
-export default ZeitGithubButton;
+export default ZeitIntegrationButton;

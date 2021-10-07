@@ -179,9 +179,9 @@ const Editor = ({
   };
 
   const cachedComment = React.useMemo(
-    () => storageComment?.length? storageComment : comment
-    , [storageComment, comment]
-  )
+      () => storageComment?.length? storageComment : comment
+      , [storageComment, comment],
+  );
 
   const handleStopTimer = async () => {
     if (projectId.length > 0) {
@@ -392,7 +392,7 @@ const Editor = ({
                   rows={3}
                   value={cachedComment}
                   onChange={(e) => {
-                    const value = e.target.value
+                    const value = e.target.value;
                     if (storageComment?.length) {
                       setStorageComment(value);
                     } else {

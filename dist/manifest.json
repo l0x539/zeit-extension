@@ -40,7 +40,8 @@
       },
       {
         "matches": [
-          "https://*.github.com/*/*/issues/*"
+          "https://*.github.com/*/*/issues/*",
+          "https://*.gitlab.com/*/*/*/issues/*"
         ],
         "run_at" : "document_idle",
         "js": [

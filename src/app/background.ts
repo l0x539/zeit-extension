@@ -16,13 +16,13 @@ const sendMessagePromise = (tabId, item) => {
 chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) => {
       chrome.storage.local.get('apiKey', async function(result) {
-        if (message.message == 'github-start-stop') {
+        if (message.message == 'integration-start-stop') {
           startStop(sender.tab.id);
           // chrome.tabs.create({
           //   active: true,
           //   url: '../popup.html',
           // }, null);
-        } else if (message.message == 'github-initialize') {
+        } else if (message.message == 'integration-initialize') {
           const pause = await request('/api/v1/usr/time_records/pause',
               'POST',
               {},
