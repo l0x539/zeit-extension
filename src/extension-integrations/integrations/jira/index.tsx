@@ -10,12 +10,12 @@ setInterval(() => {
   const findUrl = (new URL(document.location.href))
       .searchParams.get('selectedIssue');
   // eslint-disable-next-line max-len
-  const isReady = document.querySelector('div[data-test-id="ref-spotlight-target-status-spotlight"] div:not([class]):not([data-test-id]) div:not([class]):not([data-test-id])');
+  const isReady = document.querySelector('div[data-test-id="issue.views.issue-base.context.status-and-approvals-wrapper.status-and-approval"] > div');
   if (!isSet && findUrl && isReady) {
     console.log('here');
     const injectElement = injectTag({
       // eslint-disable-next-line max-len
-      query: 'div[data-test-id="ref-spotlight-target-status-spotlight"] div:not([class]):not([data-test-id]) div:not([class]):not([data-test-id])',
+      query: 'div[data-test-id="issue.views.issue-base.context.status-and-approvals-wrapper.status-and-approval"] > div',
       tag: 'button',
       className: `jira-zeit`,
     });
