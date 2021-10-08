@@ -33,7 +33,7 @@ const injectLocation = (
         element.replaceChild(_newElement, reference);
       } else {
         throw Error(`No reference element was passed,
-          try adding a referenceQuery to options`);
+          try adding a reference Query to options`);
       }
     case 'after':
       if (reference) {

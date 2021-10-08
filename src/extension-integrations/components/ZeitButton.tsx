@@ -2,6 +2,7 @@ import * as React from 'react';
 import {useComment, useTicket} from '../../utils/chrome';
 import {Status} from '../../utils/types';
 import FavIconSvg from './FavIconSvg';
+import '../../styles/zeit-button.css';
 
 const resolveTimer = (status: Status) => {
   switch (status) {
@@ -89,7 +90,7 @@ const ZeitIntegrationButton = (
 
   return (
     <a href="#"
-      className={className}
+      className={`${className} zeit-btn`}
       onClick={handleStartStop}
       style={{cursor: status || loading?'pointer':'not-allowed'}}>
       <FavIconSvg />
