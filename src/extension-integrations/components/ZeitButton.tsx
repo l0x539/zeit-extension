@@ -80,7 +80,7 @@ const ZeitIntegrationButton = (
         title,
         ticketId,
       });
-      setComment(`${ticketId} ${title}:`);
+      setComment(`#${ticketId} ${title}:`);
     } catch {
       forceUpdate();
     }
