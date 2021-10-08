@@ -75,7 +75,7 @@ const Editor = ({
     string
   ] = useComment();
 
-  const [ticket]: [
+  const [ticket, setTicket]: [
     Ticket,
     (value: Ticket) => void,
     boolean,
@@ -204,6 +204,7 @@ const Editor = ({
         setError(result.error);
       } else {
         setStorageComment('');
+        setTicket(null);
         stopTimerHandler();
       }
     } else {
@@ -414,6 +415,7 @@ const Editor = ({
           <Button variant="secondary"
             onClick={() => {
               setStorageComment('');
+              setTicket(null);
               handleResetTimer();
             }}
             className="mx-1"
