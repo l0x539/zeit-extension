@@ -44,6 +44,8 @@ import {
 import {Typeahead} from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {useComment, useTicket} from '../../utils/chrome';
+import '../../styles/datepicker.css';
+
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -328,7 +330,7 @@ const Editor = ({
               <DatePicker
                 selected={date}
                 onChange={handleDateChange}
-                className="form-control"
+                className="form-control datepicker"
                 dateFormat={userInfos['date_format'] ?
                   resolveDateFormat(userInfos['date_format']): undefined}
                 customInput={ <FormControl value={date.toDateString()} /> }
@@ -490,19 +492,19 @@ const LabelsInput = ({
   setSelectedLabels: (label) => void,
 }) => {
   return (
-    project.labels_enabled? (
+    (
       <div className="col-md-8 mb-4">
         <Form.Label className="form-label">Labels</Form.Label>
         <Typeahead
           id="labels"
           onChange={setSelectedLabels}
-          options={project.labels.map((label) => label.name)}
+          options={[{name: 'test'}, {name: 'hello'}].map((label) => label.name)}
           placeholder="Choose labels..."
           selected={selectedLabels}
           multiple
         />
       </div>
-    ): null
+    )
   );
 };
 
