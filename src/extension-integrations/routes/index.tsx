@@ -10,7 +10,7 @@ export const ROUTES = [
   {
     integration: 'jira',
     // eslint-disable-next-line max-len
-    rule: /^https:\/\/.*atlassian.net\/.*\/.*\/.*\/.*\/boards\/.*\?selectedIssue=.*$/,
+    rule: /^https\:\/\/.*atlassian\.net\/.*\/boards\/.?\?.*selectedIssue=.*$/,
   },
 ];
 
