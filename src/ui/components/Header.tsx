@@ -226,10 +226,6 @@ const Header: React.FC<IHeader> = ({
   };
 
   const handleResumeTimer = async () => {
-    setSettings({
-      ...settings,
-      askPause: !canAskPauseQuestion,
-    });
     setTimerStatus('STARTED');
     const res = await resumeTimer({apiKey: token});
     setTimer(calculateTime(res.start, res.pause_total));
@@ -261,7 +257,13 @@ const Header: React.FC<IHeader> = ({
             Would you like to resume your last record?
           </div>
         </div>}
-        handleAccept={handleResumeTimer}
+        handleAccept={() => {
+          handleResumeTimer();
+          setSettings({
+            ...settings,
+            askPause: !canAskPauseQuestion,
+          });
+        }}
         handleRefuse={() => {
           setSettings({
             ...settings,
