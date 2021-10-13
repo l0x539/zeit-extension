@@ -492,19 +492,19 @@ const LabelsInput = ({
   setSelectedLabels: (label) => void,
 }) => {
   return (
-    (
+    project.labels_enabled? (
       <div className="col-md-8 mb-4">
         <Form.Label className="form-label">Labels</Form.Label>
         <Typeahead
           id="labels"
           onChange={setSelectedLabels}
-          options={[{name: 'test'}, {name: 'hello'}].map((label) => label.name)}
+          options={project.labels.map((label) => label.name)}
           placeholder="Choose labels..."
           selected={selectedLabels}
           multiple
         />
       </div>
-    )
+    ): null
   );
 };
 
