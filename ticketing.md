@@ -8,9 +8,9 @@ This Documentation explains how to add a new ticket system to use zeit extension
 
 2. Create `index.tsx` and `app.tsx` inside the new ticket system folder.
 
-3. Optional global components can go iside `src/extension-integrations/components`.
+3. Optional global components can go inside `src/extension-integrations/components`.
 
-4. Optional components can go iside `src/extension-integrations/<INTEGRATION>/components`.
+4. Optional components can go inside `src/extension-integrations/<INTEGRATION>/components`.
 
 4. `routes` is used to specify integration url path using a regex (details in next steps).
 
@@ -157,7 +157,7 @@ This is the ticket id.
 
 ## Cases
 
-Some elements you want to inject to might be loaded later, after the document is loaded, like dynamic modals or fetched components, in this case the default manifest will try to run the inject the script once the document is loaded, however this won't work in this case and it will just throw an error that it couldn't find the element to move in, to see one way around that please check (Jira integration)[https://gitlab.com/starneit105/zeit/-/tree/Nourdin/Github-Integration/src/extension-integrations/integrations/jira] where we use setInterval to check for the component in the specified path each 1 second.
+Some elements you want to inject to might be loaded later, after the document is loaded, like dynamic modals or fetched components, in this case the default manifest will try to run injecting script once the document is loaded, however this won't work in this case and it will just throw an error that it couldn't find the element to move in, to see one way around that please check (Jira integration)[https://gitlab.com/starneit105/zeit/-/tree/Nourdin/Github-Integration/src/extension-integrations/integrations/jira] where we use setInterval to check for the component in the specified path each 1 second.
 
 ## Examples:
 
