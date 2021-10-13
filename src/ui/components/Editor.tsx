@@ -75,7 +75,7 @@ const Editor = ({
     string
   ] = useComment();
 
-  const [ticket]: [
+  const [ticket, setTicket]: [
     Ticket,
     (value: Ticket) => void,
     boolean,
@@ -179,9 +179,9 @@ const Editor = ({
   };
 
   const cachedComment = React.useMemo(
-    () => storageComment?.length? storageComment : comment
-    , [storageComment, comment]
-  )
+      () => storageComment?.length? storageComment : comment
+      , [storageComment, comment],
+  );
 
   const handleStopTimer = async () => {
     if (projectId.length > 0) {
@@ -204,6 +204,7 @@ const Editor = ({
         setError(result.error);
       } else {
         setStorageComment('');
+        setTicket(null);
         stopTimerHandler();
       }
     } else {
@@ -392,7 +393,7 @@ const Editor = ({
                   rows={3}
                   value={cachedComment}
                   onChange={(e) => {
-                    const value = e.target.value
+                    const value = e.target.value;
                     if (storageComment?.length) {
                       setStorageComment(value);
                     } else {
@@ -414,6 +415,7 @@ const Editor = ({
           <Button variant="secondary"
             onClick={() => {
               setStorageComment('');
+              setTicket(null);
               handleResetTimer();
             }}
             className="mx-1"
