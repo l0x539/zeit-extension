@@ -28,7 +28,7 @@ import {
   UserInfosResponse,
 } from '../../utils/types';
 import ZeitTimer, {TimerStatus} from './ZeitTimer';
-import {getImageUrl} from '../../utils/functions';
+import {getImageUrl, openTab} from '../../utils/functions';
 
 const calculateTime: (
   start: string,
