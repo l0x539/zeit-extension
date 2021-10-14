@@ -279,7 +279,14 @@ const Header: React.FC<IHeader> = ({
         <div onClick={() => {
           chrome.tabs.create({url: 'https://zeit.io/en/times'});
         }}>
-          <img style={{height: '35px', cursor: 'pointer'}} className="logo_big" alt="zeit.io icon" src="https://d2ldomkd7flzzm.cloudfront.net/assets/logo-1b1939c78f5369f959943e65b78943cd505527bcfe9f1d44c4c33d5e0e47eeeb.png"/>
+          <img
+            style={{
+              height: '30px',
+              marginRight: '0.4rem',
+              cursor: 'pointer',
+            }}
+            className="logo_big" alt="zeit.io icon"
+            src={chrome.runtime.getURL('icons/logo-48.png')} />
           <span className="logo_zeitio">
             <a href="/en/" className="a_logo">ZEIT.IO</a>
           </span>
