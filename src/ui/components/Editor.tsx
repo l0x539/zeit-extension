@@ -32,6 +32,7 @@ import {
   toUTC,
   resolveCurrency,
   resolveWageCategory,
+  openTab,
 } from '../../utils/functions';
 import * as moment from 'moment';
 
@@ -313,7 +314,7 @@ const Editor = ({
                   color: 'blueviolet',
                   cursor: 'pointer',
                 }} onClick={() => {
-                  chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
+                  openTab('https://zeit.io/en/projects/new');
                 }}>create a project now!</a></div>}
               </div>
             </div>

@@ -28,6 +28,7 @@ import {
   UserInfosResponse,
 } from '../../utils/types';
 import ZeitTimer, {TimerStatus} from './ZeitTimer';
+import {getImageUrl} from '../../utils/functions';
 
 const calculateTime: (
   start: string,
@@ -277,7 +278,7 @@ const Header: React.FC<IHeader> = ({
       <div className={`page-header d-flex align-items-center 
                        justify-content-between`}>
         <div onClick={() => {
-          chrome.tabs.create({url: 'https://zeit.io/en/times'});
+          openTab('https://zeit.io/en/times');
         }}>
           <img
             style={{
@@ -286,7 +287,7 @@ const Header: React.FC<IHeader> = ({
               cursor: 'pointer',
             }}
             className="logo_big" alt="zeit.io icon"
-            src={chrome.runtime.getURL('icons/logo-48.png')} />
+            src={getImageUrl('icons/logo-48.png')} />
           <span className="logo_zeitio">
             <a href="/en/" className="a_logo">ZEIT.IO</a>
           </span>
