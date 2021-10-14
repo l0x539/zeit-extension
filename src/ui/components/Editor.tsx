@@ -200,8 +200,8 @@ const Editor = ({
         activityName,
         hourlyWageCategory,
         labels: selectedLabels.length? selectedLabels.join() : null,
-        ticketBase: ticket.ticketBase,
-        ticketType: ticket.ticketType,
+        ticketBase: ticket?.ticketBase,
+        ticketType: ticket?.ticketType,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
