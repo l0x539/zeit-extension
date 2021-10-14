@@ -157,10 +157,10 @@ This is the ticket id.
 
 ## Cases
 
-Some elements you want to inject to might be loaded later, after the document is loaded, like dynamic modals or fetched components, in this case the default manifest will try to run injecting script once the document is loaded, however this won't work in this case and it will just throw an error that it couldn't find the element to move in, to see one way around that please check (Jira integration)[https://gitlab.com/starneit105/zeit/-/tree/Nourdin/Github-Integration/src/extension-integrations/integrations/jira] where we use setInterval to check for the component in the specified path each 1 second.
+Some elements you want to inject to might be loaded later, after the document is loaded, like dynamic modals or fetched components, in this case the default manifest will try to run injecting script once the document is loaded, however this won't work in this case and it will just throw an error that it couldn't find the element to move in, to see one way around that please check (Jira integration)[https://github.com/zeit-io/browser-plugin/tree/main/src/extension-integrations/integrations/jira] where we use setInterval to check for the component in the specified path each 1 second.
 
 ## Examples:
 
-* Github issues zeit button: (github)[https://gitlab.com/starneit105/zeit/-/tree/Nourdin/Github-Integration/src/extension-integrations/integrations/github].
-* Gitlab issues zeit button: (gitlab)[https://gitlab.com/starneit105/zeit/-/tree/Nourdin/Github-Integration/src/extension-integrations/integrations/gitlab].
-* Jira issues zeit button: (jira)[https://gitlab.com/starneit105/zeit/-/tree/Nourdin/Github-Integration/src/extension-integrations/integrations/jira].
+* Github issues zeit button: (github)[https://github.com/zeit-io/browser-plugin/tree/main/src/extension-integrations/integrations/github].
+* Gitlab issues zeit button: (gitlab)[https://github.com/zeit-io/browser-plugin/tree/main/src/extension-integrations/integrations/gitlab].
+* Jira issues zeit button: (jira)[https://github.com/zeit-io/browser-plugin/tree/main/src/extension-integrations/integrations/jira].
