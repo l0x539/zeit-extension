@@ -8,7 +8,7 @@ const App = () => {
 
   const ticketId = React.useMemo(() => document.querySelector(
       'h1.gh-header-title .f1-light',
-  ).textContent, []);
+  ).textContent.replace('#', ''), []);
   return (
     <ZeitIntegrationButton className={`UnderlineNav-item 
     hx_underlinenav-item no-wrap 
