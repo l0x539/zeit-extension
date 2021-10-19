@@ -9,12 +9,12 @@ import ModalScreen from './ModalScreen';
 import {useFetcher, useResource} from '@rest-hooks/core';
 import {
   getProjectsBookableHook,
-  request,
   StartStopTimerHook,
   getTimeRecordsHook,
   getHourlyWageHook,
-} from '../utils/api';
-import AuthContext from '../contexts/AuthContexts';
+} from '../../utils/api';
+import {request} from '../../utils/request';
+import AuthContext from '../../contexts/AuthContexts';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import {
@@ -32,11 +32,21 @@ import {
   toUTC,
   resolveCurrency,
   resolveWageCategory,
-} from '../utils/functions';
+  openTab,
+} from '../../utils/functions';
 import * as moment from 'moment';
-import {isErrorProjects, Project, ProjectResult} from '../utils/types';
+
+import {
+  isErrorProjects,
+  Project,
+  ProjectResult,
+  Ticket,
+} from '../../utils/types';
 import {Typeahead} from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import {useComment, useTicket} from '../../utils/chrome';
+import '../../styles/datepicker.css';
+
 
 /*
  * Edit time records posting information when the timer is stopped.
@@ -60,6 +70,20 @@ const Editor = ({
   const {token, userInfos} = React.useContext(AuthContext);
   // const stopTimer = useFetcher(StopTimerHook);
   const startStopTimer = useFetcher(StartStopTimerHook);
+
+  const [storageComment, setStorageComment]: [
+    string,
+    (value: string) => void,
+    boolean,
+    string
+  ] = useComment();
+
+  const [ticket, setTicket]: [
+    Ticket,
+    (value: Ticket) => void,
+    boolean,
+    string
+  ] = useTicket();
 
   const timeRecords = useResource(getTimeRecordsHook,
       {
@@ -157,12 +181,17 @@ const Editor = ({
     setDate(new Date(value));
   };
 
+  const cachedComment = React.useMemo(
+      () => storageComment?.length? storageComment : comment
+      , [storageComment, comment],
+  );
+
   const handleStopTimer = async () => {
     if (projectId.length > 0) {
       const result = await startStopTimer({
         apiKey: token,
         projectId,
-        comment,
+        comment: cachedComment,
         date: toShortDate(date, dateFormat),
         startTime: from,
         stopTime: to,
@@ -171,10 +200,14 @@ const Editor = ({
         activityName,
         hourlyWageCategory,
         labels: selectedLabels.length? selectedLabels.join() : null,
+        ticketBase: ticket?.ticketBase,
+        ticketType: ticket?.ticketType,
       });
       if (result.error && result.error.length > 0) {
         setError(result.error);
       } else {
+        setStorageComment('');
+        setTicket(null);
         stopTimerHandler();
       }
     } else {
@@ -281,7 +314,7 @@ const Editor = ({
                   color: 'blueviolet',
                   cursor: 'pointer',
                 }} onClick={() => {
-                  chrome.tabs.create({url: 'https://zeit.io/en/projects/new'});
+                  openTab('https://zeit.io/en/projects/new');
                 }}>create a project now!</a></div>}
               </div>
             </div>
@@ -298,7 +331,7 @@ const Editor = ({
               <DatePicker
                 selected={date}
                 onChange={handleDateChange}
-                className="form-control"
+                className="form-control datepicker"
                 dateFormat={userInfos['date_format'] ?
                   resolveDateFormat(userInfos['date_format']): undefined}
                 customInput={ <FormControl value={date.toDateString()} /> }
@@ -361,9 +394,15 @@ const Editor = ({
                 <FormControl
                   as="textarea"
                   rows={3}
-                  value={comment}
+                  value={cachedComment}
                   onChange={(e) => {
-                    setWorkingOn(e.target.value), setError('');
+                    const value = e.target.value;
+                    if (storageComment?.length) {
+                      setStorageComment(value);
+                    } else {
+                      setWorkingOn(value);
+                    }
+                    setError('');
                   }}
                 />
               </div>
@@ -377,7 +416,11 @@ const Editor = ({
         </div>
         <div className="d-flex justify-content-end">
           <Button variant="secondary"
-            onClick={handleResetTimer}
+            onClick={() => {
+              setStorageComment('');
+              setTicket(null);
+              handleResetTimer();
+            }}
             className="mx-1"
           >Discard Time</Button>
           <Button

@@ -548,3 +548,11 @@ export const resolveWageCategory = (categ: string) => {
   if (Object.keys(WAGE_CATEGORIES).includes(categ)) return WAGE_CATEGORIES[categ];
   else return '$';
 };
+
+export const getImageUrl = (pathname: string) => {
+  return chrome.runtime.getURL(pathname);
+};
+
+export const openTab = (url: string) => {
+  return chrome.tabs.create({url});
+};

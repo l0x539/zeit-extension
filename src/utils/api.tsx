@@ -4,25 +4,7 @@
 
 
 import {Endpoint} from '@rest-hooks/endpoint';
-import {API_URL} from './constants';
-
-export const request = (
-    route,
-    method,
-    data=null,
-    apiKey=undefined,
-    params='',
-) => {
-  return fetch(API_URL + route + params, {
-    method: method,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      apiKey,
-    },
-    body: data ? JSON.stringify(data) : undefined,
-  }).then((res) => ({status: res.status, data: res.json()}));
-};
+import {request} from './request';
 
 // Authentication
 export const loginHook = new Endpoint(({email, password}: {
@@ -105,6 +87,8 @@ export const StartStopTimerHook = new Endpoint(({
   activityName,
   hourlyWageCategory,
   labels,
+  ticketBase,
+  ticketType,
 }:{
   apiKey: string,
   projectId: string,
@@ -116,7 +100,9 @@ export const StartStopTimerHook = new Endpoint(({
   dateFormat: string,
   activityName: string,
   hourlyWageCategory: string,
-  labels?: string | null
+  labels?: string | null,
+  ticketBase?: string,
+  ticketType?: string
 }) => {
   return request('/api/v1/usr/time_records/start_stop', 'POST',
       {
@@ -130,6 +116,8 @@ export const StartStopTimerHook = new Endpoint(({
         stop_time: stopTime,
         pause: pause,
         labels,
+        ticket_base: ticketBase,
+        ticket_type: ticketType,
       },
       apiKey,
   ).then((res) => res.data);

@@ -1,18 +1,63 @@
-import {request} from '../ui/utils/api';
-import {notify, registerCommandAction} from '../ui/utils/chrome';
+import {request} from '../utils/request';
+import {notify, registerCommandAction} from '../utils/chrome';
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log('Background got a message!');
-  sendResponse({});
-});
-
-chrome.runtime.onConnect.addListener(function(port) {
-  if (port.name === 'Zeit') {
-    port.onDisconnect.addListener(function() {
-      chrome.runtime.reload();
+const sendMessagePromise = (tabId, item) => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(tabId, {item}, (response) => {
+      if (response?.complete) {
+        resolve('fullfilled');
+      } else {
+        reject(Error('Something wrong'));
+      }
     });
-  }
-});
+  });
+};
+
+chrome.runtime.onMessage.addListener(
+    async (message, sender, sendResponse) => {
+      chrome.storage.local.get('apiKey', async function(result) {
+        if (message.message == 'integration-start-stop') {
+          startStop(sender.tab.id);
+          // chrome.tabs.create({
+          //   active: true,
+          //   url: '../popup.html',
+          // }, null);
+        } else if (message.message == 'integration-initialize') {
+          const pause = await request('/api/v1/usr/time_records/pause',
+              'POST',
+              {},
+              result.apiKey,
+          );
+          if (pause.status === 200) {
+            sendMessagePromise(sender.tab.id, 'PAUSED');
+          } else if (pause.status === 201) {
+            request('/api/v1/usr/time_records/resume',
+                'POST',
+                {},
+                result.apiKey,
+            );
+            sendMessagePromise(sender.tab.id, 'STARTED');
+          } else if (pause.status === 401 || pause.status === 400) {
+            sendMessagePromise(sender.tab.id, 'STOPPED');
+          } else if (pause.status === 404) {
+            sendMessagePromise(sender.tab.id, 'ERROR');
+          }
+        }
+      });
+    });
+// chrome.runtime.onConnect.addListener(async function(port) {
+//   await chrome.storage.local.set({loading: true});
+
+//   if (port.name === 'Zeit') {
+//     port.onDisconnect.addListener(function() {
+//       chrome.storage.local.get(['loading'], (result) => {
+//         if (result.loading) {
+//           // chrome.runtime.reload();
+//         }
+//       });
+//     });
+//   }
+// });
 
 // chrome.windows.onRemoved.addListener(function() {
 //   chrome.storage.local.get('apiKey', async function(result) {
@@ -68,13 +113,14 @@ chrome.windows.onRemoved.addListener(function() {
   });
 });
 
-const startStop = () => {
-  chrome.storage.local.get('apiKey', async function(result) {
+const startStop = async (tabId=undefined) => {
+  return await chrome.storage.local.get('apiKey', async function(result) {
     const start = await request('/api/v1/usr/time_records/start', 'POST',
         {},
         result.apiKey,
     );
     if (start.status === 404) {
+      if (tabId) sendMessagePromise(tabId, 'ERROR');
       notify('ZEIT.IO', 'You\'re not logged in.');
       return;
     } else if (start.status === 200) {
@@ -87,13 +133,20 @@ const startStop = () => {
             {},
             result.apiKey,
         );
+        if (tabId) sendMessagePromise(tabId, 'STARTED');
         notify('ZEIT.IO', 'Timer Resumed');
+        return;
       } else if (pause.status === 201) {
+        if (tabId) sendMessagePromise(tabId, 'PAUSED');
         notify('ZEIT.IO', 'Timer Paused');
+        return;
       }
     } else if (start.status === 201) {
+      if (tabId) sendMessagePromise(tabId, 'STARTED');
       notify('ZEIT.IO', 'Timer Started');
+      return;
     }
+    if (tabId) sendMessagePromise(tabId, 'STOPPED');
   });
 };
 

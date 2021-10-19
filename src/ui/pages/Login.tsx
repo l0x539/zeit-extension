@@ -2,9 +2,10 @@ import {useFetcher} from '@rest-hooks/core';
 import {useLoading} from '@rest-hooks/hooks';
 import * as React from 'react';
 import {Alert, Button, Form, FormControl} from 'react-bootstrap';
-import AuthContext from '../contexts/AuthContexts';
-import {loginHook} from '../utils/api';
-import {Auth, isErrorAuth} from '../utils/types';
+import AuthContext from '../../contexts/AuthContexts';
+import {loginHook} from '../../utils/api';
+import {openTab} from '../../utils/functions';
+import {Auth, isErrorAuth} from '../../utils/types';
 
 /*
  * Login Page
@@ -86,12 +87,12 @@ const Login = () => {
               />
               <div>
                 <span className="pwdreset"><a href="#" onClick={() => {
-                  chrome.tabs.create({url: 'https://zeit.io/en/iforgotmypassword'});
+                  openTab('https://zeit.io/en/iforgotmypassword');
                 }}>I forgot my password</a></span>
               </div>
               <div>
                 <span className="pwdreset"><a href="#" onClick={() => {
-                  chrome.tabs.create({url: 'https://zeit.io/en/signups/new'});
+                  openTab('https://zeit.io/en/signups/new');
                 }}>Create a new account</a></span>
               </div>
             </div>

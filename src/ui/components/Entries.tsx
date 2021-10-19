@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {toTimer} from '../utils/functions';
-import {TimeEntry} from '../utils/types';
+import {openTab, toTimer} from '../../utils/functions';
+import {TimeEntry} from '../../utils/types';
 
 const sortByProject = (entries: TimeEntry[]) => {
   return entries.reduce((i, entry) => {
@@ -20,7 +20,7 @@ const sumDuration = (entries: TimeEntry[]) => {
 
 const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
   const handleVisitProject = (id: string) => {
-    chrome.tabs.create({url: 'https://zeit.io/en/times'});
+    openTab('https://zeit.io/en/times');
   };
 
   const projects = sortByProject(entries);
@@ -33,10 +33,11 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
             const timing = sumDuration(projects[project]);
             if (timing > 0) {
               return (
-                <div className="shadow-sm time-entries mx-4 my-3 px-3 py-2">
+                <div className="shadow-sm time-entries mx-4 my-3 px-3 py-2"
+                  key={index}
+                >
                   <div
                     className="row py-2 time-entry"
-                    key={index}
                     onClick={() => handleVisitProject(project)}
                   >
                     <div className="col-8">
@@ -51,8 +52,8 @@ const Entries = ({entries, total}: {entries: TimeEntry[], total: number}) => {
             } else {
               return <></>;
             }
-          })
-          : (
+          }) :
+          (
             <div className="shadow-sm time-entries mx-4 my-3 px-3 py-4">
               <div className="m-auto">No time records today, Start now!</div>
             </div>
