@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {injectTag} from '../../../extension-inject/app';
 import App from './app';
+import './styles/gitlab.css';
 
 const injectElement = injectTag({
   query: '.detail-page-header > .detail-page-header-actions',
@@ -12,7 +13,8 @@ const injectElement = injectTag({
   btn-default 
   btn-md 
   gl-button
-  gl-mr-3`,
+  gl-mr-3
+  gitlab-zeit`,
   attributes: [
     {
       key: 'type',

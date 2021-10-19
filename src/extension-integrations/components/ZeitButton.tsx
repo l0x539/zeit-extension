@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {useComment, useTicket} from '../../utils/chrome';
 import {Status} from '../../utils/types';
-import FavIconSvg from './FavIconSvg';
+// import FavIconSvg from './FavIconSvg';
+import FavIconPng from './FavIconPng';
 import '../../styles/zeit-button.css';
 
 const resolveTimer = (status: Status) => {
@@ -93,7 +94,7 @@ const ZeitIntegrationButton = (
       className={`${className} zeit-btn`}
       onClick={handleStartStop}
       style={{cursor: status || loading?'pointer':'not-allowed'}}>
-      <FavIconSvg />
+      <FavIconPng />
       {loading?
       <span style={{color: 'gray'}}
         data-content={`Signin to the ZEIT.IO extension.`}>
