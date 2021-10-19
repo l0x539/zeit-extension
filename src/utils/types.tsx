@@ -227,6 +227,8 @@ export type UserInfos = {
     email: string,
     timezone: string,
     language: string,
+    'last_project_id': string,
+    'last_project_activity': string,
     'date_format': string
 }
 
