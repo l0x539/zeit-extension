@@ -168,6 +168,19 @@ const Editor = ({
      allProjects.result.projects[0].activities[0].name :
     null);
 
+
+  React.useEffect(() => {
+    if (userInfos.last_project_id && userInfos.last_project_id.length) {
+      setProjectId(userInfos.last_project_id);
+    }
+    if (
+      userInfos.last_project_activity &&
+      userInfos.last_project_activity.length
+    ) {
+      setActivityName(userInfos.last_project_activity);
+    }
+  }, [userInfos.last_project_id, userInfos.last_project_activity]);
+
   React.useEffect(() => {
     if (!isErrorProjects(allProjects) &&
      allProjects.result.projects.length < 1) {
@@ -290,7 +303,13 @@ const Editor = ({
                 {
                  !isErrorProjects(allProjects) &&
                   allProjects.result.projects?.length ?
-                  <Form.Select onChange={handleSelectProject}>
+                  <Form.Select defaultValue={
+                    projectId && projectId.length?
+                    activityName && activityName.length?
+                    `activity-${projectId}-${activityName}` :
+                    `project-${projectId}` :
+                    allProjects.result.projects[0].id
+                  } onChange={handleSelectProject}>
                     {
                       allProjects.result.projects.map((project, index) => (
                         project.activities.length?
