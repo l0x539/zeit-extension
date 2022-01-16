@@ -1,7 +1,7 @@
 {
     "name": "ZEIT.IO",
     "version": "0.0.1",
-    "manifest_version": 3,
+    "manifest_version": 2,
     "description": "ZEIT.IO Time Tracking for Freelancers & Agencies.",
     "homepage_url": "https://zeit.io",
     "icons": {
@@ -10,42 +10,30 @@
       "128": "icons/logo-128.png"
     },
     "web_accessible_resources": [
-      {
-        "resources": [
-          "icons/android-chrome-192x192.png",
-          "icons/android-chrome-512x512.png",
-          "icons/apple-touch-icon.png",
-          "icons/favicon-16x16.png",
-          "icons/favicon-32x32.png",
-          "icons/logo-48.png",
-          "icons/logo-128.png",
-          "icons/logo-512.png"
-        ],
-        "matches": [
-          "https://*.github.com/*",
-          "https://*.gitlab.com/*",
-          "https://*.atlassian.net/*"
-        ]
-      }
+      "icons/android-chrome-192x192.png",
+      "icons/android-chrome-512x512.png",
+      "icons/apple-touch-icon.png",
+      "icons/favicon-16x16.png",
+      "icons/favicon-32x32.png",
+      "icons/logo-48.png",
+      "icons/logo-128.png",
+      "icons/logo-512.png",
+      "https://*.github.com/*",
+      "https://*.gitlab.com/*",
+      "https://*.atlassian.net/*"
     ],
-    "action": {
+    "browser_action": {
       "default_title": "ZEIT.IO",
       "default_popup": "popup.html"
     },
     "default_locale": "en",
     "background": {
-      "service_worker": "js/background.js"
+      "scripts": ["js/background.js"]
     },
     "permissions": [
       "storage",
       "notifications",
-      "background",
-      "contextMenus"
-    ],
-    "optional_permissions": [
-      "unlimitedStorage"
-    ],
-    "host_permissions": [
+      "contextMenus",
       "https://*/*"
     ],
     "content_scripts": [
