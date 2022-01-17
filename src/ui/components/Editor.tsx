@@ -15,7 +15,7 @@ import {
 } from '../../utils/api';
 import {request} from '../../utils/request';
 import AuthContext from '../../contexts/AuthContexts';
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker.min.css';
 import DatePicker from 'react-datepicker';
 import {
   fromTimeString,
@@ -43,7 +43,6 @@ import {
   Ticket,
 } from '../../utils/types';
 import {Typeahead} from 'react-bootstrap-typeahead';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {useComment, useTicket} from '../../utils/chrome';
 import '../../styles/datepicker.css';
 
