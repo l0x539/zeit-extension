@@ -34,8 +34,8 @@ const Track = () => {
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${format(new Date(), 'YYYY-MM-DD')}&to=${
-          format(addDays(new Date(), 1), 'YYYY-MM-DD')}`,
+        params: `?from=${format(new Date(), 'yyyy-MM-dd')}&to=${
+          format(addDays(new Date(), 1), 'yyyy-MM-dd')}`,
       }); // Today working time.
 
   if (timeRecords.error) {

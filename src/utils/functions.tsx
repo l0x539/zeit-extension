@@ -34,11 +34,166 @@ export const toUTC = (time) => {
       '0')}`;
 };
 
-export const toTimeZone = (time, timezone) => {
-  console.log({timezone});
+const TIMEZONES = {
+  'Rome': 'Europe/Rome',
+  'Hawaii': 'Pacific/Honolulu',
+  'Alaska': 'America/Anchorage',
+  'Pacific Time (US & Canada)': 'America/Los_Angeles',
+  'Tijuana': 'America/Tijuana',
+  'Arizona': 'America/Phoenix',
+  'Chihuahua': 'America/Mazatlan',
+  'Mazatlan': 'America/Mazatlan',
+  'Mountain Time (US & Canada)': 'America/Denver',
+  'Central America': 'America/Chicago',
+  'Central Time (US & Canada)': 'America/Chicago',
+  'Guadalajara': 'Pacific/Guadalcanal',
+  'Mexico City': 'America/Mexico_City',
+  'Monterrey': 'America/Monterrey',
+  'Saskatchewan': 'America/Chicago',
+  'Bogota': 'America/Bogota',
+  'Eastern Time (US & Canada)': 'America/New_York',
+  'Indiana (East)': 'America/indiana',
+  'Lima': 'America/Lima',
+  'Quito': 'America/Quito',
+  'Atlantic Time (Canada)': 'America/Halifax',
+  'Caracas': 'America/Caracas',
+  'Georgetown': 'America/Georgetown',
+  'La Paz': 'America/La_Paz',
+  'Puerto Rico': 'America/Puerto_Rico',
+  'Santiago': 'America/Santiago',
+  'Newfoundland': 'America/St_Johns',
+  'Brasilia': 'America/Brasil/Brasilia',
+  'Buenos Aires': 'America/Argentina/Buenos_Aires',
+  'Greenland': 'Atlantic/Greenland',
+  'Montevideo': 'America/Montevideo',
+  'Mid-Atlantic': 'America/Halifax',
+  'Azores': 'Atlantic/Azores',
+  'Cape Verde Is.': 'Atlantic/Cape_Verde',
+  'Edinburgh': 'Europe/Edinburgh',
+  'Lisbon': 'Europe/Lisbon',
+  'London': 'Europe/London',
+  'Monrovia': 'Africa/Monrovia',
+  'UTC': 'UTC',
+  'Amsterdam': 'Europe/Amsterdam',
+  'Algiers': 'Africa/Algiers',
+  'Belgrade': 'Europe/Belgrade',
+  'Berlin': 'Europe/Berlin',
+  'Bern': 'Europe/Bern',
+  'Bratislava': 'Europe/Bratislava',
+  'Brussels': 'Europe/Brussels',
+  'Budapest': 'Europe/Budapest',
+  'Casablanca': 'Africa/Casablanca',
+  'Copenhagen': 'Europe/Copenhagen',
+  'Dublin': 'Europe/Dublin',
+  'Ljubljana': 'Europe/Ljubljana',
+  'Madrid': 'Europe/Madrid',
+  'Paris': 'Europe/Paris',
+  'Prague': 'Europe/Prague',
+  'Sarajevo': 'Europe/Sarajevo',
+  'Skopje': 'Europe/Skopje',
+  'Stockholm': 'Europe/Stockholm',
+  'Vienna': 'Europe/Vienna',
+  'Warsaw': 'Europe/Warsaw',
+  'West Central Africa': 'GMT+1',
+  'Zagreb': 'Europe/Zagreb',
+  'Zurich': 'Europe/Zurich',
+  'Athens': 'Europe/Athens',
+  'Bucharest': 'Europe/Bucharest',
+  'Cairo': 'Africa/Cairo',
+  'Harare': 'Africa/Harare',
+  'Helsinki': 'Europe/Helsinki',
+  'Jerusalem': 'Asia/Jerusalem',
+  'Kaliningrad': 'Europe/Kaliningrad',
+  'Kyiv': 'Europe/Kyiv',
+  'Pretoria': 'Africa/Pretoria',
+  'Riga': 'Europe/Riga',
+  'Sofia': 'Europe/Sofia',
+  'Tallinn': 'Europe/Tallinn',
+  'Vilnius': 'Europe/Vilnius',
+  'Baghdad': 'Asia/Baghdad',
+  'Istanbul': 'Europe/Istanbul',
+  'Kuwait': 'Asia/Kuwait',
+  'Minsk': 'Europe/Minsk',
+  'Moscow': 'Europe/Moscow',
+  'Nairobi': 'Africa/Nairobi',
+  'Riyadh': 'Asia/Riyadh',
+  'St. Petersburg': 'Europe/Saint_Petersburg',
+  'Volgograd': 'Europe/Volgograd',
+  'Tehran': 'Asia/Tehran',
+  'Abu Dhabi': 'Asia/Abu_Dhabi',
+  'Baku': 'Asia/Baku',
+  'Muscat': 'Asia/Muscat',
+  'Samara': 'Europe/Samara',
+  'Tbilisi': 'Asia/Tbilisi',
+  'Yerevan': 'Asia/Yerevan',
+  'Kabul': 'Asia/Kabul',
+  'Ekaterinburg': 'Asia/Yekaterinburg',
+  'Islamabad': 'Asia/Islamabad',
+  'Karachi': 'Asia/Karachi',
+  'Tashkent': 'Asia/Tashkent',
+  'Chennai': 'Asia/Chennai',
+  'Kolkata': 'Asia/Kolkata',
+  'Mumbai': 'Asia/Mumbai',
+  'New Delhi': 'Asia/New_Delhi',
+  'Sri Jayawardenepura': 'Asia/Sri_Jayawardenepura_Kotte',
+  'Kathmandu': 'Asia/Kathmandu',
+  'Almaty': 'Asia/Almaty',
+  'Astana': 'Asia/Astana',
+  'Dhaka': 'Asia/Dhaka',
+  'Urumqi': 'Asia/Urumqi',
+  'Rangoon': 'Asia/Yangon',
+  'Bangkok': 'Asia/Bangkok',
+  'Hanoi': 'Asia/Saigon',
+  'Jakarta': 'Asia/Jakarta',
+  'Krasnoyarsk': 'Asia/Krasnoyarsk',
+  'Novosibirsk': 'Europe/Novosibirsk',
+  'Beijing': 'Asia/Beijing',
+  'Chongqing': 'Asia/Chongqing',
+  'Hong Kong': 'Asia/Hong_Kong',
+  'Irkutsk': 'Asia/Irkutsk',
+  'Kuala Lumpur': 'Asia/Kuala_Lumpur',
+  'Perth': 'Australia/Perth',
+  'Singapore': 'Asia/Singapore',
+  'Taipei': 'Asia/Taipei',
+  'Ulaanbaatar': 'Asia/Ulaanbaatar',
+  'Osaka': 'Asia/Osaka',
+  'Sapporo': 'Asia/Sapporo',
+  'Seoul': 'Asia/Seoul',
+  'Tokyo': 'Asia/Tokyo',
+  'Yakutsk': 'Asia/Yakutsk',
+  'Adelaide': 'Australia/Adelaide',
+  'Darwin': 'Australia/Darwin',
+  'Brisbane': 'Australia/Brisbane',
+  'Canberra': 'Australia/Canberra',
+  'Guam': 'Pacific/Guam',
+  'Hobart': 'Australia/Hobart',
+  'Melbourne': 'Australia/Melbourne',
+  'Port Moresby': 'Pacific/Port_Moresby',
+  'Sydney': 'Australia/Sydney',
+  'Vladivostok': 'Asia/Vladivostok',
+  'Magadan': 'Asia/Magadan',
+  'New Caledonia': 'Pacific/New_Caledonia',
+  'Solomon Is.': 'Pacific/Solomon_Islands',
+  'Srednekolymsk': 'Asia/Srednekolymsk',
+  'Auckland': 'Pacific/Auckland',
+  'Fiji': 'Pacific/Fiji',
+  'Kamchatka': 'Asia/Kamchatka',
+  'Marshall Is.': 'Pacific/Auckland',
+  'Wellington': 'Pacific/Wellington',
+  'Chatham Is.': 'Pacific/Chatham_Islands',
+  'Tonga': 'Pacific/Tonga',
+  'Samoa': 'Pacific/Samoa',
+  'Tokelau Is.': 'Pacific/Tokelau_Islands',
+};
 
-  const date = utcToZonedTime(time, timezone);
-  return format(date, 'HH:mm', {timeZone: timezone});
+export const toTimeZone = (time, timezone) => {
+  console.log({timezone, ne: 'hi'});
+
+  const date = utcToZonedTime(new Date(time), TIMEZONES[timezone] ?? timezone);
+  console.log({date});
+  console.log({zoned: format(date, 'HH:mm', {timeZone: TIMEZONES[timezone] ?? timezone})});
+
+  return format(date, 'HH:mm', {timeZone: TIMEZONES[timezone] ?? timezone});
 };
 
 export const toShortDate = (date: Date, format: string) => {
@@ -135,19 +290,19 @@ export const getFromValue = (lastTo: string, timezone: string | null = null) => 
     end: addHours(new Date(), 1),
   })) {
     if (timezone) {
-      date = utcToZonedTime(lastTo, timezone);
+      date = utcToZonedTime(new Date(lastTo), TIMEZONES[timezone] ?? timezone);
     } else {
       date = new Date(lastTo);
     }
   } else {
     if (timezone) {
-      date = utcToZonedTime(subHours(new Date(), 2), timezone);
+      date = utcToZonedTime(subHours(new Date(), 2), TIMEZONES[timezone] ?? timezone);
     } else {
       date = subHours(new Date(), 2);
     }
   }
   if (timezone) {
-    return format(date, 'HH:mm', {timeZone: timezone});
+    return format(date, 'HH:mm', {timeZone: TIMEZONES[timezone] ?? timezone});
   } else {
     return format(date, 'HH:mm');
   }
