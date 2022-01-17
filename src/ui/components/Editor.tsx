@@ -34,7 +34,7 @@ import {
   resolveWageCategory,
   openTab,
 } from '../../utils/functions';
-import * as moment from 'moment';
+import {format, addDays} from 'date-fns';
 
 import {
   isErrorProjects,
@@ -88,10 +88,8 @@ const Editor = ({
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${moment()
-            .format('YYYY-MM-DD')}&to=${moment()
-            .add(1, 'day')
-            .format('YYYY-MM-DD')}`,
+        params: `?from=${format(new Date(), 'YYYY-MM-DD')}&to=${
+          format(addDays(new Date(), 1), 'YYYY-MM-DD')}`,
       }); // Today working time.
 
   const [hourlyWageCategory, setHourlyWageCategory] = React.useState('default');
