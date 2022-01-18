@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx webpack",
+    "start:firefox": "npx webpack --env browser=firefox",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
