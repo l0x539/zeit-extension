@@ -44,7 +44,7 @@ const Login = () => {
           <div>
             <h1>Sign in</h1>
             <section className="short-explain">
-                        Sign in to use ZEIT.IO.
+              Sign in to use ZEIT.IO
             </section>
           </div>
         </div>
@@ -97,7 +97,9 @@ const Login = () => {
               </div>
             </div>
             <div className="actions">
-              <Button type="submit" name="commit" >Sign in</Button>
+              <Button type="submit" 
+                      name="commit" 
+                      className="btn btn-primary green" >Sign in</Button>
             </div>
           </Form>
         </div>

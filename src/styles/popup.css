@@ -232,6 +232,12 @@ button, input[type="submit"], input[type="reset"] {
     border-color: #007bff;
 }
 
+.btn-primary.green {
+    background-color: #a1c058;
+    color: white;
+    border-color: #a1c058;
+}
+
 .pointer {
     cursor: pointer;
 }

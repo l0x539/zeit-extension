@@ -434,19 +434,16 @@ const Editor = ({
           />
         </div>
         <div className="d-flex justify-content-end">
-          <Button variant="secondary"
-            onClick={() => {
-              setStorageComment('');
-              setTicket(null);
-              handleResetTimer();
-            }}
-            className="mx-1"
-          >Discard Time</Button>
-          <Button
-            variant="primary"
-            onClick={handleStopTimer}
-            className="blue"
-          >Save</Button>
+          <Button variant="primary"
+                  onClick={() => {
+                    setStorageComment('');
+                    setTicket(null);
+                    handleResetTimer();
+                  }}
+                  className="mx-2" >Discard Time</Button>
+          <Button variant="primary"
+                  onClick={handleStopTimer}
+                  className="green">Save</Button>
         </div>
       </Form>
     </ModalScreen>

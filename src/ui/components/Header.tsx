@@ -350,7 +350,7 @@ const Header: React.FC<IHeader> = ({
         <div>
           <div className="row m-4">
             <div className="col text-center">
-              Your Settings will automatically save
+              Your Settings will be saved automatically
             </div>
           </div>
         </div>
