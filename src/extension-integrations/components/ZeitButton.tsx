@@ -106,7 +106,7 @@ const ZeitIntegrationButton = (
       </span> :
       <span style={{color: 'gray'}}
         data-content={`Signin to the ZEIT.IO extension.`}>
-      Login to zeit extension.
+      Signin to the ZEIT.IO extension.
       </span>}
       <span className="Counter"></span>
     </a>
