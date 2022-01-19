@@ -1,6 +1,7 @@
 .idea
 .DS_Store
 dist/js/*
+firefox-dist/js/*
 node_modules/
 dist.pem
 dist.crx
