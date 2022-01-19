@@ -1,8 +1,7 @@
 const path = require('path');
 
-module.exports = {
+module.exports = (env) => ({
   mode: 'production',
-  devtool: 'inline-source-map',
   watch: false,
   entry: {
     content: './src/app/content.ts',
@@ -12,7 +11,8 @@ module.exports = {
   },
 
   output: {
-    path: path.resolve(__dirname, 'dist/js'),
+    path: path.resolve(__dirname, env.browser === 'firefox' ?
+        'firefox-dist/js' : 'dist/js'),
     filename: '[name].js',
   },
 
@@ -30,4 +30,4 @@ module.exports = {
       },
     ],
   },
-};
+});

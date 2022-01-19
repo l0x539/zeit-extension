@@ -15,7 +15,7 @@ import {
 } from '../../utils/api';
 import {request} from '../../utils/request';
 import AuthContext from '../../contexts/AuthContexts';
-import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker.min.css';
 import DatePicker from 'react-datepicker';
 import {
   fromTimeString,
@@ -34,7 +34,7 @@ import {
   resolveWageCategory,
   openTab,
 } from '../../utils/functions';
-import * as moment from 'moment';
+import {format, addDays} from 'date-fns';
 
 import {
   isErrorProjects,
@@ -43,7 +43,6 @@ import {
   Ticket,
 } from '../../utils/types';
 import {Typeahead} from 'react-bootstrap-typeahead';
-import 'react-bootstrap-typeahead/css/Typeahead.css';
 import {useComment, useTicket} from '../../utils/chrome';
 import '../../styles/datepicker.css';
 
@@ -88,10 +87,8 @@ const Editor = ({
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${moment()
-            .format('YYYY-MM-DD')}&to=${moment()
-            .add(1, 'day')
-            .format('YYYY-MM-DD')}`,
+        params: `?from=${format(new Date(), 'yyyy-MM-dd')}&to=${
+          format(addDays(new Date(), 1), 'yyyy-MM-dd')}`,
       }); // Today working time.
 
   const [hourlyWageCategory, setHourlyWageCategory] = React.useState('default');
@@ -125,6 +122,7 @@ const Editor = ({
           if (res.pause) {
             setDate(new Date(res.start));
             setPause(toTimer(res.pause_total));
+
             setFrom(userInfos.timezone?
             toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
           } else {
@@ -273,7 +271,7 @@ const Editor = ({
 
   const duration = fromTimeString(to)-
   fromTimeString(from)-
-  fromTimeString(pause);
+  fromTimeString(pause); 
 
   return (
     <ModalScreen

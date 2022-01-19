@@ -6,7 +6,7 @@ import {useResource} from '@rest-hooks/core';
 import {getTimeRecordsHook, getUserInfos} from '../../utils/api';
 import AuthContext from '../../contexts/AuthContexts';
 import {BiLoader} from 'react-icons/bi';
-import * as moment from 'moment';
+import {format, addDays} from 'date-fns';
 
 import {Scrollbars} from 'react-custom-scrollbars';
 import {isErrorUserInfos, UserInfosResponse} from '../../utils/types';
@@ -34,9 +34,8 @@ const Track = () => {
   const timeRecords = useResource(getTimeRecordsHook,
       {
         apiKey: token,
-        params: `?from=${moment().
-            format('YYYY-MM-DD')}&to=${moment().add(1, 'day')
-            .format('YYYY-MM-DD')}`,
+        params: `?from=${format(new Date(), 'yyyy-MM-dd')}&to=${
+          format(addDays(new Date(), 1), 'yyyy-MM-dd')}`,
       }); // Today working time.
 
   if (timeRecords.error) {
