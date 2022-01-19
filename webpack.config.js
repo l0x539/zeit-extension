@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = (env) => ({
-  mode: 'production',
-  // devtool: 'inline-source-map',
+  mode: 'development',
+  devtool: 'inline-source-map',
   watch: true,
   entry: {
     content: './src/app/content.ts',
