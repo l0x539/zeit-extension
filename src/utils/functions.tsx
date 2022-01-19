@@ -35,6 +35,7 @@ export const toUTC = (time) => {
 };
 
 const TIMEZONES = {
+  'International Date Line West': 'UTC-12',
   'Rome': 'Europe/Rome',
   'Hawaii': 'Pacific/Honolulu',
   'Alaska': 'America/Anchorage',
