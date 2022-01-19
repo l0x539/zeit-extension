@@ -12,8 +12,8 @@ module.exports = (env) => ({
   },
 
   output: {
-    path: path.resolve(__dirname, env.browser === 'firefox' ?
-        'dist/js' : 'firefox-dist/js'),
+    path: path.resolve(__dirname, env?.browser === 'firefox' ?
+        'firefox-dist/js' : 'dist/js'),
     filename: '[name].js',
   },
 

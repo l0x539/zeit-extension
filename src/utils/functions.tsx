@@ -187,11 +187,7 @@ const TIMEZONES = {
 };
 
 export const toTimeZone = (time, timezone) => {
-  console.log({timezone, ne: 'hi'});
-
   const date = utcToZonedTime(new Date(time), TIMEZONES[timezone] ?? timezone);
-  console.log({date});
-  console.log({zoned: format(date, 'HH:mm', {timeZone: TIMEZONES[timezone] ?? timezone})});
 
   return format(date, 'HH:mm', {timeZone: TIMEZONES[timezone] ?? timezone});
 };

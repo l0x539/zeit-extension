@@ -122,7 +122,6 @@ const Editor = ({
           if (res.pause) {
             setDate(new Date(res.start));
             setPause(toTimer(res.pause_total));
-            console.log('setting from 1');
 
             setFrom(userInfos.timezone?
             toTimeZone(res.start, userInfos.timezone): toUTC(res.start));
@@ -130,7 +129,6 @@ const Editor = ({
             const lastRecord = getLastTimeRecords(
                 timeRecords.result?.time_records,
             );
-            console.log('setting from 2');
 
             setFrom(getFromValue(
                 lastRecord?.stop_time ?? '', userInfos.timezone));
@@ -274,9 +272,6 @@ const Editor = ({
   const duration = fromTimeString(to)-
   fromTimeString(from)-
   fromTimeString(pause);
-  console.log({
-    from, to, pause, duration,
-  });
 
   return (
     <ModalScreen
