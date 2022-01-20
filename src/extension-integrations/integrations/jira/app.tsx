@@ -2,8 +2,6 @@ import * as React from 'react';
 import ZeitIntegrationButton from '../../components/ZeitButton';
 
 const App = () => {
-  console.log('hi');
-
   const title = React.useMemo(() => document.querySelector(
       'h1[data-test-id="issue.views.issue-base.foundation.summary.heading"]',
   ).textContent.replace('#', ''), []);

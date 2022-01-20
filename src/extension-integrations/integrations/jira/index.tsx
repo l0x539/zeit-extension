@@ -12,7 +12,6 @@ setInterval(() => {
   // eslint-disable-next-line max-len
   const isReady = document.querySelector('div[data-test-id="issue.views.issue-base.context.status-and-approvals-wrapper.status-and-approval"] > div');
   if (!isSet && findUrl && isReady) {
-    console.log('here');
     const injectElement = injectTag({
       // eslint-disable-next-line max-len
       query: 'div[data-test-id="issue.views.issue-base.context.status-and-approvals-wrapper.status-and-approval"] > div',
