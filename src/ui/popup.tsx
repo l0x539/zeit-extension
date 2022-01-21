@@ -16,6 +16,7 @@ import {useStore, useUserInfos} from '../utils/chrome';
 import ProtectedPage from './components/Layout/ProtectedPage';
 import Loading from './components/Loading';
 import {Auth, isErrorAuth, UserInfos} from '../utils/types';
+import './style.css';
 
 const App = () => {
   return (
