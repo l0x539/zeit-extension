@@ -24,7 +24,7 @@ module.exports = (env) => ({
   module: {
     rules: [
       {test: /\.tsx?$/, loader: 'ts-loader'},
-      {test: /\.css$/, use: ['style-loader', 'css-loader']},
+      {test: /\.css$/i, use: ['style-loader', 'css-loader']},
       {
         test: /\.svg$/,
         use: ['@svgr/webpack'],

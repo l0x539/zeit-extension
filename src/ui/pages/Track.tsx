@@ -8,7 +8,6 @@ import AuthContext from '../../contexts/AuthContexts';
 import {BiLoader} from 'react-icons/bi';
 import {format, addDays} from 'date-fns';
 
-import {Scrollbars} from 'react-custom-scrollbars';
 import {isErrorUserInfos, UserInfosResponse} from '../../utils/types';
 
 /*
@@ -48,15 +47,15 @@ const Track = () => {
         userInfos={userInfos}
       />
       {
-        timeRecords?.result?.time_records?
-        <Scrollbars
-          autoHide
+        timeRecords?.result?.time_records ?
+        <div
+          className='scrollbar'
           style={{height: '100vh'}}
         >
           <Entries
             entries={[...timeRecords.result.time_records].reverse()}
             total={timeRecords.result.total_duration} />
-        </Scrollbars> :
+        </div> :
         <BiLoader />
       }
     </div>

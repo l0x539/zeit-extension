@@ -271,7 +271,7 @@ const Editor = ({
 
   const duration = fromTimeString(to)-
   fromTimeString(from)-
-  fromTimeString(pause); 
+  fromTimeString(pause);
 
   return (
     <ModalScreen
@@ -433,15 +433,15 @@ const Editor = ({
         </div>
         <div className="d-flex justify-content-end">
           <Button variant="primary"
-                  onClick={() => {
-                    setStorageComment('');
-                    setTicket(null);
-                    handleResetTimer();
-                  }}
-                  className="mx-2" >Discard Time</Button>
+            onClick={() => {
+              setStorageComment('');
+              setTicket(null);
+              handleResetTimer();
+            }}
+            className="mx-2" >Discard Time</Button>
           <Button variant="primary"
-                  onClick={handleStopTimer}
-                  className="green">Save</Button>
+            onClick={handleStopTimer}
+            className="green">Save</Button>
         </div>
       </Form>
     </ModalScreen>
