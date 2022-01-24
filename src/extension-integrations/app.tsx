@@ -1,12 +1,9 @@
 import {ROUTES} from './routes';
 
-let isSet = false;
-
 setInterval(() => {
   const route = ROUTES.find((value) => value.rule.test(location.href));
-  if (route && !isSet) {
+  if (route) {
     require(`./integrations/${route.integration}`);
-    isSet = true;
   }
   // else {
   //   throw Error('Integration route not found for this url location');

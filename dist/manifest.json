@@ -24,7 +24,8 @@
       "matches": [
         "https://*.github.com/*",
         "https://*.gitlab.com/*",
-        "https://*.atlassian.net/*"
+        "https://*.atlassian.net/*",
+        "https://*.zendesk.com/*"
       ]
     }
   ],
@@ -61,7 +62,8 @@
       "matches": [
         "https://*.github.com/*/*/issues/*",
         "https://*.gitlab.com/*/*/*/issues/*",
-        "https://*.atlassian.net/*/*/*/*/boards/*"
+        "https://*.atlassian.net/*/*/*/*/boards/*",
+        "https://*.zendesk.com/*"
       ],
       "run_at" : "document_idle",
       "js": [

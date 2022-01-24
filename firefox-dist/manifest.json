@@ -20,7 +20,8 @@
       "icons/logo-512.png",
       "https://*.github.com/*",
       "https://*.gitlab.com/*",
-      "https://*.atlassian.net/*"
+      "https://*.atlassian.net/*",
+      "https://*.zendesk.com/*"
     ],
     "browser_action": {
       "default_title": "ZEIT.IO",
@@ -49,8 +50,9 @@
         "matches": [
           "https://*.github.com/*/*/issues/*",
           "https://*.gitlab.com/*/*/*/issues/*",
-          "https://*.atlassian.net/*/*/*/*/boards/*"
-        ],
+          "https://*.atlassian.net/*/*/*/*/boards/*",
+          "https://*.zendesk.com/*"
+      ],
         "run_at" : "document_idle",
         "js": [
           "js/integrations.js"
