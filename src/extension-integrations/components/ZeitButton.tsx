@@ -66,7 +66,8 @@ const ZeitIntegrationButton = (
         });
   }, []);
 
-  const handleStartStop = () => {
+  const handleStartStop = (e) => {
+    e.preventDefault();
     try {
       chrome.runtime.sendMessage({message: 'integration-start-stop'},
           function(resp) {
