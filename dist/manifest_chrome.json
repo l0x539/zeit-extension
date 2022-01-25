@@ -22,10 +22,8 @@
         "icons/logo-512.png"
       ],
       "matches": [
-        "https://*.github.com/*",
-        "https://*.gitlab.com/*",
-        "https://*.atlassian.net/*"
-      ]
+        "https://*/*"
+    ]
     }
   ],
   "action": {
@@ -61,7 +59,8 @@
       "matches": [
         "https://*.github.com/*/*/issues/*",
         "https://*.gitlab.com/*/*/*/issues/*",
-        "https://*.atlassian.net/*/*/*/*/boards/*"
+        "https://*.atlassian.net/*/*/*/*/boards/*",
+        "https://*/*/boards/*"
       ],
       "run_at" : "document_idle",
       "js": [

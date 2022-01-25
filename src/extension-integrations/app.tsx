@@ -1,9 +1,12 @@
 import {ROUTES} from './routes';
 
 let isSet = false;
-
 setInterval(() => {
-  const route = ROUTES.find((value) => value.rule.test(location.href));
+  const route = ROUTES.find(
+      (value) => value.rules.some((rule) => {
+        return rule.test(location.href);
+      },
+      ));
   if (route && !isSet) {
     require(`./integrations/${route.integration}`);
     isSet = true;
