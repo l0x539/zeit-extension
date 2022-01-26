@@ -5,3 +5,6 @@ firefox-dist/js/*
 node_modules/
 dist.pem
 dist.crx
+dist.zip
+firefox-zeit.zip
+firefox-dist.zip

@@ -1,21 +1,22 @@
 export const ROUTES = [
   {
     integration: 'github',
-    rule: /^https:\/\/.*github.com\/.*\/.*\/issues\/.*$/,
+    rules: [/^https:\/\/.*github.com\/.*\/.*\/issues\/.*$/],
   },
   {
     integration: 'gitlab',
-    rule: /^https:\/\/.*gitlab.com\/.*\/.*\/.*\/issues\/.*$/,
+    rules: [/^https:\/\/.*gitlab.com\/.*\/.*\/.*\/issues\/.*$/],
   },
   {
     integration: 'jira',
-    // eslint-disable-next-line max-len
-    rule: /^https\:\/\/.*atlassian\.net\/.*\/boards\/.?\?.*selectedIssue=.*$/,
+    rules: [
+      /^https\:\/\/.*atlassian\.net\/.*\/boards\/.?\?.*selectedIssue=.*$/,
+    ],
   },
   {
     integration: 'zendesk',
     // eslint-disable-next-line max-len
-    rule: /^https\:\/\/.*zendesk\.com\/agent\/tickets\/.*$/,
+    rules: [/^https\:\/\/.*zendesk\.com\/agent\/tickets\/.*$/],
   },
 ];
 

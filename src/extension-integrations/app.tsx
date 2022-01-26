@@ -1,7 +1,11 @@
 import {ROUTES} from './routes';
 
 setInterval(() => {
-  const route = ROUTES.find((value) => value.rule.test(location.href));
+  const route = ROUTES.find(
+      (value) => value.rules.some((rule) => {
+        return rule.test(location.href);
+      },
+      ));
   if (route) {
     require(`./integrations/${route.integration}`);
   }

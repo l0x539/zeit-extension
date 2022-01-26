@@ -2,7 +2,7 @@
     "name": "ZEIT.IO",
     "version": "0.0.1",
     "manifest_version": 2,
-    "description": "ZEIT.IO Time Tracking for Freelancers & Agencies.",
+    "description": "ZEIT.IO Time Tracking for Agencies & Experts.",
     "homepage_url": "https://zeit.io",
     "icons": {
       "16": "icons/favicon-16x16.png",
@@ -21,7 +21,11 @@
       "https://*.github.com/*",
       "https://*.gitlab.com/*",
       "https://*.atlassian.net/*",
+<<<<<<< HEAD
       "https://*.zendesk.com/*"
+=======
+      "https://*/*"
+>>>>>>> cf61068b750b4eadc29df5582a8c2f0a3ff937b8
     ],
     "browser_action": {
       "default_title": "ZEIT.IO",
@@ -51,7 +55,8 @@
           "https://*.github.com/*/*/issues/*",
           "https://*.gitlab.com/*/*/*/issues/*",
           "https://*.atlassian.net/*/*/*/*/boards/*",
-          "https://*.zendesk.com/*"
+          "https://*.zendesk.com/*",
+          "https://*/*/boards/*"
       ],
         "run_at" : "document_idle",
         "js": [

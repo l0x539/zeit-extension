@@ -1,6 +1,6 @@
 {
   "name": "ZEIT.IO",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "manifest_version": 3,
   "description": "ZEIT.IO Time Tracking for Agencies & Experts.",
   "homepage_url": "https://zeit.io",
@@ -60,7 +60,6 @@
         "https://*.github.com/*/*/issues/*",
         "https://*.gitlab.com/*/*/*/issues/*",
         "https://*.atlassian.net/*/*/*/*/boards/*",
-        "https://*.zendesk.com/*",
         "https://*/*/boards/*"
       ],
       "run_at" : "document_idle",

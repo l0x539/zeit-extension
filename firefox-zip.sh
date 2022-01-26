@@ -1,3 +1,3 @@
-cd dist
+cd firefox-dist
 
-zip -r -FS ../firefox-zeit.zip *
+zip -r -FS ../firefox-dist.zip *
