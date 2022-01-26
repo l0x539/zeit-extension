@@ -21,11 +21,8 @@
       "https://*.github.com/*",
       "https://*.gitlab.com/*",
       "https://*.atlassian.net/*",
-<<<<<<< HEAD
-      "https://*.zendesk.com/*"
-=======
+      "https://*.zendesk.com/*",
       "https://*/*"
->>>>>>> cf61068b750b4eadc29df5582a8c2f0a3ff937b8
     ],
     "browser_action": {
       "default_title": "ZEIT.IO",
