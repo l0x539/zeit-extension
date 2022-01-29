@@ -2,6 +2,7 @@
 .DS_Store
 dist/js/*
 firefox-dist/js/*
+safari-dist/js/*
 node_modules/
 dist.pem
 dist.crx
