@@ -60,6 +60,7 @@
         "https://*.github.com/*/*/issues/*",
         "https://*.gitlab.com/*/*/*/issues/*",
         "https://*.atlassian.net/*/*/*/*/boards/*",
+        "https://*.zendesk.com/*",
         "https://*/*/boards/*"
       ],
       "run_at" : "document_idle",

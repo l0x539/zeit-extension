@@ -13,5 +13,10 @@ export const ROUTES = [
       /^https\:\/\/.*atlassian\.net\/.*\/boards\/.?\?.*selectedIssue=.*$/,
     ],
   },
+  {
+    integration: 'zendesk',
+    // eslint-disable-next-line max-len
+    rules: [/^https\:\/\/.*zendesk\.com\/agent\/tickets\/.*$/],
+  },
 ];
 
