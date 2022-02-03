@@ -6,7 +6,9 @@ const App = () => {
       'h1[data-test-id="issue.views.issue-base.foundation.summary.heading"]',
   ).textContent.replace('#', ''), []);
   const ticketId = React.useMemo(() =>
-    new URLSearchParams(document.location.href).get('selectedIssue'),
+    new URLSearchParams(document.location.href).get('selectedIssue') ??
+    document.location.href
+        .substring(document.location.href.lastIndexOf('/') + 1),
   [document.location.href]);
   return (
     <ZeitIntegrationButton
