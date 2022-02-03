@@ -11,8 +11,8 @@ export const ROUTES = [
     integration: 'jira',
     rules: [
       /^https\:\/\/.*atlassian\.net\/.*\/boards\/.*\?.*selectedIssue=.*$/,
-      /^https\:\/\/.*atlassian\.net\/browse\/.+/,
-      /^https\:\/\/jira\.jda\.com\/browse\/.+/
+      /^https\:\/\/.*atlassian\.net\/browse\/.*/,
+      /^https\:\/\/jira\.jda\.com\/browse\/.*/,
     ],
   },
   {
