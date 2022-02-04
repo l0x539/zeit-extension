@@ -38,9 +38,7 @@
     "storage",
     "notifications",
     "background",
-    "contextMenus"
-  ],
-  "optional_permissions": [
+    "contextMenus",
     "unlimitedStorage"
   ],
   "host_permissions": [

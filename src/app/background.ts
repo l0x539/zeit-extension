@@ -1,13 +1,11 @@
 import {request} from '../utils/request';
-import {notify, registerCommandAction} from '../utils/chrome';
+import {notify, registerCommandAction} from '../utils/utils';
 
 const sendMessagePromise = (tabId, item) => {
   return new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(tabId, {item}, (response) => {
       if (response?.complete) {
         resolve('fullfilled');
-      } else {
-        reject(Error('Something wrong'));
       }
     });
   });
@@ -71,28 +69,29 @@ chrome.runtime.onMessage.addListener(
 //     });
 //   });
 // });
-
-chrome.windows.onCreated.addListener(function() {
-  chrome.storage.local.get('apiKey', async function(result) {
-    chrome.storage.local.get('settings', async (results) => {
-      if (results?.settings?.startBrowser) {
-        const start = await request('/api/v1/usr/time_records/start', 'POST',
-            {},
-            result.apiKey,
-        );
-        if (start.status === 200) {
-          const resume = await request('/api/v1/usr/time_records/resume',
-              'POST',
+chrome.runtime.onConnect.addListener((port) => {
+  chrome.windows.onCreated.addListener(function() {
+    chrome.storage.local.get('apiKey', async function(result) {
+      chrome.storage.local.get('settings', async (results) => {
+        if (results?.settings?.startBrowser) {
+          const start = await request('/api/v1/usr/time_records/start', 'POST',
               {},
               result.apiKey,
           );
-          if (resume.status === 201) {
-            notify('ZEIT.IO', 'Timer Resumed');
+          if (start.status === 200) {
+            const resume = await request('/api/v1/usr/time_records/resume',
+                'POST',
+                {},
+                result.apiKey,
+            );
+            if (resume.status === 201) {
+              notify('ZEIT.IO', 'Timer Resumed');
+            }
+          } else if (start.status === 201) {
+            notify('ZEIT.IO', 'Timer Started');
           }
-        } else if (start.status === 201) {
-          notify('ZEIT.IO', 'Timer Started');
         }
-      }
+      });
     });
   });
 });
@@ -151,10 +150,12 @@ const startStop = async (tabId=undefined) => {
 };
 
 // context Right Click
-chrome.contextMenus.create({
-  id: 'start-stop-right',
-  title: 'Start/Pause Timer',
-  contexts: ['all'],
+chrome.contextMenus.removeAll(function() {
+  chrome.contextMenus.create({
+    id: 'start-stop-right',
+    title: 'Start/Pause Timer',
+    contexts: ['all'],
+  });
 });
 
 chrome.contextMenus.onClicked.addListener((i, tab) => {
