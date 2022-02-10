@@ -6,7 +6,6 @@ import {GrPowerReset} from 'react-icons/gr';
 // import {FiSettings} from 'react-icons/fi';
 import {InputGroup, Dropdown, Form} from 'react-bootstrap';
 import {
-  registerCommandAction,
   useComment,
   useSettings,
 } from '../../utils/chrome';
@@ -29,6 +28,7 @@ import {
 } from '../../utils/types';
 import ZeitTimer, {TimerStatus} from './ZeitTimer';
 import {getImageUrl, openTab} from '../../utils/functions';
+import {registerCommandAction} from '../../utils/utils';
 
 const calculateTime: (
   start: string,
