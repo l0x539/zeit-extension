@@ -1,7 +1,3 @@
-.zeit-github svg ,.zeit-github img {
-    margin-right: 6px;
-}
-
 .zeit-btn {
     display: flex;
     align-items: center;
@@ -10,4 +6,7 @@
 .zeit-btn:hover,.zeit-btn:focus {
     text-decoration: none;
 }
-  
+
+.zeit-btn img {
+    margin-right: 3px;
+}

@@ -95,7 +95,7 @@ const ZeitIntegrationButton = (
       className={`${className} zeit-btn`}
       onClick={handleStartStop}
       style={{cursor: status || loading?'pointer':'not-allowed'}}>
-      <FavIconPng style={{marginRight: '3px'}} />{' '}
+      <FavIconPng />{' '}
       {loading?
       <span style={{color: 'gray'}}
         data-content={`Signin to the ZEIT.IO extension.`}>

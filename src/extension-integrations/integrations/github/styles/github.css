@@ -1,4 +1,7 @@
+.github-zeit span {
+    text-align: left;
+}
 
-.github-zeit svg, .github-zeit img {
-    margin-right: 0.2rem;
+.zeit-github svg , .zeit-github img {
+    margin-right: 6px;
 }
