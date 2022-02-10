@@ -12,6 +12,7 @@ export const ROUTES = [
     rules: [
       /^https\:\/\/.*atlassian\.net\/.*\/boards\/.*\?.*selectedIssue=.*$/,
       /^https\:\/\/.*atlassian\.net\/browse\/.*/,
+      /^https\:\/\/jira\.jda\.com\/.*\/boards\/.*\?.*selectedIssue=.*$/,
       /^https\:\/\/jira\.jda\.com\/browse\/.*/,
     ],
   },
